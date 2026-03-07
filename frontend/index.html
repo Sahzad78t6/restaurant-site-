@@ -19,34 +19,67 @@
 </head>
 <body class="bg-white text-gray-900 flex flex-col min-h-screen">
 
-    <nav class="sticky top-0 z-50 glass-nav shadow-sm border-b">
-        <div class="max-w-6xl mx-auto px-4 h-20 flex items-center justify-between">
-            <div class="flex items-center gap-3">
-                <div class="w-10 h-10 bg-orange-500 rounded-full flex items-center justify-center text-white text-xl shadow-lg shadow-orange-200">
-                    <i class="fa-solid fa-utensils"></i>
-                </div>
-                <span class="text-2xl font-black tracking-tight text-gray-800 uppercase italic">Royal Sweets</span>
-            </div>
+  <nav class="sticky top-0 z-50 glass-nav shadow-sm border-b">
+<div class="max-w-6xl mx-auto px-4 h-20 flex items-center justify-between">
 
-            <div class="hidden md:flex gap-8 font-bold text-gray-600 items-center">
-                <a href="index.html" class="text-orange-500">Home</a>
-                <a href="menu.html" class="hover:text-orange-500 transition">Menu</a>
-                <a href="my-orders.html" class="hover:text-orange-500 transition">My Orders</a>
-                
-                <div id="authContainer">
-                    <a href="login.html" class="flex items-center gap-2 bg-gray-100 px-5 py-2.5 rounded-xl hover:bg-gray-200 transition">
-                        <i class="fa-regular fa-user text-orange-500"></i>
-                        <span class="text-sm font-extrabold uppercase tracking-tight">Sign In</span>
-                    </a>
-                </div>
-            </div>
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 bg-orange-500 rounded-full flex items-center justify-center text-white text-xl shadow-lg shadow-orange-200">
+<i class="fa-solid fa-utensils"></i>
+</div>
+<span class="text-2xl font-black tracking-tight text-gray-800 uppercase italic">Royal Sweets</span>
+</div>
 
-            <button onclick="window.location.href='menu.html'" class="bg-orange-500 text-white px-6 py-2.5 rounded-xl font-black hover:bg-orange-600 shadow-lg shadow-orange-200 transition uppercase text-sm italic">
-                Order Now
-            </button>
-        </div>
-    </nav>
+<!-- Desktop Menu -->
+<div class="hidden md:flex gap-8 font-bold text-gray-600 items-center">
+<a href="index.html" class="text-orange-500">Home</a>
+<a href="menu.html" class="hover:text-orange-500 transition">Menu</a>
+<a href="my-orders.html" class="hover:text-orange-500 transition">My Orders</a>
 
+<div id="authContainer">
+<a href="login.html" class="flex items-center gap-2 bg-gray-100 px-5 py-2.5 rounded-xl hover:bg-gray-200 transition">
+<i class="fa-regular fa-user text-orange-500"></i>
+<span class="text-sm font-extrabold uppercase tracking-tight">Sign In</span>
+</a>
+</div>
+</div>
+
+<!-- Order Button -->
+<button onclick="window.location.href='menu.html'" class="hidden md:block bg-orange-500 text-white px-6 py-2.5 rounded-xl font-black hover:bg-orange-600 shadow-lg shadow-orange-200 transition uppercase text-sm italic">
+Order Now
+</button>
+
+<!-- Mobile Menu Button -->
+<button id="mobileMenuBtn" class="md:hidden text-2xl text-gray-700">
+<i class="fa-solid fa-bars"></i>
+</button>
+
+</div>
+
+<!-- Mobile Dropdown -->
+<div id="mobileMenu" class="hidden md:hidden bg-white border-t">
+
+<div class="flex flex-col p-4 gap-4 font-bold text-gray-700">
+
+<a href="index.html" class="text-orange-500">Home</a>
+<a href="menu.html" class="hover:text-orange-500">Menu</a>
+<a href="my-orders.html" class="hover:text-orange-500">My Orders</a>
+
+<div id="authContainerMobile">
+<a href="login.html" class="flex items-center gap-2 bg-gray-100 px-4 py-3 rounded-xl">
+<i class="fa-regular fa-user text-orange-500"></i>
+<span class="text-sm font-extrabold uppercase tracking-tight">Sign In</span>
+</a>
+</div>
+
+<button onclick="window.location.href='menu.html'" class="bg-orange-500 text-white px-6 py-3 rounded-xl font-black hover:bg-orange-600 shadow-lg shadow-orange-200 transition uppercase text-sm italic">
+Order Now
+</button>
+
+</div>
+
+</div>
+
+</nav>
    <header class="relative h-[80vh] flex items-center justify-center text-center overflow-hidden">
     <div class="absolute inset-0 z-0">
         <img src="https://images.unsplash.com/photo-1589119908995-c6837fa14848?auto=format&fit=crop&w=1600&q=80" 
@@ -183,6 +216,12 @@
     </footer>
 
     <script>
+        const btn = document.getElementById("mobileMenuBtn");
+const menu = document.getElementById("mobileMenu");
+
+btn.addEventListener("click", () => {
+menu.classList.toggle("hidden");
+});
         // Simulation: Check if user is "Logged In"
        window.onload = function(){
 
