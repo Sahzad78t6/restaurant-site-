@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Delivery Partner App</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body class="bg-slate-900 text-white p-6">
+    <div class="max-w-md mx-auto">
+        <h1 class="text-xl font-black mb-8 border-b border-white/10 pb-4">DELIVERY PANEL</h1>
+        
+        <div class="bg-white/5 p-6 rounded-3xl border border-white/10 mb-6">
+            <p class="text-xs font-bold text-orange-500 mb-1 uppercase">Active Order</p>
+            <h2 class="text-2xl font-bold">#RS-2026-001</h2>
+            <p class="text-sm text-gray-400 mt-2">Customer: Sahazad</p>
+        </div>
+
+        <div class="space-y-4">
+            <button onclick="updateStatus('Kitchen')" class="w-full bg-orange-600 p-5 rounded-2xl font-bold flex items-center justify-between">
+                <span>1. Mark as Cooking</span> <i class="fa-solid fa-fire"></i>
+            </button>
+            <button onclick="updateStatus('On the Way')" class="w-full bg-blue-600 p-5 rounded-2xl font-bold flex items-center justify-center gap-3">
+                <i class="fa-solid fa-motorcycle"></i> 2. Out for Delivery
+            </button>
+            <button onclick="updateStatus('Delivered')" class="w-full bg-green-600 p-5 rounded-2xl font-bold flex items-center justify-between">
+                <span>3. Mark Delivered</span> <i class="fa-solid fa-check-double"></i>
+            </button>
+        </div>
+    </div>
+
+    <script>
+        function updateStatus(status) {
+            // This updates the central 'database' (localStorage)
+            localStorage.setItem('orderStatus', status);
+            alert("Status Updated to: " + status);
+        }
+    </script>
+</body>
+</html>

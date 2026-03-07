@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Track Order | Royal Sweets</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;800&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Plus Jakarta Sans', sans-serif; }
+        .step-line { height: 4px; background: #e2e8f0; flex-grow: 1; position: relative; top: 20px; z-index: -1; }
+        .step-dot { width: 40px; height: 40px; border-radius: 50%; background: white; border: 4px solid #e2e8f0; display: flex; align-items: center; justify-content: center; transition: all 0.5s; }
+        .step-dot.active { border-color: #f97316; color: #f97316; box-shadow: 0 0 15px rgba(249, 115, 22, 0.3); }
+        .step-dot.completed { background: #f97316; border-color: #f97316; color: white; }
+        .progress-fill { height: 100%; background: #f97316; width: 0%; transition: width 0.5s; }
+    </style>
+</head>
+<script>
+
+const user = localStorage.getItem("royalSweetsUser");
+
+if(!user){
+alert("Please login to continue");
+window.location.href="login.html";
+}
+
+</script>
+<body class="bg-[#F8F9FA] pb-10">
+
+    <nav class="bg-white border-b border-gray-100 p-6 sticky top-0 z-50">
+        <div class="max-w-xl mx-auto flex items-center gap-4">
+            <a href="my-orders.html" class="w-10 h-10 flex items-center justify-center rounded-full bg-white shadow-sm border border-gray-100 text-gray-800">
+                <i class="fa-solid fa-chevron-left"></i>
+            </a>
+            <h1 class="text-xl font-black uppercase tracking-tight">Order Tracking</h1>
+        </div>
+    </nav>
+
+    <main class="max-w-xl mx-auto px-4 mt-8">
+        
+        <div class="bg-white rounded-[2.5rem] p-8 shadow-xl border border-gray-50 text-center mb-8">
+            <div class="mb-6">
+                <p class="text-[10px] font-black text-gray-400 uppercase tracking-widest mb-1">Estimated Delivery</p>
+                <h2 class="text-3xl font-black text-gray-800 italic">25 - 35 MINS</h2>
+            </div>
+
+            <div class="flex justify-between items-start relative mb-12 mt-10">
+                <div class="absolute w-full h-1 bg-gray-100 top-5 left-0 -z-10 rounded-full">
+                    <div id="line-progress" class="h-full bg-orange-500 transition-all duration-500" style="width: 0%;"></div>
+                </div>
+
+                <div class="flex flex-col items-center gap-2">
+                    <div id="step-1" class="step-dot active"><i class="fa-solid fa-check"></i></div>
+                    <span class="text-[10px] font-bold text-gray-400 uppercase">Accepted</span>
+                </div>
+                <div class="flex flex-col items-center gap-2">
+                    <div id="step-2" class="step-dot"><i class="fa-solid fa-fire-burner"></i></div>
+                    <span class="text-[10px] font-bold text-gray-400 uppercase">Kitchen</span>
+                </div>
+                <div class="flex flex-col items-center gap-2">
+                    <div id="step-3" class="step-dot"><i class="fa-solid fa-motorcycle"></i></div>
+                    <span class="text-[10px] font-bold text-gray-400 uppercase">On Way</span>
+                </div>
+                <div class="flex flex-col items-center gap-2">
+                    <div id="step-4" class="step-dot"><i class="fa-solid fa-house-chimney"></i></div>
+                    <span class="text-[10px] font-bold text-gray-400 uppercase">Arrived</span>
+                </div>
+            </div>
+
+            <div class="bg-orange-50 rounded-2xl p-4 flex items-center gap-4 text-left">
+                <div class="w-12 h-12 bg-orange-500 rounded-full flex items-center justify-center text-white text-xl">
+                    <i id="current-icon" class="fa-solid fa-receipt"></i>
+                </div>
+                <div>
+                    <h4 id="status-title" class="font-black text-orange-600 uppercase text-sm">Order Accepted</h4>
+                    <p id="status-desc" class="text-xs text-orange-400 font-bold">Royal Sweets has confirmed your order.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="bg-slate-900 rounded-[2rem] p-6 text-white flex items-center justify-between shadow-xl">
+            <div>
+                <h4 class="font-black text-lg italic uppercase">Need Help?</h4>
+                <p class="text-xs text-slate-400 font-bold">Contact our support team</p>
+            </div>
+            <div class="flex gap-2">
+                <a href="tel:+919000000000" class="w-12 h-12 bg-white/10 rounded-xl flex items-center justify-center text-white"><i class="fa-solid fa-phone"></i></a>
+                <a href="https://wa.me/919000000000" class="w-12 h-12 bg-green-500 rounded-xl flex items-center justify-center text-white"><i class="fa-brands fa-whatsapp"></i></a>
+            </div>
+        </div>
+
+    </main>
+
+
+    <script>
+
+const parsedUser = JSON.parse(localStorage.getItem("royalSweetsUser"));
+
+async function updateTracker(){
+
+try{
+
+const res = await fetch(`http://localhost:5000/api/orders/user/${parsedUser._id}`);
+
+const orders = await res.json();
+
+if(!orders.length) return;
+
+const order = orders[0];   // latest order
+const status = order.status;
+
+const line = document.getElementById('line-progress');
+const title = document.getElementById('status-title');
+const desc = document.getElementById('status-desc');
+const icon = document.getElementById('current-icon');
+
+const steps = {
+
+Accepted:{
+percent:0,
+step:1,
+title:"Order Accepted",
+desc:"The shop has received your order.",
+icon:"fa-receipt"
+},
+
+Kitchen:{
+percent:33,
+step:2,
+title:"In Kitchen",
+desc:"Your food is being prepared.",
+icon:"fa-fire-burner"
+},
+
+"On Way":{
+percent:66,
+step:3,
+title:"On The Way",
+desc:"Delivery partner is coming.",
+icon:"fa-motorcycle"
+},
+
+Arrived:{
+percent:100,
+step:4,
+title:"Delivered",
+desc:"Your order has arrived.",
+icon:"fa-house-chimney-check"
+}
+
+};
+
+const data = steps[status];
+
+if(!data) return;
+
+/* progress line */
+
+line.style.width = data.percent + "%";
+
+/* text update */
+
+title.innerText = data.title;
+desc.innerText = data.desc;
+icon.className = `fa-solid ${data.icon}`;
+
+/* step dots */
+
+for(let i=1;i<=4;i++){
+
+const dot = document.getElementById(`step-${i}`);
+
+if(i < data.step){
+
+dot.classList.add("completed");
+dot.classList.remove("active");
+
+}
+
+else if(i === data.step){
+
+dot.classList.add("active");
+dot.classList.remove("completed");
+
+}
+
+else{
+
+dot.classList.remove("active","completed");
+
+}
+
+}
+
+}catch(err){
+
+console.log(err);
+
+}
+
+}
+
+/* update every 3 seconds */
+
+updateTracker();
+
+setInterval(updateTracker,3000);
+
+</script>
+</body>
+</html>

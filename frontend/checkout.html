@@ -1,0 +1,437 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Confirm Order | Royal Sweets</title>
+
+<script src="https://cdn.tailwindcss.com"></script>
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;800&display=swap" rel="stylesheet">
+
+<style>
+
+body{font-family:'Plus Jakarta Sans',sans-serif;}
+
+.loader{
+border:4px solid #f3f3f3;
+border-top:4px solid #f97316;
+border-radius:50%;
+width:40px;
+height:40px;
+animation:spin 1s linear infinite;
+}
+
+@keyframes spin{
+0%{transform:rotate(0deg);}
+100%{transform:rotate(360deg);}
+}
+
+.payment-option.active{
+border-color:#f97316;
+background-color:#fff7ed;
+}
+
+.suggestion-box{
+position:absolute;
+background:white;
+border:1px solid #e5e7eb;
+border-radius:12px;
+width:100%;
+max-height:200px;
+overflow-y:auto;
+z-index:50;
+}
+
+.suggestion-item{
+padding:10px;
+cursor:pointer;
+font-size:14px;
+}
+
+.suggestion-item:hover{
+background:#f3f4f6;
+}
+
+</style>
+
+</head>
+
+<script>
+
+const userCheck = localStorage.getItem("royalSweetsUser");
+
+if(!userCheck){
+alert("Please login to continue");
+window.location.href="login.html";
+}
+
+</script>
+
+<body class="bg-gray-50 min-h-screen">
+
+<div class="max-w-xl mx-auto p-4 py-12" id="main-content">
+
+<div id="order-card" class="bg-white rounded-[2.5rem] p-8 shadow-xl border border-gray-100">
+
+<div class="flex items-center gap-4 mb-8">
+
+<a href="menu.html" class="text-gray-400 hover:text-gray-900">
+<i class="fa-solid fa-arrow-left text-xl"></i>
+</a>
+
+<h1 class="text-3xl font-black uppercase tracking-tighter">
+Confirm Order
+</h1>
+
+</div>
+
+<div id="cartItems" class="space-y-4 border-b border-dashed pb-8 mb-8"></div>
+
+<div class="flex justify-between items-center mb-10">
+
+<span class="text-gray-500 font-bold uppercase tracking-widest text-sm">
+Amount to Pay
+</span>
+
+<span class="text-4xl font-black text-orange-500 italic">
+₹<span id="finalTotal">0</span>
+</span>
+
+</div>
+
+<!-- DELIVERY DETAILS -->
+
+<div class="space-y-4 mb-10 relative">
+
+<p class="text-[10px] font-black text-gray-400 uppercase tracking-widest">
+Delivery Details
+</p>
+
+<input
+id="phone"
+type="tel"
+placeholder="Phone Number"
+class="w-full bg-gray-50 border p-4 rounded-xl outline-none focus:ring-2 focus:ring-orange-500">
+
+<div class="flex gap-2 relative">
+
+<input
+id="address"
+type="text"
+placeholder="Enter delivery address"
+class="flex-1 bg-gray-50 border p-4 rounded-xl outline-none focus:ring-2 focus:ring-orange-500">
+
+<button onclick="useLocation()" class="bg-orange-500 text-white px-4 rounded-xl">
+<i class="fa-solid fa-location-crosshairs"></i>
+</button>
+
+</div>
+
+<div id="suggestions" class="suggestion-box hidden"></div>
+
+</div>
+
+<!-- PAYMENT -->
+
+<div class="space-y-3 mb-10">
+
+<p class="text-[10px] font-black text-gray-400 uppercase tracking-widest mb-2 px-1">
+Select Payment Method
+</p>
+
+<label onclick="updatePaymentUI('cod')" class="payment-option active flex items-center justify-between p-5 bg-gray-50 rounded-2xl border-2 border-orange-500 cursor-pointer">
+
+<div class="flex items-center gap-4">
+
+<div class="w-10 h-10 bg-green-100 text-green-600 rounded-xl flex items-center justify-center text-lg">
+<i class="fa-solid fa-money-bill-1"></i>
+</div>
+
+<span class="font-bold text-gray-800">
+Cash on Delivery
+</span>
+
+</div>
+
+<input type="radio" name="pay" value="COD" checked class="accent-orange-500 w-5 h-5">
+
+</label>
+
+<label onclick="updatePaymentUI('upi')" class="payment-option flex items-center justify-between p-5 bg-gray-50 rounded-2xl border-2 border-transparent cursor-pointer">
+
+<div class="flex items-center gap-4">
+
+<div class="w-10 h-10 bg-blue-100 text-blue-600 rounded-xl flex items-center justify-center text-lg">
+<i class="fa-solid fa-mobile-screen-button"></i>
+</div>
+
+<div class="flex flex-col">
+<span class="font-bold text-gray-800">
+UPI (GPay / PhonePe)
+</span>
+
+<span class="text-[10px] font-bold text-gray-400 uppercase tracking-tight">
+Pay instantly
+</span>
+</div>
+
+</div>
+
+<input type="radio" name="pay" value="UPI" class="accent-orange-500 w-5 h-5">
+
+</label>
+
+</div>
+
+<button onclick="processOrder()" class="w-full bg-orange-500 text-white py-5 rounded-[2rem] font-black text-xl shadow-lg shadow-orange-200">
+Place Order Now
+</button>
+
+</div>
+
+<!-- LOADING -->
+
+<div id="loading" class="hidden flex flex-col items-center justify-center py-20">
+
+<div class="loader mb-6"></div>
+
+<h2 class="text-2xl font-black uppercase italic">
+Processing...
+</h2>
+
+<p class="text-gray-400 text-sm mt-2">
+Placing your order with Royal Sweets
+</p>
+
+</div>
+
+<!-- SUCCESS -->
+
+<div id="success" class="hidden text-center py-10">
+
+<div class="w-24 h-24 bg-green-500 text-white rounded-full flex items-center justify-center text-5xl mx-auto mb-6 shadow-xl shadow-green-100">
+<i class="fa-solid fa-check"></i>
+</div>
+
+<h2 class="text-4xl font-black text-gray-900 mb-2 italic tracking-tighter uppercase">
+Order Placed!
+</h2>
+
+<p class="text-gray-500 font-bold mb-10">
+Success! Track your fresh treats in My Orders.
+</p>
+
+<div class="space-y-4">
+
+<button onclick="window.location.href='my-orders.html'" class="w-full bg-slate-900 text-white py-4 rounded-2xl font-black uppercase tracking-widest">
+Track My Order
+</button>
+
+<button onclick="window.location.href='index.html'" class="w-full text-gray-400 font-bold text-sm">
+Back to Home
+</button>
+
+</div>
+
+</div>
+
+</div>
+
+<script>
+
+const user = JSON.parse(localStorage.getItem("royalSweetsUser"));
+const cart = JSON.parse(localStorage.getItem('activeCart')) || [];
+
+const container=document.getElementById('cartItems');
+
+let total=0;
+
+const grouped=cart.reduce((acc,curr)=>{
+
+acc[curr.name]=(acc[curr.name]||{p:curr.price,c:0});
+acc[curr.name].c++;
+
+return acc;
+
+},{});
+
+for(const name in grouped){
+
+const itemTotal=grouped[name].p*grouped[name].c;
+
+total+=itemTotal;
+
+container.innerHTML+=`
+
+<div class="flex justify-between items-center font-bold">
+
+<div class="flex flex-col text-left">
+<span class="text-gray-800">${name}</span>
+<span class="text-xs text-orange-500">${grouped[name].c} x ₹${grouped[name].p}</span>
+</div>
+
+<span class="text-lg">₹${itemTotal}</span>
+
+</div>
+
+`;
+
+}
+
+document.getElementById('finalTotal').innerText=total;
+
+
+function updatePaymentUI(){
+
+document.querySelectorAll('.payment-option').forEach(opt=>{
+opt.classList.remove('active','border-orange-500');
+opt.classList.add('border-transparent');
+});
+
+event.currentTarget.classList.add('active','border-orange-500');
+
+}
+
+
+/* ADDRESS AUTOCOMPLETE (OPENSTREETMAP) */
+
+const addressInput=document.getElementById("address");
+const suggestions=document.getElementById("suggestions");
+
+addressInput.addEventListener("input",async function(){
+
+const query=this.value;
+
+if(query.length<3){
+suggestions.classList.add("hidden");
+return;
+}
+
+const res=await fetch(`https://nominatim.openstreetmap.org/search?format=json&q=${query}`);
+
+const data=await res.json();
+
+suggestions.innerHTML="";
+
+data.slice(0,5).forEach(place=>{
+
+const div=document.createElement("div");
+
+div.className="suggestion-item";
+
+div.innerText=place.display_name;
+
+div.onclick=()=>{
+addressInput.value=place.display_name;
+suggestions.classList.add("hidden");
+};
+
+suggestions.appendChild(div);
+
+});
+
+suggestions.classList.remove("hidden");
+
+});
+
+
+/* CURRENT LOCATION */
+
+function useLocation(){
+
+if(!navigator.geolocation){
+alert("Geolocation not supported by this browser.");
+return;
+}
+
+navigator.geolocation.getCurrentPosition(
+async function(position){
+
+const lat = position.coords.latitude;
+const lon = position.coords.longitude;
+
+const res = await fetch(
+`https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lon}`
+);
+
+const data = await res.json();
+
+if(data.display_name){
+document.getElementById("address").value = data.display_name;
+}
+
+},
+function(error){
+
+if(error.code === 1){
+alert("Location permission denied");
+}
+else if(error.code === 2){
+alert("Location unavailable");
+}
+else{
+alert("Location request timeout");
+}
+
+}
+);
+
+}
+
+/* PLACE ORDER */
+
+async function processOrder(){
+const paymentMethod = document.querySelector('input[name="pay"]:checked').value;
+if(cart.length===0){
+alert("Cart empty");
+return;
+}
+
+document.getElementById('order-card').classList.add('hidden');
+document.getElementById('loading').classList.remove('hidden');
+
+try{
+
+await fetch("http://localhost:5000/api/orders/create",{
+
+method:"POST",
+
+headers:{
+"Content-Type":"application/json"
+},
+
+body:JSON.stringify({
+
+userId:user._id,
+items:cart,
+total:total,
+phone:document.getElementById("phone").value,
+address:document.getElementById("address").value
+
+})
+
+});
+
+localStorage.removeItem("activeCart");
+
+document.getElementById('loading').classList.add('hidden');
+document.getElementById('success').classList.remove('hidden');
+
+}catch(err){
+
+alert("Order failed");
+
+}
+
+}
+
+</script>
+
+</body>
+</html>
