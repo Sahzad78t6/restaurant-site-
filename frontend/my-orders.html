@@ -70,7 +70,7 @@ async function loadOrders(){
 
 try{
 
-const res = await fetch(`http://localhost:5000/api/orders/user/${user._id}`);
+const res = await fetch(`https://restaurant-site-production.up.railway.app/api/orders/user/${user._id}`);
 
 const orders = await res.json();
 

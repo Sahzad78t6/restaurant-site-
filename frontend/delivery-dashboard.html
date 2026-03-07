@@ -300,7 +300,7 @@ watchId = navigator.geolocation.watchPosition(async function(position){
 const lat = position.coords.latitude;
 const lng = position.coords.longitude;
 
-await fetch(`http://localhost:5000/api/orders/location/${orderId}`,{
+await fetch(`https://restaurant-site-production.up.railway.app/api/orders/location/${orderId}`,{
 
 method:"PUT",
 

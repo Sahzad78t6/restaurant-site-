@@ -71,7 +71,7 @@ let cart = JSON.parse(localStorage.getItem('activeCart')) || [];
 /* LOAD MENU FROM DATABASE */
 async function loadMenu(){
 
-const res = await fetch("http://localhost:5000/api/menu");
+const res = await fetch("https://restaurant-site-production.up.railway.app/api/menu");
 const menu = await res.json();
 
 const container=document.getElementById("menuContainer");

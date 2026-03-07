@@ -38,7 +38,7 @@ const orderId = params.get("orderId");
 
 async function pay(method){
 
-await fetch(`http://localhost:5000/api/orders/collect-payment/${orderId}`,{
+await fetch(`https://restaurant-site-production.up.railway.app/api/orders/collect-payment/${orderId}`,{
 
 method:"PUT",
 
