@@ -35,6 +35,68 @@
             transform: translateY(-8px);
             box-shadow: 0 20px 40px -10px rgba(234, 88, 12, 0.15);
         }
+
+        /* 3D Cube Animation */
+        .scene {
+            width: 300px;
+            height: 300px;
+            perspective: 1200px;
+            margin: 0 auto;
+            margin-top: 40px;
+            margin-bottom: 60px;
+        }
+
+        .cube {
+            width: 100%;
+            height: 100%;
+            position: relative;
+            transform-style: preserve-3d;
+            animation: spinCube 12s infinite linear;
+        }
+
+        .cube:hover {
+            animation-play-state: paused;
+        }
+
+        .cube__face {
+            position: absolute;
+            width: 300px;
+            height: 300px;
+            border-radius: 2rem;
+            overflow: hidden;
+            border: 4px solid white;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.1);
+            cursor: pointer;
+            transition: transform 0.3s;
+        }
+
+        .cube__face img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .cube__face--front  { transform: rotateY(  0deg) translateZ(150px); }
+        .cube__face--right  { transform: rotateY( 90deg) translateZ(150px); }
+        .cube__face--back   { transform: rotateY(180deg) translateZ(150px); }
+        .cube__face--left   { transform: rotateY(-90deg) translateZ(150px); }
+
+        .cube-overlay {
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(to top, rgba(0,0,0,0.8), transparent 50%);
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+            padding: 1.5rem;
+            color: white;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.5);
+        }
+
+        @keyframes spinCube {
+            0%   { transform: rotateY(0deg) rotateX(-10deg); }
+            100% { transform: rotateY(-360deg) rotateX(-10deg); }
+        }
     </style>
 </head>
 
@@ -185,90 +247,41 @@
                         class="text-gradient">Masterpieces</span></h2>
             </div>
 
-            <div class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-3 max-w-6xl mx-auto gap-8">
-                <!-- Category 1 (Sweets) -->
-                <div onclick="window.location.href='menu.html?category=Sweets'"
-                    class="group cursor-pointer card-hover transition-all duration-300">
-                    <div class="bg-slate-50 rounded-3xl p-3 border border-slate-100 relative overflow-hidden">
-                        <div
-                            class="absolute top-6 right-6 z-10 w-10 h-10 bg-white/50 backdrop-blur-md rounded-full flex items-center justify-center text-slate-700 opacity-0 group-hover:opacity-100 transform translate-y-2 group-hover:translate-y-0 transition-all duration-300">
-                            <i class="fa-solid fa-arrow-right -rotate-45"></i>
-                        </div>
-                        <div class="relative h-64 rounded-2xl overflow-hidden mb-5">
-                            <div
-                                class="absolute inset-0 bg-slate-900/20 group-hover:bg-transparent transition-colors duration-300 z-10">
-                            </div>
-                            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTeXbTJE6nFj156FW38nM7aQKDyhjjiVEH6SQ&s"
-                                class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700">
-                        </div>
-                        <div class="px-3 pb-3">
-                            <h4 class="font-black text-xl text-slate-800 mb-1">Premium Sweets</h4>
-                            <p class="text-sm font-medium text-slate-500">Rich traditions delivered</p>
+            <div class="scene">
+                <div class="cube">
+                    <!-- Front (Sweets) -->
+                    <div class="cube__face cube__face--front" onclick="window.location.href='menu.html?category=Sweets'">
+                        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTeXbTJE6nFj156FW38nM7aQKDyhjjiVEH6SQ&s" alt="Sweets">
+                        <div class="cube-overlay">
+                            <h4 class="font-black text-2xl tracking-tight mb-1">Premium Sweets</h4>
+                            <p class="text-sm text-slate-200 font-medium">Rich traditions delivered</p>
                         </div>
                     </div>
-                </div>
 
-                <!-- Category 2 (Snacks) -->
-                <div onclick="window.location.href='menu.html?category=Snacks'"
-                    class="group cursor-pointer card-hover transition-all duration-300">
-                    <div class="bg-slate-50 rounded-3xl p-3 border border-slate-100 relative overflow-hidden">
-                        <div
-                            class="absolute top-6 right-6 z-10 w-10 h-10 bg-white/50 backdrop-blur-md rounded-full flex items-center justify-center text-slate-700 opacity-0 group-hover:opacity-100 transform translate-y-2 group-hover:translate-y-0 transition-all duration-300">
-                            <i class="fa-solid fa-arrow-right -rotate-45"></i>
-                        </div>
-                        <div class="relative h-64 rounded-2xl overflow-hidden mb-5">
-                            <div
-                                class="absolute inset-0 bg-slate-900/20 group-hover:bg-transparent transition-colors duration-300 z-10">
-                            </div>
-                            <img src="https://images.unsplash.com/photo-1606491956689-2ea866880c84?auto=format&fit=crop&w=800&q=80"
-                                class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700">
-                        </div>
-                        <div class="px-3 pb-3">
-                            <h4 class="font-black text-xl text-slate-800 mb-1">Spicy Snacks</h4>
-                            <p class="text-sm font-medium text-slate-500">Perfect tea-time partners</p>
+                    <!-- Right (Snacks) -->
+                    <div class="cube__face cube__face--right" onclick="window.location.href='menu.html?category=Snacks'">
+                        <img src="https://images.unsplash.com/photo-1606491956689-2ea866880c84?auto=format&fit=crop&w=800&q=80" alt="Snacks">
+                        <div class="cube-overlay">
+                            <h4 class="font-black text-2xl tracking-tight mb-1">Spicy Snacks</h4>
+                            <p class="text-sm text-slate-200 font-medium">Perfect tea-time partners</p>
                         </div>
                     </div>
-                </div>
 
-                <!-- Category 3 (Drinks) -->
-                <div onclick="window.location.href='menu.html?category=Drinks'"
-                    class="group cursor-pointer card-hover transition-all duration-300">
-                    <div class="bg-slate-50 rounded-3xl p-3 border border-slate-100 relative overflow-hidden">
-                        <div
-                            class="absolute top-6 right-6 z-10 w-10 h-10 bg-white/50 backdrop-blur-md rounded-full flex items-center justify-center text-slate-700 opacity-0 group-hover:opacity-100 transform translate-y-2 group-hover:translate-y-0 transition-all duration-300">
-                            <i class="fa-solid fa-arrow-right -rotate-45"></i>
-                        </div>
-                        <div class="relative h-64 rounded-2xl overflow-hidden mb-5">
-                            <div
-                                class="absolute inset-0 bg-slate-900/20 group-hover:bg-transparent transition-colors duration-300 z-10">
-                            </div>
-                            <img src="https://images.unsplash.com/photo-1546173159-315724a31696?auto=format&fit=crop&w=800&q=80"
-                                class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700 text-slate-700">
-                        </div>
-                        <div class="px-3 pb-3">
-                            <h4 class="font-black text-xl text-slate-800 mb-1">Cool Drinks</h4>
-                            <p class="text-sm font-medium text-slate-500">Refreshing beverages</p>
+                    <!-- Back (Drinks) -->
+                    <div class="cube__face cube__face--back" onclick="window.location.href='menu.html?category=Drinks'">
+                        <img src="https://images.unsplash.com/photo-1546173159-315724a31696?auto=format&fit=crop&w=800&q=80" alt="Drinks">
+                        <div class="cube-overlay">
+                            <h4 class="font-black text-2xl tracking-tight mb-1">Cool Drinks</h4>
+                            <p class="text-sm text-slate-200 font-medium">Refreshing beverages</p>
                         </div>
                     </div>
-                </div>
 
-                <!-- Category 4 (Hidden) -->
-                <div class="hidden group cursor-pointer card-hover transition-all duration-300">
-                    <div class="bg-slate-50 rounded-3xl p-3 border border-slate-100 relative overflow-hidden">
-                        <div
-                            class="absolute top-6 right-6 z-10 w-10 h-10 bg-white/50 backdrop-blur-md rounded-full flex items-center justify-center text-slate-700 opacity-0 group-hover:opacity-100 transform translate-y-2 group-hover:translate-y-0 transition-all duration-300">
-                            <i class="fa-solid fa-arrow-right -rotate-45"></i>
-                        </div>
-                        <div class="relative h-64 rounded-2xl overflow-hidden mb-5">
-                            <div
-                                class="absolute inset-0 bg-slate-900/20 group-hover:bg-transparent transition-colors duration-300 z-10">
-                            </div>
-                            <img src="https://images.unsplash.com/photo-1513558161293-cdaf765ed2fd?w=600"
-                                class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700 text-slate-700">
-                        </div>
-                        <div class="px-3 pb-3">
-                            <h4 class="font-black text-xl text-slate-800 mb-1">Cool Drinks</h4>
-                            <p class="text-sm font-medium text-slate-500">Refreshing beverages</p>
+                    <!-- Left (All Items) -->
+                    <div class="cube__face cube__face--left" onclick="window.location.href='menu.html'">
+                        <img src="https://images.unsplash.com/photo-1548940740-20472c4c94bb?auto=format&fit=crop&w=800&q=80" alt="All">
+                        <div class="cube-overlay">
+                            <h4 class="font-black text-2xl tracking-tight mb-1">Explore All</h4>
+                            <p class="text-sm text-slate-200 font-medium">See everything we offer</p>
                         </div>
                     </div>
                 </div>
