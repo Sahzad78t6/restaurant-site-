@@ -51,11 +51,7 @@
             height: 100%;
             position: relative;
             transform-style: preserve-3d;
-            animation: spinCube 12s infinite linear;
-        }
-
-        .cube:hover {
-            animation-play-state: paused;
+            /* Animation now handled by JS for interactive control */
         }
 
         .cube__face {
@@ -91,11 +87,6 @@
             padding: 1.5rem;
             color: white;
             text-shadow: 0 2px 4px rgba(0,0,0,0.5);
-        }
-
-        @keyframes spinCube {
-            0%   { transform: rotateY(0deg) rotateX(-10deg); }
-            100% { transform: rotateY(-360deg) rotateX(-10deg); }
         }
     </style>
 </head>
@@ -501,6 +492,70 @@
                     fourthFaceImg.style.opacity = 1;
                 }, 200);
             }, 3000); // Change image every 3 seconds
+        }
+
+        // --- 3D Interactive Physics Engine ---
+        const cube = document.querySelector('.cube');
+        const scene = document.querySelector('.scene');
+        
+        // Initial setup
+        let curX = -10; 
+        let curY = 0;
+        let curVelX = 0;
+        let curVelY = 0;
+        let tgtVelX = 0;
+        let tgtVelY = 0;
+        let isSpinHovering = false;
+        
+        if (scene && cube) {
+            scene.addEventListener('mouseenter', () => {
+                isSpinHovering = true;
+            });
+            
+            scene.addEventListener('mouseleave', () => {
+                isSpinHovering = false;
+            });
+            
+            scene.addEventListener('mousemove', (e) => {
+                if (!isSpinHovering) return;
+                
+                const rect = scene.getBoundingClientRect();
+                const centerX = rect.left + rect.width / 2;
+                const centerY = rect.top + rect.height / 2;
+                
+                // Distance from center mapped from -1 to 1
+                const dx = (e.clientX - centerX) / (rect.width / 2);
+                const dy = (e.clientY - centerY) / (rect.height / 2);
+                
+                // Directly control the rotation velocity based on mouse offset
+                // Moving right rotates the cube right, moving up rotates it up, etc.
+                tgtVelY = dx * 2.5; 
+                tgtVelX = -dy * 2.5; 
+            });
+            
+            function animateCube() {
+                if (!isSpinHovering) {
+                    // Smooth, random 3D drifting curves when not hovered
+                    const time = Date.now();
+                    tgtVelY = Math.sin(time * 0.0004) * 0.8 + 0.8; 
+                    tgtVelX = Math.cos(time * 0.0005) * 1.5;
+                }
+                
+                // Smoothly accelerate current velocity towards target velocity
+                curVelX += (tgtVelX - curVelX) * 0.05;
+                curVelY += (tgtVelY - curVelY) * 0.05;
+                
+                // Apply physics to angle
+                curX += curVelX;
+                curY += curVelY;
+                
+                cube.style.transform = `rotateX(${curX}deg) rotateY(${curY}deg)`;
+                
+                requestAnimationFrame(animateCube);
+            }
+            
+            // Start physics loop
+            animateCube();
         }
     </script>
 </body>
