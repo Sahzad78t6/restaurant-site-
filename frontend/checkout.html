@@ -241,45 +241,67 @@
     <script>
 
         const user = JSON.parse(localStorage.getItem("royalSweetsUser"));
-        const cart = JSON.parse(localStorage.getItem('activeCart')) || [];
+        let cart = JSON.parse(localStorage.getItem('activeCart')) || [];
 
         const container = document.getElementById('cartItems');
 
         let total = 0;
 
-        const grouped = cart.reduce((acc, curr) => {
+        function renderCart() {
+            container.innerHTML = "";
+            total = 0;
 
-            acc[curr.name] = (acc[curr.name] || { p: curr.price, c: 0 });
-            acc[curr.name].c++;
+            if (cart.length === 0) {
+                container.innerHTML = `<p class="text-center text-slate-400 font-medium py-4">Your cart is empty.</p>`;
+                document.getElementById('finalTotal').innerText = total;
+                return;
+            }
 
-            return acc;
+            const grouped = cart.reduce((acc, curr) => {
+                acc[curr.name] = (acc[curr.name] || { p: curr.price, c: 0 });
+                acc[curr.name].c++;
+                return acc;
+            }, {});
 
-        }, {});
+            for (const name in grouped) {
+                const itemTotal = grouped[name].p * grouped[name].c;
+                total += itemTotal;
 
-        for (const name in grouped) {
-
-            const itemTotal = grouped[name].p * grouped[name].c;
-
-            total += itemTotal;
-
-            container.innerHTML += `
-<div class="flex justify-between items-start">
-    <div class="flex gap-4">
-        <div class="w-8 h-8 rounded-lg bg-orange-50 text-orange-600 font-black flex items-center justify-center shrink-0 border border-orange-100">
-            ${grouped[name].c}x
+                container.innerHTML += `
+<div class="flex justify-between items-center group">
+    <div class="flex gap-4 items-center">
+        <div class="flex items-center gap-1.5 bg-slate-50 border border-slate-200 rounded-lg p-1 shadow-sm shrink-0">
+            <button onclick="updateQuantity(this.getAttribute('data-name'), -1)" data-name="${name.replace(/"/g, '&quot;')}" class="w-7 h-7 flex items-center justify-center rounded-md bg-white text-slate-500 hover:bg-slate-100 hover:text-orange-600 transition-colors"><i class="fa-solid fa-minus text-[10px]"></i></button>
+            <span class="w-5 text-center font-black text-slate-700 text-sm">${grouped[name].c}</span>
+            <button onclick="updateQuantity(this.getAttribute('data-name'), 1, parseFloat(this.getAttribute('data-price')))" data-name="${name.replace(/"/g, '&quot;')}" data-price="${grouped[name].p}" class="w-7 h-7 flex items-center justify-center rounded-md bg-white text-slate-500 hover:bg-slate-100 hover:text-orange-600 transition-colors"><i class="fa-solid fa-plus text-[10px]"></i></button>
         </div>
         <div>
-            <h4 class="font-bold text-slate-800 text-lg leading-tight tracking-tight">${name}</h4>
-            <span class="text-sm font-semibold text-slate-400 tracking-wide">₹${grouped[name].p} each</span>
+            <h4 class="font-bold text-slate-800 text-base leading-tight tracking-tight">${name}</h4>
+            <span class="text-xs font-semibold text-slate-400 tracking-wide">₹${grouped[name].p} each</span>
         </div>
     </div>
     <span class="text-lg font-black text-slate-800">₹${itemTotal}</span>
 </div>
 `;
+            }
 
+            document.getElementById('finalTotal').innerText = total;
         }
 
-        document.getElementById('finalTotal').innerText = total;
+        function updateQuantity(name, change, price = 0) {
+            if (change === 1) {
+                cart.push({ name, price });
+            } else {
+                const index = cart.findIndex(item => item.name === name);
+                if (index > -1) {
+                    cart.splice(index, 1);
+                }
+            }
+            localStorage.setItem('activeCart', JSON.stringify(cart));
+            renderCart();
+        }
+
+        renderCart();
 
 
         function updatePaymentUI() {
