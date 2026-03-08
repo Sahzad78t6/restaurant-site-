@@ -129,20 +129,77 @@ const getBaseUrl = () => {
         : "https://restaurant-site-8y41.onrender.com";
 };
 
-// 1. Traditional Signup
+// 1. Traditional Signup + Google Phone Completion
+let pendingGoogleData = null;
+
+// Check if we were redirected here from Google Login
+document.addEventListener("DOMContentLoaded", () => {
+    const rawData = sessionStorage.getItem("pendingGoogleSignup");
+    if (rawData) {
+        pendingGoogleData = JSON.parse(rawData);
+        
+        // Auto-fill and lock the fields they already gave us via Google
+        const nameField = document.getElementById("name");
+        const emailField = document.getElementById("email");
+        const passwordContainer = document.getElementById("password").closest('.group');
+        
+        nameField.value = pendingGoogleData.name;
+        nameField.readOnly = true;
+        nameField.classList.add("opacity-60", "cursor-not-allowed");
+
+        emailField.value = pendingGoogleData.email;
+        emailField.readOnly = true;
+        emailField.classList.add("opacity-60", "cursor-not-allowed");
+
+        // Hide password entirely, they don't need one!
+        passwordContainer.style.display = "none";
+
+        // Update the button text 
+        document.querySelector("button[type='submit']").innerText = "Complete Registration";
+
+        // Hide the "Or continue with Google" section since they are already using Google
+        document.getElementById("g_id_onload").parentElement.style.display = "none";
+        document.querySelector(".mt-6.flex.items-center.justify-between").style.display = "none";
+        
+        // Let them know what's happening
+        setTimeout(() => alert(`Welcome ${pendingGoogleData.name}! Please provide your WhatsApp number to complete your registration.`), 100);
+    }
+});
+
 document.getElementById("signupForm").addEventListener("submit", async function(e){
     e.preventDefault();
 
-    const name=document.getElementById("name").value;
-    const email=document.getElementById("email").value;
-    const phone=document.getElementById("phone").value;
-    const password=document.getElementById("password").value;
+    const name = document.getElementById("name").value;
+    const email = document.getElementById("email").value;
+    const phone = document.getElementById("phone").value;
+    const password = document.getElementById("password").value;
+
+    // Strict Phone Format Validation (Basic 10 digit Indian standard check)
+    const phoneRegex = /^[0-9]{10}$/;
+    if(!phoneRegex.test(phone)) {
+        alert("Please enter a valid 10-digit WhatsApp number.");
+        return;
+    }
 
     try{
+        const payload = { name, email, phone };
+        
+        if (pendingGoogleData) {
+            // They are completing a Google Signin, pass the ID and NO password
+            payload.googleId = pendingGoogleData.googleId;
+        } else {
+            // Traditional signup, password is required
+            if (!password) {
+                alert("Please enter a password.");
+                return;
+            }
+            payload.password = password;
+        }
+
         const res = await fetch(`${getBaseUrl()}/api/auth/signup`,{
             method:"POST",
             headers:{ "Content-Type":"application/json" },
-            body:JSON.stringify({ name, email, phone, password })
+            body:JSON.stringify(payload)
         });
 
         const data = await res.json();
@@ -152,7 +209,10 @@ document.getElementById("signupForm").addEventListener("submit", async function(
             return;
         }
 
-        alert("Account created successfully");
+        // Clean up the temporary session
+        sessionStorage.removeItem("pendingGoogleSignup");
+        
+        alert("Account created successfully. Please login!");
         window.location.href="login.html";
 
     }catch(err){

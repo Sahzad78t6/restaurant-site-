@@ -10,7 +10,20 @@ router.post("/signup", async (req,res)=>{
 
 try{
 
-const user = new User(req.body);
+const { name, email, phone, password, googleId } = req.body;
+
+// Enforce phone requirement
+if(!phone) {
+    return res.status(400).json({message: "Phone number is required."});
+}
+
+const user = new User({
+    name,
+    email,
+    phone,
+    password,
+    googleId
+});
 
 await user.save();
 
@@ -57,14 +70,15 @@ router.post("/google", async (req, res) => {
         let user = await User.findOne({ $or: [{ googleId }, { email }] });
 
         if (!user) {
-            // First time login - auto-create account
-            user = new User({
-                name,
-                email,
-                googleId,
-                // Make a random password just to satisfy model just in case, or leave blank if optional handled
+            // Send back a 404 with the google details to pre-fill the signup form
+            return res.status(404).json({
+                message: "User not found. Please complete signup.",
+                googleData: {
+                    name,
+                    email,
+                    googleId
+                }
             });
-            await user.save();
         } else if (!user.googleId) {
             // Found by email, link google account
             user.googleId = googleId;
