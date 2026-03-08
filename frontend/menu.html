@@ -165,21 +165,41 @@ items[i].style.display=name.includes(input)?"flex":"none";
 function filterCategory(cat){
 
 let items=document.getElementsByClassName("menu-item");
+let pills=document.getElementsByClassName("category-pill");
 
 for(let i=0;i<items.length;i++){
-
 if(cat==="all") items[i].style.display="flex";
-
 else items[i].style.display=items[i].dataset.category===cat?"flex":"none";
-
 }
 
+for(let i=0;i<pills.length;i++){
+pills[i].classList.remove("active");
+pills[i].classList.remove("bg-[#f97316]");
+pills[i].classList.remove("text-white");
+pills[i].classList.add("bg-white");
+pills[i].classList.add("text-gray-500");
+
+if((cat==="all" && i===0) || (cat==="Sweets" && i===1) || (cat==="Snacks" && i===2) || (cat==="Drinks" && i===3)) {
+pills[i].classList.add("active");
+pills[i].classList.add("bg-[#f97316]");
+pills[i].classList.add("text-white");
+pills[i].classList.remove("bg-white");
+pills[i].classList.remove("text-gray-500");
+}
+}
 }
 
-window.onload=()=>{
+window.onload=async ()=>{
 
-loadMenu();
+await loadMenu();
 updateCartBar();
+
+// Check for category filter from URL parameter
+const urlParams = new URLSearchParams(window.location.search);
+const initialCategory = urlParams.get('category');
+if(initialCategory) {
+    filterCategory(initialCategory);
+}
 
 }
 

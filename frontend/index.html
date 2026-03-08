@@ -189,30 +189,9 @@
                         class="text-gradient">Masterpieces</span></h2>
             </div>
 
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 max-w-4xl mx-auto gap-8">
-                <!-- Category 1 -->
-                <div class="group cursor-pointer card-hover transition-all duration-300">
-                    <div class="bg-slate-50 rounded-3xl p-3 border border-slate-100 relative overflow-hidden">
-                        <div
-                            class="absolute top-6 right-6 z-10 w-10 h-10 bg-white/50 backdrop-blur-md rounded-full flex items-center justify-center text-slate-700 opacity-0 group-hover:opacity-100 transform translate-y-2 group-hover:translate-y-0 transition-all duration-300">
-                            <i class="fa-solid fa-arrow-right -rotate-45"></i>
-                        </div>
-                        <div class="relative h-64 rounded-2xl overflow-hidden mb-5">
-                            <div
-                                class="absolute inset-0 bg-slate-900/20 group-hover:bg-transparent transition-colors duration-300 z-10">
-                            </div>
-                            <img src="https://images.unsplash.com/photo-1548940740-20472c4c94bb?w=600"
-                                class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700">
-                        </div>
-                        <div class="px-3 pb-3">
-                            <h4 class="font-black text-xl text-slate-800 mb-1">Premium Sweets</h4>
-                            <p class="text-sm font-medium text-slate-500">Rich traditions delivered</p>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Category 2 -->
-                <div class="group cursor-pointer card-hover transition-all duration-300">
+            <div class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-3 max-w-6xl mx-auto gap-8">
+                <!-- Category 1 (Sweets) -->
+                <div onclick="window.location.href='menu.html?category=Sweets'" class="group cursor-pointer card-hover transition-all duration-300">
                     <div class="bg-slate-50 rounded-3xl p-3 border border-slate-100 relative overflow-hidden">
                         <div
                             class="absolute top-6 right-6 z-10 w-10 h-10 bg-white/50 backdrop-blur-md rounded-full flex items-center justify-center text-slate-700 opacity-0 group-hover:opacity-100 transform translate-y-2 group-hover:translate-y-0 transition-all duration-300">
@@ -226,14 +205,14 @@
                                 class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700">
                         </div>
                         <div class="px-3 pb-3">
-                            <h4 class="font-black text-xl text-slate-800 mb-1">Spicy Snacks</h4>
-                            <p class="text-sm font-medium text-slate-500">Perfect tea-time partners</p>
+                            <h4 class="font-black text-xl text-slate-800 mb-1">Premium Sweets</h4>
+                            <p class="text-sm font-medium text-slate-500">Rich traditions delivered</p>
                         </div>
                     </div>
                 </div>
 
-                <!-- Category 3 (Hidden) -->
-                <div class="hidden group cursor-pointer card-hover transition-all duration-300">
+                <!-- Category 2 (Snacks) -->
+                <div onclick="window.location.href='menu.html?category=Snacks'" class="group cursor-pointer card-hover transition-all duration-300">
                     <div class="bg-slate-50 rounded-3xl p-3 border border-slate-100 relative overflow-hidden">
                         <div
                             class="absolute top-6 right-6 z-10 w-10 h-10 bg-white/50 backdrop-blur-md rounded-full flex items-center justify-center text-slate-700 opacity-0 group-hover:opacity-100 transform translate-y-2 group-hover:translate-y-0 transition-all duration-300">
@@ -243,12 +222,33 @@
                             <div
                                 class="absolute inset-0 bg-slate-900/20 group-hover:bg-transparent transition-colors duration-300 z-10">
                             </div>
-                            <img src="https://images.unsplash.com/photo-1567188040759-fb8a883dc6d8?w=600"
+                            <img src="https://images.unsplash.com/photo-1601050690597-df056fb01793?w=600"
                                 class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700">
                         </div>
                         <div class="px-3 pb-3">
-                            <h4 class="font-black text-xl text-slate-800 mb-1">Fresh Desserts</h4>
-                            <p class="text-sm font-medium text-slate-500">Contemporary indulgences</p>
+                            <h4 class="font-black text-xl text-slate-800 mb-1">Spicy Snacks</h4>
+                            <p class="text-sm font-medium text-slate-500">Perfect tea-time partners</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Category 3 (Drinks) -->
+                <div onclick="window.location.href='menu.html?category=Drinks'" class="group cursor-pointer card-hover transition-all duration-300">
+                    <div class="bg-slate-50 rounded-3xl p-3 border border-slate-100 relative overflow-hidden">
+                        <div
+                            class="absolute top-6 right-6 z-10 w-10 h-10 bg-white/50 backdrop-blur-md rounded-full flex items-center justify-center text-slate-700 opacity-0 group-hover:opacity-100 transform translate-y-2 group-hover:translate-y-0 transition-all duration-300">
+                            <i class="fa-solid fa-arrow-right -rotate-45"></i>
+                        </div>
+                        <div class="relative h-64 rounded-2xl overflow-hidden mb-5">
+                            <div
+                                class="absolute inset-0 bg-slate-900/20 group-hover:bg-transparent transition-colors duration-300 z-10">
+                            </div>
+                            <img src="https://images.unsplash.com/photo-1513558161293-cdaf765ed2fd?w=600"
+                                class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700 text-slate-700">
+                        </div>
+                        <div class="px-3 pb-3">
+                            <h4 class="font-black text-xl text-slate-800 mb-1">Cool Drinks</h4>
+                            <p class="text-sm font-medium text-slate-500">Refreshing beverages</p>
                         </div>
                     </div>
                 </div>
