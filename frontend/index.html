@@ -61,21 +61,44 @@
             transform: translateY(0);
         }
 
-        /* Native scrolling containers optimized for JS auto-scroll */
+        /* Continuous Floating Marquee (Hardware Accelerated) */
+        @keyframes scroll-left {
+            0% {
+                transform: translate3d(0, 0, 0);
+            }
+
+            100% {
+                transform: translate3d(-50%, 0, 0);
+            }
+        }
+
+        @keyframes scroll-right {
+            0% {
+                transform: translate3d(-50%, 0, 0);
+            }
+
+            100% {
+                transform: translate3d(0, 0, 0);
+            }
+        }
+
         .marquee-track {
             display: flex;
             width: max-content;
+            animation: scroll-left 30s linear infinite;
         }
 
-        .marquee-container {
-            overflow-x: auto;
-            scroll-behavior: auto; /* Managed by JS for smooth grabbing */
-            -webkit-overflow-scrolling: touch;
-            cursor: grab;
+        .marquee-track.reverse {
+            animation: scroll-right 30s linear infinite;
         }
 
-        .marquee-container:active {
-            cursor: grabbing;
+        .marquee-track.slow {
+            animation-duration: 45s;
+            /* Slower for videos */
+        }
+
+        .marquee-track:hover {
+            animation-play-state: paused;
         }
 
         /* Hide Scrollbars completely */
@@ -402,9 +425,9 @@
             </div>
 
             <!-- Horizontal Text Pills Continuous Marquee - Row 1 (LTR) -->
-            <div class="marquee-container hide-scrollbar overflow-hidden pt-4 mb-4 reveal"
-                style="mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent);" data-speed="1" data-direction="left">
-                <div class="marquee-track gap-4 pl-4 shrink-0">
+            <div class="overflow-hidden pt-4 mb-4 reveal"
+                style="mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent);">
+                <div class="marquee-track gap-4 pl-4 hover:cursor-crosshair">
 
                     <!-- --- SET 1 --- -->
                     <div
@@ -462,9 +485,9 @@
             </div>
 
             <!-- Horizontal Text Pills Continuous Marquee - Row 2 (RTL) -->
-            <div class="marquee-container hide-scrollbar overflow-hidden pb-4 mb-12 reveal"
-                style="mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent);" data-speed="1" data-direction="right">
-                <div class="marquee-track gap-4 pl-4 shrink-0">
+            <div class="overflow-hidden pb-4 mb-12 reveal"
+                style="mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent);">
+                <div class="marquee-track reverse gap-4 pl-4 hover:cursor-crosshair">
 
                     <!-- --- SET 1 --- -->
                     <div
@@ -525,9 +548,9 @@
             </h3>
 
             <!-- Continuous Video Grid Scroll -->
-            <div class="marquee-container hide-scrollbar overflow-hidden pb-8 pt-4 reveal"
-                style="mask-image: linear-gradient(to right, transparent, black 5%, black 95%, transparent);" data-speed="0.8" data-direction="left">
-                <div class="marquee-track gap-4 pl-4 shrink-0">
+            <div class="overflow-hidden pb-8 pt-4 reveal"
+                style="mask-image: linear-gradient(to right, transparent, black 5%, black 95%, transparent);">
+                <div class="marquee-track slow gap-4 pl-4 hover:cursor-crosshair">
 
                     <!-- --- SET 1 ---  -->
                     <!-- Video Card 1 -->
@@ -1012,101 +1035,7 @@
             animateCube();
         }
 
-        // --- Review Marquee Auto-Scroll & Drag Logic ---
-        document.querySelectorAll('.marquee-container').forEach(container => {
-            const track = container.querySelector('.marquee-track');
-            const speed = parseFloat(container.dataset.speed || 1);
-            const isRight = container.dataset.direction === 'right';
-            
-            let isDown = false;
-            let startX;
-            let scrollLeft;
-            let animationId;
-            let isHovered = false;
-            let userInteracting = false;
-            let interactionTimeout;
-
-            // Wait for images to load before calculating perfect center
-            setTimeout(() => {
-                // If moving right, start at the exact middle so it can scroll backwards
-                if (isRight) {
-                     container.scrollLeft = track.scrollWidth / 2;
-                }
-            }, 100);
-
-            // Auto Scroll Loop
-            function autoScroll() {
-                if (!isHovered && !isDown && !userInteracting) {
-                    if (isRight) {
-                        container.scrollLeft -= speed;
-                        // Seamless Loop backward
-                        if (container.scrollLeft <= 0) {
-                            container.scrollLeft = track.scrollWidth / 2;
-                        }
-                    } else {
-                        container.scrollLeft += speed;
-                        // Seamless Loop forward
-                        if (container.scrollLeft >= (track.scrollWidth / 2)) {
-                            container.scrollLeft = 0;
-                        }
-                    }
-                }
-                animationId = requestAnimationFrame(autoScroll);
-            }
-            
-            // Start the loop
-            autoScroll();
-
-            // Hover Pause
-            container.addEventListener('mouseenter', () => isHovered = true);
-            container.addEventListener('mouseleave', () => {
-                isHovered = false;
-                isDown = false; // Failsafe
-            });
-
-            // Drag to Scroll Logic
-            container.addEventListener('mousedown', (e) => {
-                isDown = true;
-                startX = e.pageX - container.offsetLeft;
-                scrollLeft = container.scrollLeft;
-                container.style.cursor = 'grabbing';
-            });
-
-            container.addEventListener('mouseup', () => {
-                isDown = false;
-                container.style.cursor = 'grab';
-            });
-
-            container.addEventListener('mousemove', (e) => {
-                if (!isDown) return;
-                e.preventDefault();
-                const x = e.pageX - container.offsetLeft;
-                const walk = (x - startX) * 2; // Drag sensitivity
-                container.scrollLeft = scrollLeft - walk;
-            });
-            
-            // Touch support
-            container.addEventListener('touchstart', (e) => {
-                isDown = true;
-                startX = e.touches[0].pageX - container.offsetLeft;
-                scrollLeft = container.scrollLeft;
-            }, {passive:true});
-            container.addEventListener('touchend', () => isDown = false);
-            
-            // Native Scroll Detection (Trackpad / Touch Swipes)
-            // This prevents the auto-scroll loop from fighting user input
-            container.addEventListener('scroll', () => {
-                // Pause auto-scroll
-                userInteracting = true;
-                
-                // Resume auto-scroll 1.5 seconds after they stop scrolling
-                clearTimeout(interactionTimeout);
-                interactionTimeout = setTimeout(() => {
-                    userInteracting = false;
-                }, 1500);
-            }, {passive: true});
-
-        });
+        // Removed native JS scrolling for marquee loops, restored high-performance CSS transforms.
 
     </script>
 </body>
