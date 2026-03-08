@@ -151,7 +151,9 @@ let pendingGoogleData = null;
         emailField.readOnly = true;
         emailField.classList.add("opacity-60", "cursor-not-allowed");
 
-        // Hide password entirely, they don't need one!
+        // Hide password entirely and remove HTML5 validation requirement, they don't need one!
+        const passwordInput = document.getElementById("password");
+        passwordInput.removeAttribute("required");
         passwordContainer.style.display = "none";
 
         // Update the button text 
