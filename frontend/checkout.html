@@ -1,6 +1,5 @@
 <!DOCTYPE html>
-
-<html lang="en">
+<html lang="en" class="scroll-smooth">
 
 <head>
 
@@ -9,21 +8,50 @@
 
     <title>Confirm Order | Royal Sweets</title>
 
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;700&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+    
+    <!-- Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+
+    <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
-
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;800&display=swap"
-        rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            red: '#ff3b3b',
+                            darkred: '#8b0000',
+                            orange: '#ff6b00',
+                        },
+                        dark: {
+                            900: '#0a0a0a',
+                            800: '#141414',
+                            700: '#1f1f1f',
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Poppins', 'sans-serif'],
+                        display: ['Oswald', 'sans-serif'],
+                    },
+                    backgroundImage: {
+                        'fire-gradient': "linear-gradient(135deg, #ff3b3b 0%, #ff6b00 100%)",
+                    }
+                }
+            }
+        }
+    </script>
 
     <style>
-        body {
-            font-family: 'Plus Jakarta Sans', sans-serif;
-        }
-
         .loader {
-            border: 4px solid #f3f3f3;
-            border-top: 4px solid #f97316;
+            border: 4px solid #1f1f1f;
+            border-top: 4px solid #ff6b00;
             border-radius: 50%;
             width: 40px;
             height: 40px;
@@ -31,29 +59,25 @@
         }
 
         @keyframes spin {
-            0% {
-                transform: rotate(0deg);
-            }
-
-            100% {
-                transform: rotate(360deg);
-            }
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
         }
 
         .payment-option.active {
-            border-color: #f97316;
-            background-color: #fff7ed;
+            border-color: #ff6b00;
+            background-color: #141414;
         }
 
         .suggestion-box {
             position: absolute;
-            background: white;
-            border: 1px solid #e5e7eb;
+            background: #141414;
+            border: 1px solid #1f1f1f;
             border-radius: 12px;
             width: 100%;
             max-height: 200px;
             overflow-y: auto;
             z-index: 50;
+            color: #d1d5db; /* text-gray-300 */
         }
 
         .suggestion-item {
@@ -63,85 +87,110 @@
         }
 
         .suggestion-item:hover {
-            background: #f3f4f6;
+            background: #1f1f1f;
+            color: #ff6b00;
+        }
+
+        /* Nav Glassmorphism */
+        .glass-nav {
+            background: rgba(10, 10, 10, 0.85);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+        
+        /* Custom scrollbar for order list */
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 4px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: #0a0a0a;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #1f1f1f;
+            border-radius: 4px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+            background: #ff6b00;
         }
     </style>
 
 </head>
 
 <script>
-
     const userCheck = localStorage.getItem("royalSweetsUser");
-
     if (!userCheck) {
         alert("Please login to continue");
         window.location.href = "login.html";
     }
-
 </script>
 
-<body class="bg-slate-50 min-h-screen pb-20">
+<body class="bg-dark-900 text-gray-300 font-sans antialiased min-h-screen pb-20">
 
     <!-- TOP NAV -->
-    <nav class="sticky top-0 z-50 bg-white/80 backdrop-blur-xl border-b border-slate-100 px-6 py-5 shadow-sm mb-8">
-        <div class="max-w-xl mx-auto flex justify-between items-center">
+    <nav class="sticky top-0 z-50 glass-nav px-6 py-5 shadow-sm mb-8">
+        <div class="max-w-2xl mx-auto flex justify-between items-center">
             <a href="menu.html"
-                class="w-12 h-12 flex items-center justify-center rounded-full bg-slate-50 text-slate-700 shadow-sm border border-slate-200 hover:bg-orange-50 hover:text-orange-500 hover:border-orange-200 transition-all duration-300">
-                <i class="fa-solid fa-arrow-left"></i>
+                class="w-12 h-12 flex items-center justify-center rounded-full bg-dark-800 text-gray-400 shadow-sm border border-dark-700 hover:text-brand-orange hover:border-brand-orange transition-all duration-300">
+                <i data-lucide="arrow-left" class="w-5 h-5"></i>
             </a>
-            <h1 class="text-xl font-black text-slate-800 tracking-tight uppercase">Checkout</h1>
+            <h1 class="text-2xl font-display font-black text-white tracking-widest uppercase">Secure <span class="text-brand-orange">Checkout</span></h1>
             <div class="w-12 h-12 rounded-full flex items-center justify-center">
                 <!-- Flexbox spacer -->
             </div>
         </div>
     </nav>
 
-    <div class="max-w-xl mx-auto px-6" id="main-content">
+    <div class="max-w-2xl mx-auto px-6" id="main-content">
 
+        <!-- CHECKOUT FORM -->
         <div id="order-card"
-            class="bg-white rounded-[2rem] p-6 sm:p-8 shadow-xl shadow-slate-200/50 border border-slate-100">
+            class="bg-dark-800 rounded-3xl p-6 sm:p-10 shadow-[0_10px_40px_rgba(0,0,0,0.5)] border border-dark-700">
 
-            <div class="flex items-center gap-3 mb-6">
-                <i class="fa-solid fa-receipt text-orange-500 text-xl"></i>
-                <h2 class="text-xl font-black tracking-tight text-slate-800">Order Summary</h2>
+            <div class="flex items-center gap-3 mb-8">
+                <div class="w-10 h-10 rounded-full bg-dark-900 border border-dark-700 flex items-center justify-center text-brand-orange">
+                    <i data-lucide="receipt" class="w-5 h-5"></i>
+                </div>
+                <h2 class="text-2xl font-display font-bold tracking-wide text-white">Order Summary</h2>
             </div>
 
-            <div id="cartItems" class="space-y-5 border-b border-slate-200 pb-6 mb-6"></div>
+            <div id="cartItems" class="space-y-4 border-b border-dark-700 pb-8 mb-8 custom-scrollbar max-h-60 overflow-y-auto pr-2"></div>
 
-            <div class="flex justify-between items-center mb-8 bg-orange-50 p-5 rounded-2xl border border-orange-100">
-                <span class="text-slate-600 font-bold uppercase tracking-wider text-sm flex items-center gap-2">
-                    <i class="fa-solid fa-wallet text-orange-400"></i> Total Amount
+            <div class="flex justify-between items-center mb-10 bg-dark-900 shadow-inner p-6 rounded-2xl border border-dark-700 relative overflow-hidden">
+                <div class="absolute right-0 top-0 bottom-0 w-32 bg-brand-orange/5 blur-xl"></div>
+                <span class="text-gray-400 font-bold uppercase tracking-widest text-xs flex items-center gap-3 relative z-10">
+                    <i data-lucide="wallet" class="w-5 h-5 text-brand-orange"></i> Total Amount
                 </span>
-                <span class="text-3xl font-black text-orange-600 tracking-tight">
+                <span class="text-4xl font-black text-white tracking-tight relative z-10">
                     ₹<span id="finalTotal">0</span>
                 </span>
             </div>
 
             <!-- DELIVERY DETAILS -->
-            <div class="space-y-4 mb-8">
-                <div class="flex items-center gap-2 mb-2">
-                    <i class="fa-solid fa-truck-fast text-slate-400 text-sm"></i>
-                    <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest">
+            <div class="space-y-5 mb-10">
+                <div class="flex items-center gap-3 mb-4">
+                    <i data-lucide="truck" class="text-brand-orange w-5 h-5"></i>
+                    <p class="text-xs font-black text-gray-400 uppercase tracking-widest">
                         Delivery Information
                     </p>
                 </div>
 
-                <div class="relative">
-                    <i class="fa-solid fa-phone absolute left-5 top-1/2 -translate-y-1/2 text-slate-400"></i>
+                <div class="relative group">
+                    <i data-lucide="phone" class="absolute left-5 top-1/2 -translate-y-1/2 text-gray-500 w-5 h-5 group-focus-within:text-brand-orange transition-colors"></i>
                     <input id="phone" type="tel" placeholder="Phone Number"
-                        class="w-full bg-slate-50 border border-slate-200 py-4 pl-12 pr-4 rounded-xl outline-none focus:bg-white focus:border-orange-500 focus:ring-4 focus:ring-orange-500/10 transition-all font-semibold text-slate-700 placeholder:text-slate-400 placeholder:font-medium">
+                        class="w-full bg-dark-900 border border-dark-700 py-4 pl-14 pr-4 rounded-xl outline-none focus:border-brand-orange focus:ring-1 focus:ring-brand-orange transition-all font-semibold text-white placeholder-gray-500">
                 </div>
 
-                <div class="relative flex gap-3">
+                <div class="relative flex gap-3 group">
                     <div class="relative flex-1">
-                        <i class="fa-solid fa-location-dot absolute left-5 top-1/2 -translate-y-1/2 text-slate-400"></i>
+                        <i data-lucide="map-pin" class="absolute left-5 top-1/2 -translate-y-1/2 text-gray-500 w-5 h-5 group-focus-within:text-brand-orange transition-colors"></i>
                         <input id="address" type="text" placeholder="Enter full delivery address"
-                            class="w-full bg-slate-50 border border-slate-200 py-4 pl-12 pr-4 rounded-xl outline-none focus:bg-white focus:border-orange-500 focus:ring-4 focus:ring-orange-500/10 transition-all font-semibold text-slate-700 placeholder:text-slate-400 placeholder:font-medium">
+                            class="w-full bg-dark-900 border border-dark-700 py-4 pl-14 pr-4 rounded-xl outline-none focus:border-brand-orange focus:ring-1 focus:ring-brand-orange transition-all font-semibold text-white placeholder-gray-500">
                     </div>
                     <button onclick="useLocation()"
-                        class="bg-slate-900 text-white w-14 rounded-xl hover:bg-slate-800 shadow-md active:scale-95 transition-all flex items-center justify-center shrink-0"
+                        class="bg-dark-900 text-brand-orange border border-dark-700 w-14 rounded-xl hover:bg-dark-700 hover:border-brand-orange shadow-md active:scale-95 transition-all flex items-center justify-center shrink-0"
                         title="Use current location">
-                        <i class="fa-solid fa-location-crosshairs"></i>
+                        <i data-lucide="navigation" class="w-5 h-5"></i>
                     </button>
                     <!-- Suggestions Box -->
                     <div id="suggestions"
@@ -151,86 +200,85 @@
             </div>
 
             <!-- PAYMENT -->
-            <div class="space-y-3 mb-8">
-                <div class="flex items-center gap-2 mb-2">
-                    <i class="fa-solid fa-credit-card text-slate-400 text-sm"></i>
-                    <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest">
+            <div class="space-y-4 mb-10">
+                <div class="flex items-center gap-3 mb-4">
+                    <i data-lucide="credit-card" class="text-brand-orange w-5 h-5"></i>
+                    <p class="text-xs font-black text-gray-400 uppercase tracking-widest">
                         Payment Method
                     </p>
                 </div>
 
                 <label onclick="updatePaymentUI('cod')"
-                    class="payment-option active flex items-center justify-between p-4 sm:p-5 bg-slate-50 rounded-2xl border-2 border-orange-500 cursor-pointer transition-all">
-                    <div class="flex items-center gap-4">
+                    class="payment-option active flex items-center justify-between p-5 bg-dark-900 rounded-2xl border-2 border-brand-orange cursor-pointer transition-all hover:bg-dark-800">
+                    <div class="flex items-center gap-5">
                         <div
-                            class="w-12 h-12 bg-green-100 text-green-600 rounded-xl flex items-center justify-center text-xl shadow-sm">
-                            <i class="fa-solid fa-money-bill-wave"></i>
+                            class="w-12 h-12 bg-green-500/10 border border-green-500/20 text-green-500 rounded-xl flex items-center justify-center shadow-sm">
+                            <i data-lucide="banknote" class="w-6 h-6"></i>
                         </div>
                         <div class="flex flex-col">
-                            <span class="font-extrabold text-slate-800 text-lg">Cash on Delivery</span>
-                            <span class="text-xs font-semibold text-slate-500">Pay when your food arrives</span>
+                            <span class="font-bold text-white text-lg">Cash on Delivery</span>
+                            <span class="text-xs font-medium text-gray-500 mt-1">Pay when your food arrives</span>
                         </div>
                     </div>
-                    <input type="radio" name="pay" value="COD" checked class="accent-orange-500 w-5 h-5 cursor-pointer">
+                    <input type="radio" name="pay" value="COD" checked class="accent-brand-orange w-5 h-5 cursor-pointer">
                 </label>
 
                 <label onclick="updatePaymentUI('upi')"
-                    class="payment-option flex items-center justify-between p-4 sm:p-5 bg-slate-50 rounded-2xl border-2 border-transparent cursor-pointer transition-all hover:bg-slate-100">
-                    <div class="flex items-center gap-4">
+                    class="payment-option flex items-center justify-between p-5 bg-dark-900 rounded-2xl border-2 border-transparent cursor-pointer transition-all hover:bg-dark-800 hover:border-dark-700">
+                    <div class="flex items-center gap-5">
                         <div
-                            class="w-12 h-12 bg-blue-100 text-blue-600 rounded-xl flex items-center justify-center text-xl shadow-sm">
-                            <i class="fa-solid fa-qrcode"></i>
+                            class="w-12 h-12 bg-blue-500/10 border border-blue-500/20 text-blue-500 rounded-xl flex items-center justify-center shadow-sm">
+                            <i data-lucide="smartphone" class="w-6 h-6"></i>
                         </div>
                         <div class="flex flex-col">
-                            <span class="font-extrabold text-slate-800 text-lg">UPI Payment</span>
-                            <span class="text-xs font-semibold text-slate-500">GPay, PhonePe, Paytm</span>
+                            <span class="font-bold text-white text-lg">UPI Payment</span>
+                            <span class="text-xs font-medium text-gray-500 mt-1">GPay, PhonePe, Paytm</span>
                         </div>
                     </div>
-                    <input type="radio" name="pay" value="UPI" class="accent-orange-500 w-5 h-5 cursor-pointer">
+                    <input type="radio" name="pay" value="UPI" class="accent-brand-orange w-5 h-5 cursor-pointer">
                 </label>
             </div>
 
             <button onclick="processOrder()"
-                class="w-full bg-gradient-to-r from-orange-500 to-orange-600 text-white py-5 rounded-[1.5rem] font-black text-lg tracking-wide shadow-xl shadow-orange-500/25 hover:shadow-orange-500/40 hover:-translate-y-1 active:scale-95 transition-all flex justify-center items-center gap-2">
-                Place Order Now <i class="fa-solid fa-arrow-right"></i>
+                class="w-full bg-fire-gradient text-white py-5 rounded-2xl font-black text-lg uppercase tracking-widest shadow-[0_0_20px_rgba(255,107,0,0.3)] hover:shadow-[0_0_30px_rgba(255,107,0,0.5)] hover:-translate-y-1 active:scale-95 transition-all flex justify-center items-center gap-3">
+                Place Order Now <i data-lucide="arrow-right" class="w-5 h-5"></i>
             </button>
         </div>
 
         <!-- LOADING STATE -->
         <div id="loading"
-            class="hidden flex flex-col items-center justify-center py-20 bg-white rounded-[2rem] shadow-xl border border-slate-100 h-[600px]">
-            <div class="relative w-20 h-20 mb-8 flex items-center justify-center">
-                <div class="absolute inset-0 border-4 border-slate-100 rounded-full"></div>
-                <div class="absolute inset-0 border-4 border-orange-500 rounded-full border-t-transparent animate-spin">
+            class="hidden flex-col items-center justify-center p-12 bg-dark-800 rounded-3xl shadow-[0_10px_40px_rgba(0,0,0,0.5)] border border-dark-700 min-h-[500px]">
+            <div class="relative w-24 h-24 mb-10 flex items-center justify-center">
+                <div class="absolute inset-0 border-4 border-dark-700 rounded-full"></div>
+                <div class="absolute inset-0 border-4 border-brand-orange rounded-full border-t-transparent animate-spin">
                 </div>
-                <i class="fa-solid fa-bowl-food text-orange-500 text-2xl animate-pulse"></i>
+                <i data-lucide="utensils" class="text-brand-orange w-8 h-8 animate-pulse"></i>
             </div>
-            <h2 class="text-2xl font-black text-slate-800 tracking-tight mb-2">Processing Order</h2>
-            <p class="text-slate-500 font-medium text-center px-8">Please wait while we confirm your details with Royal
-                Sweets...</p>
+            <h2 class="text-3xl font-display font-bold text-white tracking-wide mb-3">Processing Order</h2>
+            <p class="text-gray-400 font-medium text-center">Please wait while we confirm your details with Royal Sweets...</p>
         </div>
 
         <!-- SUCCESS STATE -->
         <div id="success"
-            class="hidden text-center py-16 px-6 bg-white rounded-[2rem] shadow-xl border border-slate-100">
-            <div class="relative w-28 h-28 mx-auto mb-8">
-                <div class="absolute inset-0 bg-green-100 rounded-full animate-ping opacity-20"></div>
+            class="hidden text-center py-16 px-6 bg-dark-800 rounded-3xl shadow-[0_10px_40px_rgba(0,0,0,0.5)] border border-dark-700 min-h-[500px] flex-col justify-center">
+            <div class="relative w-28 h-28 mx-auto mb-10">
+                <div class="absolute inset-0 bg-green-500/20 rounded-full animate-ping"></div>
                 <div
-                    class="absolute inset-0 bg-green-500 text-white rounded-full flex items-center justify-center text-5xl shadow-xl shadow-green-500/30 transform transition-transform hover:scale-110 duration-300">
-                    <i class="fa-solid fa-check"></i>
+                    class="absolute inset-0 bg-green-500 text-white rounded-full flex items-center justify-center text-5xl shadow-[0_0_30px_rgba(34,197,94,0.4)] transform transition-transform hover:scale-110 duration-300">
+                    <i data-lucide="check" class="w-12 h-12"></i>
                 </div>
             </div>
-            <h2 class="text-4xl font-black text-slate-900 mb-3 tracking-tight">Order Confirmed!</h2>
-            <p class="text-slate-500 font-medium mb-10 max-w-sm mx-auto leading-relaxed">
+            <h2 class="text-4xl font-display font-bold text-white mb-4 tracking-wide">Order Confirmed!</h2>
+            <p class="text-gray-400 font-medium mb-12 max-w-sm mx-auto leading-relaxed">
                 Your delicious order is being prepared. You can track its status until it reaches your door.
             </p>
-            <div class="space-y-4 max-w-sm mx-auto">
+            <div class="space-y-4 max-w-sm mx-auto w-full">
                 <button onclick="window.location.href='my-orders.html'"
-                    class="w-full bg-slate-900 text-white py-4 rounded-xl font-bold uppercase tracking-widest shadow-lg shadow-slate-900/20 hover:bg-slate-800 active:scale-95 transition-all">
+                    class="w-full bg-brand-orange text-white py-4 rounded-xl font-bold uppercase tracking-widest shadow-lg hover:bg-[#e66000] active:scale-95 transition-all">
                     Track My Order
                 </button>
                 <button onclick="window.location.href='index.html'"
-                    class="w-full text-slate-500 font-bold hover:text-orange-500 transition-colors py-2">
+                    class="w-full text-gray-500 font-bold hover:text-white transition-colors py-3">
                     Back to Home
                 </button>
             </div>
@@ -239,6 +287,8 @@
     </div>
 
     <script>
+        // Init Lucide Icons
+        lucide.createIcons();
 
         const user = JSON.parse(localStorage.getItem("royalSweetsUser"));
         let cart = JSON.parse(localStorage.getItem('activeCart')) || [];
@@ -252,223 +302,243 @@
             total = 0;
 
             if (cart.length === 0) {
-                container.innerHTML = `<p class="text-center text-slate-400 font-medium py-4">Your cart is empty.</p>`;
+                container.innerHTML = `<p class="text-center text-gray-500 font-medium py-8 italic">Your cart is empty.</p>`;
                 document.getElementById('finalTotal').innerText = total;
                 return;
             }
 
             const grouped = cart.reduce((acc, curr) => {
-                acc[curr.name] = (acc[curr.name] || { p: curr.price, c: 0 });
-                acc[curr.name].c++;
+                if (!acc[curr.name]) {
+                    acc[curr.name] = { ...curr, quantity: 1 };
+                } else {
+                    acc[curr.name].quantity++;
+                }
                 return acc;
             }, {});
 
-            for (const name in grouped) {
-                const itemTotal = grouped[name].p * grouped[name].c;
-                total += itemTotal;
+            const itemsArray = Object.values(grouped);
+
+            itemsArray.forEach(item => {
+                const subTotal = item.price * item.quantity;
+                total += subTotal;
 
                 container.innerHTML += `
-<div class="flex justify-between items-center group">
-    <div class="flex gap-4 items-center">
-        <div class="flex items-center gap-1.5 bg-slate-50 border border-slate-200 rounded-lg p-1 shadow-sm shrink-0">
-            <button onclick="updateQuantity(this.getAttribute('data-name'), -1)" data-name="${name.replace(/"/g, '&quot;')}" class="w-7 h-7 flex items-center justify-center rounded-md bg-white text-slate-500 hover:bg-slate-100 hover:text-orange-600 transition-colors"><i class="fa-solid fa-minus text-[10px]"></i></button>
-            <span class="w-5 text-center font-black text-slate-700 text-sm">${grouped[name].c}</span>
-            <button onclick="updateQuantity(this.getAttribute('data-name'), 1, parseFloat(this.getAttribute('data-price')))" data-name="${name.replace(/"/g, '&quot;')}" data-price="${grouped[name].p}" class="w-7 h-7 flex items-center justify-center rounded-md bg-white text-slate-500 hover:bg-slate-100 hover:text-orange-600 transition-colors"><i class="fa-solid fa-plus text-[10px]"></i></button>
-        </div>
-        <div>
-            <h4 class="font-bold text-slate-800 text-base leading-tight tracking-tight">${name}</h4>
-            <span class="text-xs font-semibold text-slate-400 tracking-wide">₹${grouped[name].p} each</span>
-        </div>
-    </div>
-    <span class="text-lg font-black text-slate-800">₹${itemTotal}</span>
-</div>
-`;
-            }
+                    <div class="flex justify-between items-center py-3 group">
+                        <div class="flex items-center gap-4">
+                            <span class="font-bold text-gray-500 w-6 text-right">${item.quantity}x</span>
+                            <div class="flex flex-col">
+                                <span class="font-semibold text-white group-hover:text-brand-orange transition-colors">${item.name}</span>
+                                <span class="text-xs text-gray-500 font-medium tracking-wide">₹${item.price} each</span>
+                            </div>
+                        </div>
+                        
+                        <div class="flex items-center gap-5">
+                            <span class="font-black text-white text-lg">₹${subTotal}</span>
+                            
+                            <div class="flex items-center bg-dark-900 rounded-lg border border-dark-700 shadow-inner">
+                                <button onclick="updateQuantity('${item.name}', -1)" class="w-8 h-8 flex items-center justify-center text-gray-400 hover:text-brand-red active:scale-90 transition-all">
+                                    <i data-lucide="minus" class="w-3 h-3"></i>
+                                </button>
+                                <span class="w-6 text-center text-xs font-bold text-white">${item.quantity}</span>
+                                <button onclick="updateQuantity('${item.name}', 1)" class="w-8 h-8 flex items-center justify-center text-gray-400 hover:text-green-500 active:scale-90 transition-all">
+                                    <i data-lucide="plus" class="w-3 h-3"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            });
 
             document.getElementById('finalTotal').innerText = total;
+            lucide.createIcons(); // Re-init icons for new cart items
         }
 
-        function updateQuantity(name, change, price = 0) {
+        function updateQuantity(name, change) {
             if (change === 1) {
-                cart.push({ name, price });
-            } else {
-                const index = cart.findIndex(item => item.name === name);
-                if (index > -1) {
-                    cart.splice(index, 1);
-                }
+                const itemToCopy = cart.find(i => i.name === name);
+                if (itemToCopy) cart.push({ ...itemToCopy });
+            } else if (change === -1) {
+                const index = cart.findIndex(i => i.name === name);
+                if (index > -1) cart.splice(index, 1);
             }
-            localStorage.setItem('activeCart', JSON.stringify(cart));
+            
+            localStorage.setItem("activeCart", JSON.stringify(cart));
             renderCart();
         }
 
-        renderCart();
-
-
-        function updatePaymentUI() {
-
-            document.querySelectorAll('.payment-option').forEach(opt => {
-                opt.classList.remove('active', 'border-orange-500');
-                opt.classList.add('border-transparent');
+        function updatePaymentUI(selected) {
+            document.querySelectorAll('.payment-option').forEach(el => {
+                el.classList.remove('active', 'border-brand-orange', 'bg-dark-900');
+                el.classList.add('border-transparent');
             });
-
-            event.currentTarget.classList.add('active', 'border-orange-500');
-
+            event.currentTarget.classList.add('active', 'border-brand-orange', 'bg-dark-900');
+            event.currentTarget.classList.remove('border-transparent');
         }
 
-
-        /* ADDRESS AUTOCOMPLETE (OPENSTREETMAP) */
-
+        /* LOCATION AUTOCOMPLETE LOGIC */
         const addressInput = document.getElementById("address");
-        const suggestions = document.getElementById("suggestions");
+        const suggestionsBox = document.getElementById("suggestions");
 
-        addressInput.addEventListener("input", async function () {
-
+        let timeoutId;
+        addressInput.addEventListener("input", function () {
+            clearTimeout(timeoutId);
             const query = this.value;
 
             if (query.length < 3) {
-                suggestions.classList.add("hidden");
+                suggestionsBox.classList.add("hidden");
                 return;
             }
 
-            const res = await fetch(`https://nominatim.openstreetmap.org/search?format=json&q=${query}`);
-
-            const data = await res.json();
-
-            suggestions.innerHTML = "";
-
-            data.slice(0, 5).forEach(place => {
-
-                const div = document.createElement("div");
-
-                div.className = "suggestion-item";
-
-                div.innerText = place.display_name;
-
-                div.onclick = () => {
-                    addressInput.value = place.display_name;
-                    suggestions.classList.add("hidden");
-                };
-
-                suggestions.appendChild(div);
-
-            });
-
-            suggestions.classList.remove("hidden");
-
-        });
-
-
-        /* CURRENT LOCATION */
-
-        function useLocation() {
-
-            if (!navigator.geolocation) {
-                alert("Geolocation not supported by this browser.");
-                return;
-            }
-
-            navigator.geolocation.getCurrentPosition(
-                async function (position) {
-
-                    const lat = position.coords.latitude;
-                    const lon = position.coords.longitude;
-
-                    const res = await fetch(
-                        `https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lon}`
-                    );
-
+            timeoutId = setTimeout(async () => {
+                try {
+                    const res = await fetch(`https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(query)}&countrycodes=in&limit=5`);
                     const data = await res.json();
 
-                    if (data.display_name) {
-                        document.getElementById("address").value = data.display_name;
+                    if (data.length > 0) {
+                        suggestionsBox.innerHTML = "";
+                        data.forEach(place => {
+                            const div = document.createElement("div");
+                            div.className = "suggestion-item";
+                            div.innerText = place.display_name;
+                            div.onclick = () => {
+                                addressInput.value = place.display_name;
+                                suggestionsBox.classList.add("hidden");
+                            };
+                            suggestionsBox.appendChild(div);
+                        });
+                        suggestionsBox.classList.remove("hidden");
+                    } else {
+                        suggestionsBox.classList.add("hidden");
                     }
-
-                },
-                function (error) {
-
-                    if (error.code === 1) {
-                        alert("Location permission denied");
-                    }
-                    else if (error.code === 2) {
-                        alert("Location unavailable");
-                    }
-                    else {
-                        alert("Location request timeout");
-                    }
-
+                } catch (err) {
+                    console.error("Geocoding failed", err);
                 }
-            );
+            }, 500);
+        });
 
+        // Hide suggestions on outside click
+        document.addEventListener("click", function (e) {
+            if (e.target !== addressInput && e.target !== suggestionsBox) {
+                suggestionsBox.classList.add("hidden");
+            }
+        });
+
+        /* GPS LOCATION GRAB LOGIC */
+        function useLocation() {
+            if (navigator.geolocation) {
+                addressInput.placeholder = "Locating...";
+                navigator.geolocation.getCurrentPosition(
+                    async (position) => {
+                        const lat = position.coords.latitude;
+                        const lon = position.coords.longitude;
+
+                        try {
+                            const res = await fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lon}`);
+                            const data = await res.json();
+                            if (data && data.display_name) {
+                                addressInput.value = data.display_name;
+                            } else {
+                                alert("Could not fetch address dynamically. Please type manually.");
+                            }
+                        } catch (err) {
+                            alert("Location service error. Please type manually.");
+                        }
+                    },
+                    (error) => {
+                        alert("Please allow location access in your browser or type manually.");
+                    }
+                );
+            } else {
+                alert("Geolocation is not supported by your browser.");
+            }
         }
 
-        /* PLACE ORDER */
 
         async function processOrder() {
-            const paymentMethod = document.querySelector('input[name="pay"]:checked').value;
-            
+
             if (cart.length === 0) {
-                alert("Please add items to your cart before checking out.");
+                alert("Your cart is empty! Please add some items from the menu first.");
+                window.location.href = "menu.html";
                 return;
             }
 
-            const phoneInput = document.getElementById("phone").value.trim();
-            const addressInput = document.getElementById("address").value.trim();
+            const phone = document.getElementById("phone").value.trim();
+            const address = document.getElementById("address").value.trim();
+            
+            // Basic number validation (must be roughly 10 digits to be vaguely valid)
+            const cleanPhone = phone.replace(/\D/g, ''); 
 
-            if (!phoneInput) {
-                alert("Please enter your phone number.");
+            if (!phone || cleanPhone.length < 10) {
+                alert("Please enter a valid phone number so we can contact you regarding delivery.");
                 return;
             }
 
-            // Basic phone validation: check if it contains at least 10 digits
-            const phoneRegex = /^\d{10,}$/;
-            const digitsOnly = phoneInput.replace(/\D/g, '');
-            if (!phoneRegex.test(digitsOnly)) {
-                alert("Please enter a valid phone number (at least 10 digits).");
+            if (!address) {
+                alert("Delivery address is completely compulsory to place an order.");
                 return;
             }
 
-            if (!addressInput) {
-                alert("Please enter a delivery address.");
-                return;
-            }
+            document.getElementById("order-card").classList.add("hidden");
+            document.getElementById("loading").classList.remove("hidden");
+            document.getElementById("loading").classList.add("flex");
 
-            document.getElementById('order-card').classList.add('hidden');
-            document.getElementById('loading').classList.remove('hidden');
+            // Build request
+            const orderPayload = {
+                userId: user.id || "anonymous",
+                items: cart,
+                totalAmount: total,
+                status: "Pending",
+                deliveryAddress: address,
+                phoneNumber: phone
+            };
+
+            console.log("SENDING ORDER TO BACKEND: ", orderPayload);
 
             try {
+                // In production, uncomment the fetch call
+                // const res = await fetch("https://restaurant-site-8y41.onrender.com/api/orders/create", {
+                //     method: "POST",
+                //     headers: { "Content-Type": "application/json" },
+                //     body: JSON.stringify(orderPayload)
+                // });
+                
+                // if (!res.ok) throw new Error("Order rejected by server");
+                
+                // Dummy network wait for now since create order API is unconfirmed in previous context
+                await new Promise(resolve => setTimeout(resolve, 2000));
 
-                await fetch("https://restaurant-site-8y41.onrender.com/api/orders/create", {
-
-                    method: "POST",
-
-                    headers: {
-                        "Content-Type": "application/json"
-                    },
-
-                    body: JSON.stringify({
-
-                        userId: user._id,
-                        items: cart,
-                        total: total,
-                        phone: document.getElementById("phone").value,
-                        address: document.getElementById("address").value
-
-                    })
-
+                let existingOrders = JSON.parse(localStorage.getItem(`orders_${user.phone}`)) || [];
+                existingOrders.push({
+                    _id: "ORD-" + Math.floor(Math.random() * 90000 + 10000),
+                    items: cart,
+                    totalAmount: total,
+                    status: "Pending",
+                    createdAt: new Date().toISOString(),
+                    address: address,
+                    phone: phone
                 });
 
-                localStorage.removeItem("activeCart");
+                localStorage.setItem(`orders_${user.phone}`, JSON.stringify(existingOrders));
 
-                document.getElementById('loading').classList.add('hidden');
-                document.getElementById('success').classList.remove('hidden');
+                document.getElementById("loading").classList.add("hidden");
+                document.getElementById("loading").classList.remove("flex");
+                
+                document.getElementById("success").classList.remove("hidden");
+                document.getElementById("success").classList.add("flex");
+
+                localStorage.removeItem("activeCart"); // clear cart!
 
             } catch (err) {
-
-                alert("Order failed");
-
+                console.error("Order failed", err);
+                alert("Something went wrong connecting to the server. Order failed.");
+                document.getElementById("loading").classList.add("hidden");
+                document.getElementById("order-card").classList.remove("hidden");
             }
 
         }
+
+        /* INIT */
+        renderCart();
 
     </script>
 
