@@ -1,15 +1,18 @@
 <!DOCTYPE html>
 <html lang="en" class="scroll-smooth">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Royal Sweets & Cafe | Premium Taste</title>
-    
+
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;700&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
-    
+    <link
+        href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;700&family=Poppins:wght@300;400;500;600&display=swap"
+        rel="stylesheet">
+
     <!-- Icons -->
     <script src="https://unpkg.com/lucide@latest"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -52,11 +55,12 @@
             transform: translateY(30px);
             transition: all 0.8s ease-out;
         }
+
         .reveal.active {
             opacity: 1;
             transform: translateY(0);
         }
-        
+
         /* Glassmorphism for Navbar */
         .glass-nav {
             background: rgba(10, 10, 10, 0.85);
@@ -69,9 +73,11 @@
         .img-zoom-container {
             overflow: hidden;
         }
+
         .img-zoom-container img {
             transition: transform 0.5s ease;
         }
+
         .img-zoom-container:hover img {
             transform: scale(1.1);
         }
@@ -85,54 +91,72 @@
             margin-top: 100px;
             margin-bottom: 120px;
         }
+
         .cube {
             width: 100%;
             height: 100%;
             position: relative;
             transform-style: preserve-3d;
         }
+
         .cube__face {
             position: absolute;
             width: 300px;
             height: 300px;
             border-radius: 2rem;
             overflow: hidden;
-            border: 4px solid rgba(255,255,255,0.1);
-            box-shadow: 0 15px 35px rgba(0,0,0,0.5);
+            border: 4px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5);
             cursor: pointer;
             transition: transform 0.3s, border-color 0.3s;
         }
+
         .cube__face:hover {
             border-color: #ff6b00;
         }
+
         .cube__face img {
             width: 100%;
             height: 100%;
             object-fit: cover;
             transition: opacity 0.5s;
         }
-        .cube__face--front  { transform: rotateY(  0deg) translateZ(150px); }
-        .cube__face--right  { transform: rotateY( 90deg) translateZ(150px); }
-        .cube__face--back   { transform: rotateY(180deg) translateZ(150px); }
-        .cube__face--left   { transform: rotateY(-90deg) translateZ(150px); }
+
+        .cube__face--front {
+            transform: rotateY(0deg) translateZ(150px);
+        }
+
+        .cube__face--right {
+            transform: rotateY(90deg) translateZ(150px);
+        }
+
+        .cube__face--back {
+            transform: rotateY(180deg) translateZ(150px);
+        }
+
+        .cube__face--left {
+            transform: rotateY(-90deg) translateZ(150px);
+        }
 
         .cube-overlay {
             position: absolute;
             inset: 0;
-            background: linear-gradient(to top, rgba(0,0,0,0.9), transparent 60%);
+            background: linear-gradient(to top, rgba(0, 0, 0, 0.9), transparent 60%);
             display: flex;
             flex-direction: column;
             justify-content: flex-end;
             padding: 1.5rem;
             color: white;
-            text-shadow: 0 2px 4px rgba(0,0,0,0.8);
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.8);
         }
     </style>
 </head>
+
 <body class="bg-dark-900 text-gray-300 font-sans antialiased overflow-x-hidden">
 
     <!-- Navbar -->
-    <header id="navbar" class="fixed w-full top-0 z-50 transition-all duration-300 bg-transparent py-4 border-b border-transparent">
+    <header id="navbar"
+        class="fixed w-full top-0 z-50 transition-all duration-300 bg-transparent py-4 border-b border-transparent">
         <div class="max-w-7xl mx-auto px-6 md:px-12 flex justify-between items-center">
             <!-- Logo -->
             <a href="index.html" class="text-2xl font-display font-bold text-white flex items-center gap-2 group">
@@ -142,18 +166,25 @@
 
             <!-- Desktop Nav -->
             <nav class="hidden md:flex items-center gap-8">
-                <a href="index.html" class="text-sm font-medium hover:text-brand-orange transition-colors uppercase tracking-wider text-white">Home</a>
-                <a href="#about" class="text-sm font-medium hover:text-brand-orange transition-colors uppercase tracking-wider text-white">About</a>
-                <a href="menu.html" class="text-sm font-medium hover:text-brand-orange transition-colors uppercase tracking-wider text-white">Menu</a>
-                <a href="my-orders.html" class="text-sm font-medium hover:text-brand-orange transition-colors uppercase tracking-wider text-white">Orders</a>
-                
+                <a href="index.html"
+                    class="text-sm font-medium hover:text-brand-orange transition-colors uppercase tracking-wider text-white">Home</a>
+                <a href="#about"
+                    class="text-sm font-medium hover:text-brand-orange transition-colors uppercase tracking-wider text-white">About</a>
+                <a href="menu.html"
+                    class="text-sm font-medium hover:text-brand-orange transition-colors uppercase tracking-wider text-white">Menu</a>
+                <a href="my-orders.html"
+                    class="text-sm font-medium hover:text-brand-orange transition-colors uppercase tracking-wider text-white">Orders</a>
+
                 <div id="authContainer">
-                    <a href="login.html" class="text-sm font-medium text-white hover:text-brand-orange transition-colors uppercase tracking-wider flex items-center gap-2">
+                    <a href="login.html"
+                        class="text-sm font-medium text-white hover:text-brand-orange transition-colors uppercase tracking-wider flex items-center gap-2">
                         <i data-lucide="user" class="w-4 h-4"></i> Sign In
                     </a>
                 </div>
 
-                <a href="menu.html" class="px-5 py-2 rounded-full bg-fire-gradient text-white font-medium hover:shadow-[0_0_15px_rgba(255,107,0,0.4)] transition-all">Order Now</a>
+                <a href="menu.html"
+                    class="px-5 py-2 rounded-full bg-fire-gradient text-white font-medium hover:shadow-[0_0_15px_rgba(255,107,0,0.4)] transition-all">Order
+                    Now</a>
             </nav>
 
             <!-- Mobile Menu Button -->
@@ -163,13 +194,15 @@
         </div>
 
         <!-- Mobile Nav Dropdown -->
-        <div id="mobile-menu" class="absolute top-full left-0 w-full bg-dark-800 border-t border-dark-700 hidden flex-col py-4 px-6 gap-4 shadow-xl">
+        <div id="mobile-menu"
+            class="absolute top-full left-0 w-full bg-dark-800 border-t border-dark-700 hidden flex-col py-4 px-6 gap-4 shadow-xl">
             <a href="index.html" class="text-white font-medium hover:text-brand-orange mobile-link">Home</a>
             <a href="#about" class="text-white font-medium hover:text-brand-orange mobile-link">About</a>
             <a href="menu.html" class="text-white font-medium hover:text-brand-orange mobile-link">Menu</a>
             <a href="my-orders.html" class="text-white font-medium hover:text-brand-orange mobile-link">My Orders</a>
             <div id="authContainerMobile" class="border-t border-dark-700 pt-3">
-                <a href="login.html" class="text-white font-medium hover:text-brand-orange mobile-link flex items-center gap-2">
+                <a href="login.html"
+                    class="text-white font-medium hover:text-brand-orange mobile-link flex items-center gap-2">
                     <i data-lucide="user" class="w-5 h-5"></i> Sign In
                 </a>
             </div>
@@ -181,14 +214,24 @@
     <section id="home" class="relative h-screen flex items-center bg-dark-900 overflow-hidden">
         <!-- Background Slideshow -->
         <div class="absolute inset-0 z-0 pointer-events-none">
-            <div id="hero-bg-0" class="absolute inset-0 bg-cover bg-center bg-no-repeat transition-opacity duration-1000 opacity-100" style="background-image: linear-gradient(to right, rgba(10, 10, 10, 0.9), rgba(10, 10, 10, 0.4)), url('https://images.unsplash.com/photo-1589119908995-c6837fa14848?auto=format&fit=crop&w=2000&q=80')"></div>
-            <div id="hero-bg-1" class="absolute inset-0 bg-cover bg-center bg-no-repeat transition-opacity duration-1000 opacity-0" style="background-image: linear-gradient(to right, rgba(10, 10, 10, 0.9), rgba(10, 10, 10, 0.4)), url('https://images.unsplash.com/photo-1606491956689-2ea866880c84?auto=format&fit=crop&w=2000&q=80')"></div>
-            <div id="hero-bg-2" class="absolute inset-0 bg-cover bg-center bg-no-repeat transition-opacity duration-1000 opacity-0" style="background-image: linear-gradient(to right, rgba(10, 10, 10, 0.9), rgba(10, 10, 10, 0.4)), url('https://images.unsplash.com/photo-1546173159-315724a31696?auto=format&fit=crop&w=2000&q=80')"></div>
+            <div id="hero-bg-0"
+                class="absolute inset-0 bg-cover bg-center bg-no-repeat transition-opacity duration-1000 opacity-100"
+                style="background-image: linear-gradient(to right, rgba(10, 10, 10, 0.9), rgba(10, 10, 10, 0.4)), url('https://images.unsplash.com/photo-1589119908995-c6837fa14848?auto=format&fit=crop&w=2000&q=80')">
+            </div>
+            <div id="hero-bg-1"
+                class="absolute inset-0 bg-cover bg-center bg-no-repeat transition-opacity duration-1000 opacity-0"
+                style="background-image: linear-gradient(to right, rgba(10, 10, 10, 0.9), rgba(10, 10, 10, 0.4)), url('https://images.unsplash.com/photo-1606491956689-2ea866880c84?auto=format&fit=crop&w=2000&q=80')">
+            </div>
+            <div id="hero-bg-2"
+                class="absolute inset-0 bg-cover bg-center bg-no-repeat transition-opacity duration-1000 opacity-0"
+                style="background-image: linear-gradient(to right, rgba(10, 10, 10, 0.9), rgba(10, 10, 10, 0.4)), url('https://images.unsplash.com/photo-1546173159-315724a31696?auto=format&fit=crop&w=2000&q=80')">
+            </div>
         </div>
 
         <div class="max-w-7xl mx-auto px-6 md:px-12 relative z-10 w-full pt-20">
             <div class="max-w-3xl reveal">
-                <span class="inline-block py-1 px-3 rounded-full bg-dark-800/80 border border-brand-orange/30 text-brand-orange text-sm font-semibold tracking-widest uppercase mb-6 backdrop-blur-sm">
+                <span
+                    class="inline-block py-1 px-3 rounded-full bg-dark-800/80 border border-brand-orange/30 text-brand-orange text-sm font-semibold tracking-widest uppercase mb-6 backdrop-blur-sm">
                     Premium • Authentic • Crafted
                 </span>
                 <h1 class="text-5xl md:text-7xl lg:text-8xl font-display font-bold text-white leading-tight mb-6">
@@ -196,10 +239,12 @@
                     <span class="text-transparent bg-clip-text bg-fire-gradient">ROYALTY.</span>
                 </h1>
                 <p class="text-lg md:text-xl text-gray-300 mb-10 max-w-2xl font-light">
-                    Experience the authentic taste of tradition, delivered straight to your door with zero platform fees.
+                    Experience the authentic taste of tradition, delivered straight to your door with zero platform
+                    fees.
                 </p>
                 <div class="flex flex-wrap gap-4">
-                    <a href="menu.html" class="px-8 py-4 rounded-full bg-fire-gradient text-white font-semibold text-lg hover:shadow-[0_0_20px_rgba(255,107,0,0.5)] transition-all transform hover:-translate-y-1">
+                    <a href="menu.html"
+                        class="px-8 py-4 rounded-full bg-fire-gradient text-white font-semibold text-lg hover:shadow-[0_0_20px_rgba(255,107,0,0.5)] transition-all transform hover:-translate-y-1">
                         Explore Our Menu
                     </a>
                 </div>
@@ -215,24 +260,33 @@
             <div class="grid md:grid-cols-2 gap-12 items-center reveal">
                 <div class="relative">
                     <div class="absolute -top-4 -left-4 w-24 h-24 bg-brand-orange/20 rounded-full blur-2xl"></div>
-                    <img src="https://images.unsplash.com/photo-1548940740-20472c4c94bb?q=80&w=1000&auto=format&fit=crop" alt="Premium Sweets" class="rounded-xl shadow-2xl relative z-10 border border-dark-700">
-                    <div class="absolute -bottom-6 -right-6 bg-dark-800 p-6 rounded-xl border border-dark-700 shadow-xl z-20 hidden sm:block">
+                    <img src="https://images.unsplash.com/photo-1548940740-20472c4c94bb?q=80&w=1000&auto=format&fit=crop"
+                        alt="Premium Sweets" class="rounded-xl shadow-2xl relative z-10 border border-dark-700">
+                    <div
+                        class="absolute -bottom-6 -right-6 bg-dark-800 p-6 rounded-xl border border-dark-700 shadow-xl z-20 hidden sm:block">
                         <p class="text-brand-orange font-display text-4xl font-bold">25+</p>
                         <p class="text-sm text-gray-400 uppercase tracking-wide">Years of Tradition</p>
                     </div>
                 </div>
                 <div>
-                    <h2 class="text-3xl md:text-5xl font-display font-bold text-white mb-6">THE STORY OF <span class="text-brand-orange">ROYAL SWEETS</span></h2>
+                    <h2 class="text-3xl md:text-5xl font-display font-bold text-white mb-6">THE STORY OF <span
+                            class="text-brand-orange">ROYAL SWEETS</span></h2>
                     <p class="text-gray-400 mb-6 leading-relaxed text-lg">
-                        Royal Sweets is built for people who appreciate the finest ingredients, bold flavors, and authentic street-style bites. We don't compromise on quality, and we don't cut corners on tradition.
+                        Royal Sweets is built for people who appreciate the finest ingredients, bold flavors, and
+                        authentic street-style bites. We don't compromise on quality, and we don't cut corners on
+                        tradition.
                     </p>
                     <p class="text-gray-400 mb-8 leading-relaxed text-lg">
-                        Our chefs use techniques passed down through generations, preparing every meal with pure passion to bring you a culinary experience that hits your soul.
+                        Our chefs use techniques passed down through generations, preparing every meal with pure passion
+                        to bring you a culinary experience that hits your soul.
                     </p>
                     <ul class="space-y-4 mb-8">
-                        <li class="flex items-center gap-3"><i data-lucide="check-circle-2" class="text-brand-orange"></i> Fresh, locally sourced ingredients</li>
-                        <li class="flex items-center gap-3"><i data-lucide="check-circle-2" class="text-brand-orange"></i> Traditional cooking methods</li>
-                        <li class="flex items-center gap-3"><i data-lucide="check-circle-2" class="text-brand-orange"></i> 100% authentic family recipes</li>
+                        <li class="flex items-center gap-3"><i data-lucide="check-circle-2"
+                                class="text-brand-orange"></i> Fresh, locally sourced ingredients</li>
+                        <li class="flex items-center gap-3"><i data-lucide="check-circle-2"
+                                class="text-brand-orange"></i> Traditional cooking methods</li>
+                        <li class="flex items-center gap-3"><i data-lucide="check-circle-2"
+                                class="text-brand-orange"></i> 100% authentic family recipes</li>
                     </ul>
                 </div>
             </div>
@@ -244,7 +298,8 @@
         <div class="max-w-7xl mx-auto px-6 md:px-12">
             <div class="text-center max-w-2xl mx-auto mb-16 reveal">
                 <i data-lucide="crown" class="text-brand-orange w-10 h-10 mx-auto mb-4"></i>
-                <h2 class="text-3xl md:text-5xl font-display font-bold text-white mb-4">OUR CULINARY <span class="text-brand-orange">MASTERPIECES</span></h2>
+                <h2 class="text-3xl md:text-5xl font-display font-bold text-white mb-4">OUR CULINARY <span
+                        class="text-brand-orange">MASTERPIECES</span></h2>
                 <p class="text-gray-400 text-lg">Grab and drag the cube to explore, or watch it spin.</p>
             </div>
 
@@ -252,8 +307,10 @@
             <div class="scene reveal">
                 <div class="cube">
                     <!-- Front (Sweets) -->
-                    <div class="cube__face cube__face--front" onclick="window.location.href='menu.html?category=Sweets'">
-                        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTeXbTJE6nFj156FW38nM7aQKDyhjjiVEH6SQ&s" alt="Sweets">
+                    <div class="cube__face cube__face--front"
+                        onclick="window.location.href='menu.html?category=Sweets'">
+                        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTeXbTJE6nFj156FW38nM7aQKDyhjjiVEH6SQ&s"
+                            alt="Sweets">
                         <div class="cube-overlay">
                             <h4 class="font-display font-bold text-3xl tracking-wide mb-1">Premium Sweets</h4>
                             <p class="text-sm font-light text-gray-300">Rich traditions delivered</p>
@@ -261,8 +318,10 @@
                     </div>
 
                     <!-- Right (Snacks) -->
-                    <div class="cube__face cube__face--right" onclick="window.location.href='menu.html?category=Snacks'">
-                        <img src="https://images.unsplash.com/photo-1606491956689-2ea866880c84?auto=format&fit=crop&w=800&q=80" alt="Snacks">
+                    <div class="cube__face cube__face--right"
+                        onclick="window.location.href='menu.html?category=Snacks'">
+                        <img src="https://images.unsplash.com/photo-1606491956689-2ea866880c84?auto=format&fit=crop&w=800&q=80"
+                            alt="Snacks">
                         <div class="cube-overlay">
                             <h4 class="font-display font-bold text-3xl tracking-wide mb-1">Spicy Snacks</h4>
                             <p class="text-sm font-light text-gray-300">Perfect tea-time partners</p>
@@ -271,7 +330,8 @@
 
                     <!-- Back (Drinks) -->
                     <div class="cube__face cube__face--back" onclick="window.location.href='menu.html?category=Drinks'">
-                        <img src="https://images.unsplash.com/photo-1546173159-315724a31696?auto=format&fit=crop&w=800&q=80" alt="Drinks">
+                        <img src="https://images.unsplash.com/photo-1546173159-315724a31696?auto=format&fit=crop&w=800&q=80"
+                            alt="Drinks">
                         <div class="cube-overlay">
                             <h4 class="font-display font-bold text-3xl tracking-wide mb-1">Cool Drinks</h4>
                             <p class="text-sm font-light text-gray-300">Refreshing beverages</p>
@@ -280,17 +340,22 @@
 
                     <!-- Left (All Items Slideshow) -->
                     <div class="cube__face cube__face--left" onclick="window.location.href='menu.html'">
-                        <img id="all-items-slideshow" src="https://images.unsplash.com/photo-1548940740-20472c4c94bb?auto=format&fit=crop&w=800&q=80" alt="All">
+                        <img id="all-items-slideshow"
+                            src="https://images.unsplash.com/photo-1548940740-20472c4c94bb?auto=format&fit=crop&w=800&q=80"
+                            alt="All">
                         <div class="cube-overlay">
-                            <h4 class="font-display font-bold text-3xl tracking-wide mb-1 text-brand-orange">Explore All</h4>
+                            <h4 class="font-display font-bold text-3xl tracking-wide mb-1 text-brand-orange">Explore All
+                            </h4>
                             <p class="text-sm font-light text-gray-300">See everything we offer</p>
                         </div>
                     </div>
                 </div>
             </div>
-            
+
             <div class="mt-12 text-center reveal">
-                <button onclick="window.location.href='menu.html'" class="px-8 py-3 rounded-full bg-dark-700 hover:bg-dark-900 border border-dark-700 text-white font-medium hover:border-brand-orange transition-all tracking-wide uppercase shadow-lg">View Full Menu</button>
+                <button onclick="window.location.href='menu.html'"
+                    class="px-8 py-3 rounded-full bg-dark-700 hover:bg-dark-900 border border-dark-700 text-white font-medium hover:border-brand-orange transition-all tracking-wide uppercase shadow-lg">View
+                    Full Menu</button>
             </div>
         </div>
     </section>
@@ -300,47 +365,65 @@
         <div class="max-w-7xl mx-auto px-6 md:px-12">
             <div class="grid grid-cols-1 md:grid-cols-4 gap-10 mb-12">
                 <div class="md:col-span-1">
-                    <a href="index.html" class="text-2xl font-display font-bold text-white flex items-center gap-2 mb-4">
+                    <a href="index.html"
+                        class="text-2xl font-display font-bold text-white flex items-center gap-2 mb-4">
                         <i data-lucide="crown" class="text-brand-orange"></i>
                         ROYAL SWEETS
                     </a>
-                    <p class="text-gray-400 text-sm leading-relaxed mb-6">Serving the finest traditional sweets and snacks for over 25 years. Quality and tradition packed meticulously in every box.</p>
+                    <p class="text-gray-400 text-sm leading-relaxed mb-6">Serving the finest traditional sweets and
+                        snacks for over 25 years. Quality and tradition packed meticulously in every box.</p>
                     <div class="flex gap-4">
-                        <a href="#" class="w-10 h-10 rounded-full bg-dark-800 flex items-center justify-center text-gray-400 hover:text-white hover:bg-brand-orange transition-all"><i data-lucide="facebook" class="w-5 h-5"></i></a>
-                        <a href="#" class="w-10 h-10 rounded-full bg-dark-800 flex items-center justify-center text-gray-400 hover:text-white hover:bg-brand-orange transition-all"><i data-lucide="instagram" class="w-5 h-5"></i></a>
-                        <a href="https://wa.me/918260722846" class="w-10 h-10 rounded-full bg-dark-800 flex items-center justify-center text-gray-400 hover:text-white hover:bg-green-500 transition-all"><i data-lucide="message-circle" class="w-5 h-5"></i></a>
+                        <a href="#"
+                            class="w-10 h-10 rounded-full bg-dark-800 flex items-center justify-center text-gray-400 hover:text-white hover:bg-brand-orange transition-all"><i
+                                data-lucide="facebook" class="w-5 h-5"></i></a>
+                        <a href="#"
+                            class="w-10 h-10 rounded-full bg-dark-800 flex items-center justify-center text-gray-400 hover:text-white hover:bg-brand-orange transition-all"><i
+                                data-lucide="instagram" class="w-5 h-5"></i></a>
+                        <a href="https://wa.me/918260722846"
+                            class="w-10 h-10 rounded-full bg-dark-800 flex items-center justify-center text-gray-400 hover:text-white hover:bg-green-500 transition-all"><i
+                                data-lucide="message-circle" class="w-5 h-5"></i></a>
                     </div>
                 </div>
-                
+
                 <div>
                     <h4 class="text-white font-display text-lg mb-4">Quick Links</h4>
                     <ul class="space-y-2">
-                        <li><a href="index.html" class="text-gray-400 hover:text-brand-orange transition-colors text-sm">Home</a></li>
-                        <li><a href="menu.html" class="text-gray-400 hover:text-brand-orange transition-colors text-sm">Online Menu</a></li>
-                        <li><a href="my-orders.html" class="text-gray-400 hover:text-brand-orange transition-colors text-sm">Track Order</a></li>
+                        <li><a href="index.html"
+                                class="text-gray-400 hover:text-brand-orange transition-colors text-sm">Home</a></li>
+                        <li><a href="menu.html"
+                                class="text-gray-400 hover:text-brand-orange transition-colors text-sm">Online Menu</a>
+                        </li>
+                        <li><a href="my-orders.html"
+                                class="text-gray-400 hover:text-brand-orange transition-colors text-sm">Track Order</a>
+                        </li>
                     </ul>
                 </div>
-                
+
                 <div>
                     <h4 class="text-white font-display text-lg mb-4">Store Info</h4>
                     <ul class="space-y-2">
-                        <li class="text-gray-400 text-sm flex items-center gap-2"><i data-lucide="map-pin" class="w-4 h-4 text-brand-orange"></i> 123 Main Road, Jubilee Hills, Hyderabad</li>
-                        <li class="text-gray-400 text-sm flex items-center gap-2 mt-4"><i data-lucide="clock" class="w-4 h-4 text-brand-orange"></i> 9:00 AM - 10:00 PM</li>
+                        <li class="text-gray-400 text-sm flex items-center gap-2"><i data-lucide="map-pin"
+                                class="w-4 h-4 text-brand-orange"></i> 123 Main Road, Jubilee Hills, Hyderabad</li>
+                        <li class="text-gray-400 text-sm flex items-center gap-2 mt-4"><i data-lucide="clock"
+                                class="w-4 h-4 text-brand-orange"></i> 9:00 AM - 10:00 PM</li>
                     </ul>
                 </div>
 
                 <div>
                     <h4 class="text-white font-display text-lg mb-4">Support</h4>
                     <p class="text-gray-400 text-sm mb-4">Party orders? Event catering? Reach out instantly.</p>
-                    <button onclick="window.location.href='https://wa.me/918260722846'" class="w-full bg-[#25D366] text-white py-3 rounded-lg font-bold flex items-center justify-center gap-2 hover:bg-[#1ebe57] transition-colors shadow-lg shadow-green-900/20 active:scale-95 text-sm uppercase tracking-wide">
+                    <button onclick="window.location.href='https://wa.me/918260722846'"
+                        class="w-full bg-[#25D366] text-white py-3 rounded-lg font-bold flex items-center justify-center gap-2 hover:bg-[#1ebe57] transition-colors shadow-lg shadow-green-900/20 active:scale-95 text-sm uppercase tracking-wide">
                         Chat on WhatsApp
                     </button>
                 </div>
             </div>
-            
-            <div class="border-t border-dark-800 pt-8 text-center flex flex-col md:flex-row justify-between items-center gap-4">
+
+            <div
+                class="border-t border-dark-800 pt-8 text-center flex flex-col md:flex-row justify-between items-center gap-4">
                 <p class="text-gray-500 text-sm">© 2026 Royal Sweets & Cafe. All rights reserved.</p>
-                <p class="text-gray-500 text-sm uppercase tracking-wider">Crafted by <span class="text-white font-bold ml-1">Sahazad</span></p>
+                <p class="text-gray-500 text-sm uppercase tracking-wider">Crafted by <span
+                        class="text-white font-bold ml-1">Sahazad</span></p>
             </div>
         </div>
     </footer>
@@ -423,7 +506,7 @@
                         </div>
                     `;
                 }
-                
+
                 // Re-initialize icons inside dynamic HTML
                 lucide.createIcons();
             }
@@ -436,13 +519,13 @@
 
         // Scroll Reveal Animations
         const revealElements = document.querySelectorAll('.reveal');
-        
+
         const revealOptions = {
             threshold: 0.15,
             rootMargin: "0px 0px -50px 0px"
         };
 
-        const revealOnScroll = new IntersectionObserver(function(entries, observer) {
+        const revealOnScroll = new IntersectionObserver(function (entries, observer) {
             entries.forEach(entry => {
                 if (!entry.isIntersecting) {
                     return;
@@ -469,9 +552,9 @@
             setInterval(() => {
                 heroBgs[currentHeroBg].classList.remove('opacity-100');
                 heroBgs[currentHeroBg].classList.add('opacity-0');
-                
+
                 currentHeroBg = (currentHeroBg + 1) % heroBgs.length;
-                
+
                 heroBgs[currentHeroBg].classList.remove('opacity-0');
                 heroBgs[currentHeroBg].classList.add('opacity-100');
             }, 4000); // Crossfade every 4 seconds
@@ -486,8 +569,8 @@
             "https://images.unsplash.com/photo-1551024506-0bccd828d307?auto=format&fit=crop&w=800&q=80"
         ];
         let showcaseIndex = 0;
-        
-        if(fourthFaceImg) {
+
+        if (fourthFaceImg) {
             setInterval(() => {
                 showcaseIndex = (showcaseIndex + 1) % showcaseImages.length;
                 fourthFaceImg.style.opacity = 0.5; // Quick fade effect
@@ -498,83 +581,37 @@
             }, 3000); // Change image every 3 seconds
         }
 
-        // --- 3D Interactive Physics Engine ---
+        // --- 3D Rotating Cube ---
         const cube = document.querySelector('.cube');
         const scene = document.querySelector('.scene');
-        
-        let curX = -10; 
-        let curY = 0;
-        let curVelX = 0;
-        let curVelY = 0;
-        let tgtVelX = 0;
-        let tgtVelY = 0;
-        let isSpinHovering = false;
-        
+
         // Auto-rotation variables
+        let curY = 0;
         let autoRotateY = 0;
         let lastRotationTime = Date.now();
         const ROTATION_INTERVAL = 2000; // 2 seconds per face
-        
+
         if (scene && cube) {
-            scene.addEventListener('mouseenter', () => {
-                isSpinHovering = true;
-            });
-            
-            scene.addEventListener('mouseleave', () => {
-                isSpinHovering = false;
-                // Snap back to the nearest face when mouse leaves
-                autoRotateY = Math.round(curY / 90) * 90;
-                lastRotationTime = Date.now(); // Reset timer so it holds for 2s
-            });
-            
-            scene.addEventListener('mousemove', (e) => {
-                if (!isSpinHovering) return;
-                
-                const rect = scene.getBoundingClientRect();
-                const centerX = rect.left + rect.width / 2;
-                const centerY = rect.top + rect.height / 2;
-                
-                const dx = (e.clientX - centerX) / (rect.width / 2);
-                const dy = (e.clientY - centerY) / (rect.height / 2);
-                
-                tgtVelY = dx * 3.5; 
-                tgtVelX = -dy * 2.5; 
-            });
-            
             function animateCube() {
-                if (!isSpinHovering) {
-                    const now = Date.now();
-                    if (now - lastRotationTime > ROTATION_INTERVAL) {
-                        autoRotateY -= 90; // Turn right
-                        lastRotationTime = now;
-                    }
-                    
-                    // Smoothly interpolate towards the target 90-degree increment
-                    curY += (autoRotateY - curY) * 0.05;
-                    
-                    // Slowly drift back to a mostly flat X-angle
-                    curX += (-10 - curX) * 0.05; 
-                } else {
-                    // Apply mouse physics
-                    curVelX += (tgtVelX - curVelX) * 0.1;
-                    curVelY += (tgtVelY - curVelY) * 0.1;
-                    
-                    curX += curVelX;
-                    curY += curVelY;
-                    
-                    // Add some friction
-                    curVelX *= 0.95;
-                    curVelY *= 0.95;
+                const now = Date.now();
+                if (now - lastRotationTime > ROTATION_INTERVAL) {
+                    autoRotateY -= 90; // Turn right precisely 90 degrees
+                    lastRotationTime = now;
                 }
-                
-                cube.style.transform = `rotateX(${curX}deg) rotateY(${curY}deg)`;
-                
+
+                // Smoothly interpolate towards the target 90-degree increment
+                curY += (autoRotateY - curY) * 0.05;
+
+                // Maintain a static 10-degree downward tilt on the X axis 
+                cube.style.transform = `rotateX(-10deg) rotateY(${curY}deg)`;
+
                 requestAnimationFrame(animateCube);
             }
-            
+
             // Start loop
             animateCube();
         }
     </script>
 </body>
+
 </html>
