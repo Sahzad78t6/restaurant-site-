@@ -1,437 +1,433 @@
 <!DOCTYPE html>
 
 <html lang="en">
+
 <head>
 
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Confirm Order | Royal Sweets</title>
+    <title>Confirm Order | Royal Sweets</title>
 
-<script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
 
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 
-<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;800&display=swap"
+        rel="stylesheet">
 
-<style>
+    <style>
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+        }
 
-body{font-family:'Plus Jakarta Sans',sans-serif;}
+        .loader {
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #f97316;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+        }
 
-.loader{
-border:4px solid #f3f3f3;
-border-top:4px solid #f97316;
-border-radius:50%;
-width:40px;
-height:40px;
-animation:spin 1s linear infinite;
-}
+        @keyframes spin {
+            0% {
+                transform: rotate(0deg);
+            }
 
-@keyframes spin{
-0%{transform:rotate(0deg);}
-100%{transform:rotate(360deg);}
-}
+            100% {
+                transform: rotate(360deg);
+            }
+        }
 
-.payment-option.active{
-border-color:#f97316;
-background-color:#fff7ed;
-}
+        .payment-option.active {
+            border-color: #f97316;
+            background-color: #fff7ed;
+        }
 
-.suggestion-box{
-position:absolute;
-background:white;
-border:1px solid #e5e7eb;
-border-radius:12px;
-width:100%;
-max-height:200px;
-overflow-y:auto;
-z-index:50;
-}
+        .suggestion-box {
+            position: absolute;
+            background: white;
+            border: 1px solid #e5e7eb;
+            border-radius: 12px;
+            width: 100%;
+            max-height: 200px;
+            overflow-y: auto;
+            z-index: 50;
+        }
 
-.suggestion-item{
-padding:10px;
-cursor:pointer;
-font-size:14px;
-}
+        .suggestion-item {
+            padding: 10px;
+            cursor: pointer;
+            font-size: 14px;
+        }
 
-.suggestion-item:hover{
-background:#f3f4f6;
-}
-
-</style>
+        .suggestion-item:hover {
+            background: #f3f4f6;
+        }
+    </style>
 
 </head>
 
 <script>
 
-const userCheck = localStorage.getItem("royalSweetsUser");
+    const userCheck = localStorage.getItem("royalSweetsUser");
 
-if(!userCheck){
-alert("Please login to continue");
-window.location.href="login.html";
-}
+    if (!userCheck) {
+        alert("Please login to continue");
+        window.location.href = "login.html";
+    }
 
 </script>
 
-<body class="bg-gray-50 min-h-screen">
+<body class="bg-slate-50 min-h-screen pb-20">
 
-<div class="max-w-xl mx-auto p-4 py-12" id="main-content">
+    <!-- TOP NAV -->
+    <nav class="sticky top-0 z-50 bg-white/80 backdrop-blur-xl border-b border-slate-100 px-6 py-5 shadow-sm mb-8">
+        <div class="max-w-xl mx-auto flex justify-between items-center">
+            <a href="menu.html"
+                class="w-12 h-12 flex items-center justify-center rounded-full bg-slate-50 text-slate-700 shadow-sm border border-slate-200 hover:bg-orange-50 hover:text-orange-500 hover:border-orange-200 transition-all duration-300">
+                <i class="fa-solid fa-arrow-left"></i>
+            </a>
+            <h1 class="text-xl font-black text-slate-800 tracking-tight uppercase">Checkout</h1>
+            <div class="w-12 h-12 rounded-full flex items-center justify-center">
+                <!-- Flexbox spacer -->
+            </div>
+        </div>
+    </nav>
 
-<div id="order-card" class="bg-white rounded-[2.5rem] p-8 shadow-xl border border-gray-100">
+    <div class="max-w-xl mx-auto px-6" id="main-content">
 
-<div class="flex items-center gap-4 mb-8">
+        <div id="order-card"
+            class="bg-white rounded-[2rem] p-6 sm:p-8 shadow-xl shadow-slate-200/50 border border-slate-100">
 
-<a href="menu.html" class="text-gray-400 hover:text-gray-900">
-<i class="fa-solid fa-arrow-left text-xl"></i>
-</a>
+            <div class="flex items-center gap-3 mb-6">
+                <i class="fa-solid fa-receipt text-orange-500 text-xl"></i>
+                <h2 class="text-xl font-black tracking-tight text-slate-800">Order Summary</h2>
+            </div>
 
-<h1 class="text-3xl font-black uppercase tracking-tighter">
-Confirm Order
-</h1>
+            <div id="cartItems" class="space-y-5 border-b border-slate-200 pb-6 mb-6"></div>
 
+            <div class="flex justify-between items-center mb-8 bg-orange-50 p-5 rounded-2xl border border-orange-100">
+                <span class="text-slate-600 font-bold uppercase tracking-wider text-sm flex items-center gap-2">
+                    <i class="fa-solid fa-wallet text-orange-400"></i> Total Amount
+                </span>
+                <span class="text-3xl font-black text-orange-600 tracking-tight">
+                    ₹<span id="finalTotal">0</span>
+                </span>
+            </div>
+
+            <!-- DELIVERY DETAILS -->
+            <div class="space-y-4 mb-8">
+                <div class="flex items-center gap-2 mb-2">
+                    <i class="fa-solid fa-truck-fast text-slate-400 text-sm"></i>
+                    <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest">
+                        Delivery Information
+                    </p>
+                </div>
+
+                <div class="relative">
+                    <i class="fa-solid fa-phone absolute left-5 top-1/2 -translate-y-1/2 text-slate-400"></i>
+                    <input id="phone" type="tel" placeholder="Phone Number"
+                        class="w-full bg-slate-50 border border-slate-200 py-4 pl-12 pr-4 rounded-xl outline-none focus:bg-white focus:border-orange-500 focus:ring-4 focus:ring-orange-500/10 transition-all font-semibold text-slate-700 placeholder:text-slate-400 placeholder:font-medium">
+                </div>
+
+                <div class="relative flex gap-3">
+                    <div class="relative flex-1">
+                        <i class="fa-solid fa-location-dot absolute left-5 top-1/2 -translate-y-1/2 text-slate-400"></i>
+                        <input id="address" type="text" placeholder="Enter full delivery address"
+                            class="w-full bg-slate-50 border border-slate-200 py-4 pl-12 pr-4 rounded-xl outline-none focus:bg-white focus:border-orange-500 focus:ring-4 focus:ring-orange-500/10 transition-all font-semibold text-slate-700 placeholder:text-slate-400 placeholder:font-medium">
+                    </div>
+                    <button onclick="useLocation()"
+                        class="bg-slate-900 text-white w-14 rounded-xl hover:bg-slate-800 shadow-md active:scale-95 transition-all flex items-center justify-center shrink-0"
+                        title="Use current location">
+                        <i class="fa-solid fa-location-crosshairs"></i>
+                    </button>
+                    <!-- Suggestions Box -->
+                    <div id="suggestions"
+                        class="suggestion-box hidden absolute top-[calc(100%+0.5rem)] left-0 w-[calc(100%-4rem)] shadow-xl z-50 overflow-hidden">
+                    </div>
+                </div>
+            </div>
+
+            <!-- PAYMENT -->
+            <div class="space-y-3 mb-8">
+                <div class="flex items-center gap-2 mb-2">
+                    <i class="fa-solid fa-credit-card text-slate-400 text-sm"></i>
+                    <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest">
+                        Payment Method
+                    </p>
+                </div>
+
+                <label onclick="updatePaymentUI('cod')"
+                    class="payment-option active flex items-center justify-between p-4 sm:p-5 bg-slate-50 rounded-2xl border-2 border-orange-500 cursor-pointer transition-all">
+                    <div class="flex items-center gap-4">
+                        <div
+                            class="w-12 h-12 bg-green-100 text-green-600 rounded-xl flex items-center justify-center text-xl shadow-sm">
+                            <i class="fa-solid fa-money-bill-wave"></i>
+                        </div>
+                        <div class="flex flex-col">
+                            <span class="font-extrabold text-slate-800 text-lg">Cash on Delivery</span>
+                            <span class="text-xs font-semibold text-slate-500">Pay when your food arrives</span>
+                        </div>
+                    </div>
+                    <input type="radio" name="pay" value="COD" checked class="accent-orange-500 w-5 h-5 cursor-pointer">
+                </label>
+
+                <label onclick="updatePaymentUI('upi')"
+                    class="payment-option flex items-center justify-between p-4 sm:p-5 bg-slate-50 rounded-2xl border-2 border-transparent cursor-pointer transition-all hover:bg-slate-100">
+                    <div class="flex items-center gap-4">
+                        <div
+                            class="w-12 h-12 bg-blue-100 text-blue-600 rounded-xl flex items-center justify-center text-xl shadow-sm">
+                            <i class="fa-solid fa-qrcode"></i>
+                        </div>
+                        <div class="flex flex-col">
+                            <span class="font-extrabold text-slate-800 text-lg">UPI Payment</span>
+                            <span class="text-xs font-semibold text-slate-500">GPay, PhonePe, Paytm</span>
+                        </div>
+                    </div>
+                    <input type="radio" name="pay" value="UPI" class="accent-orange-500 w-5 h-5 cursor-pointer">
+                </label>
+            </div>
+
+            <button onclick="processOrder()"
+                class="w-full bg-gradient-to-r from-orange-500 to-orange-600 text-white py-5 rounded-[1.5rem] font-black text-lg tracking-wide shadow-xl shadow-orange-500/25 hover:shadow-orange-500/40 hover:-translate-y-1 active:scale-95 transition-all flex justify-center items-center gap-2">
+                Place Order Now <i class="fa-solid fa-arrow-right"></i>
+            </button>
+        </div>
+
+        <!-- LOADING STATE -->
+        <div id="loading"
+            class="hidden flex flex-col items-center justify-center py-20 bg-white rounded-[2rem] shadow-xl border border-slate-100 h-[600px]">
+            <div class="relative w-20 h-20 mb-8 flex items-center justify-center">
+                <div class="absolute inset-0 border-4 border-slate-100 rounded-full"></div>
+                <div class="absolute inset-0 border-4 border-orange-500 rounded-full border-t-transparent animate-spin">
+                </div>
+                <i class="fa-solid fa-bowl-food text-orange-500 text-2xl animate-pulse"></i>
+            </div>
+            <h2 class="text-2xl font-black text-slate-800 tracking-tight mb-2">Processing Order</h2>
+            <p class="text-slate-500 font-medium text-center px-8">Please wait while we confirm your details with Royal
+                Sweets...</p>
+        </div>
+
+        <!-- SUCCESS STATE -->
+        <div id="success"
+            class="hidden text-center py-16 px-6 bg-white rounded-[2rem] shadow-xl border border-slate-100">
+            <div class="relative w-28 h-28 mx-auto mb-8">
+                <div class="absolute inset-0 bg-green-100 rounded-full animate-ping opacity-20"></div>
+                <div
+                    class="absolute inset-0 bg-green-500 text-white rounded-full flex items-center justify-center text-5xl shadow-xl shadow-green-500/30 transform transition-transform hover:scale-110 duration-300">
+                    <i class="fa-solid fa-check"></i>
+                </div>
+            </div>
+            <h2 class="text-4xl font-black text-slate-900 mb-3 tracking-tight">Order Confirmed!</h2>
+            <p class="text-slate-500 font-medium mb-10 max-w-sm mx-auto leading-relaxed">
+                Your delicious order is being prepared. You can track its status until it reaches your door.
+            </p>
+            <div class="space-y-4 max-w-sm mx-auto">
+                <button onclick="window.location.href='my-orders.html'"
+                    class="w-full bg-slate-900 text-white py-4 rounded-xl font-bold uppercase tracking-widest shadow-lg shadow-slate-900/20 hover:bg-slate-800 active:scale-95 transition-all">
+                    Track My Order
+                </button>
+                <button onclick="window.location.href='index.html'"
+                    class="w-full text-slate-500 font-bold hover:text-orange-500 transition-colors py-2">
+                    Back to Home
+                </button>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+
+        const user = JSON.parse(localStorage.getItem("royalSweetsUser"));
+        const cart = JSON.parse(localStorage.getItem('activeCart')) || [];
+
+        const container = document.getElementById('cartItems');
+
+        let total = 0;
+
+        const grouped = cart.reduce((acc, curr) => {
+
+            acc[curr.name] = (acc[curr.name] || { p: curr.price, c: 0 });
+            acc[curr.name].c++;
+
+            return acc;
+
+        }, {});
+
+        for (const name in grouped) {
+
+            const itemTotal = grouped[name].p * grouped[name].c;
+
+            total += itemTotal;
+
+            container.innerHTML += `
+<div class="flex justify-between items-start">
+    <div class="flex gap-4">
+        <div class="w-8 h-8 rounded-lg bg-orange-50 text-orange-600 font-black flex items-center justify-center shrink-0 border border-orange-100">
+            ${grouped[name].c}x
+        </div>
+        <div>
+            <h4 class="font-bold text-slate-800 text-lg leading-tight tracking-tight">${name}</h4>
+            <span class="text-sm font-semibold text-slate-400 tracking-wide">₹${grouped[name].p} each</span>
+        </div>
+    </div>
+    <span class="text-lg font-black text-slate-800">₹${itemTotal}</span>
 </div>
-
-<div id="cartItems" class="space-y-4 border-b border-dashed pb-8 mb-8"></div>
-
-<div class="flex justify-between items-center mb-10">
-
-<span class="text-gray-500 font-bold uppercase tracking-widest text-sm">
-Amount to Pay
-</span>
-
-<span class="text-4xl font-black text-orange-500 italic">
-₹<span id="finalTotal">0</span>
-</span>
-
-</div>
-
-<!-- DELIVERY DETAILS -->
-
-<div class="space-y-4 mb-10 relative">
-
-<p class="text-[10px] font-black text-gray-400 uppercase tracking-widest">
-Delivery Details
-</p>
-
-<input
-id="phone"
-type="tel"
-placeholder="Phone Number"
-class="w-full bg-gray-50 border p-4 rounded-xl outline-none focus:ring-2 focus:ring-orange-500">
-
-<div class="flex gap-2 relative">
-
-<input
-id="address"
-type="text"
-placeholder="Enter delivery address"
-class="flex-1 bg-gray-50 border p-4 rounded-xl outline-none focus:ring-2 focus:ring-orange-500">
-
-<button onclick="useLocation()" class="bg-orange-500 text-white px-4 rounded-xl">
-<i class="fa-solid fa-location-crosshairs"></i>
-</button>
-
-</div>
-
-<div id="suggestions" class="suggestion-box hidden"></div>
-
-</div>
-
-<!-- PAYMENT -->
-
-<div class="space-y-3 mb-10">
-
-<p class="text-[10px] font-black text-gray-400 uppercase tracking-widest mb-2 px-1">
-Select Payment Method
-</p>
-
-<label onclick="updatePaymentUI('cod')" class="payment-option active flex items-center justify-between p-5 bg-gray-50 rounded-2xl border-2 border-orange-500 cursor-pointer">
-
-<div class="flex items-center gap-4">
-
-<div class="w-10 h-10 bg-green-100 text-green-600 rounded-xl flex items-center justify-center text-lg">
-<i class="fa-solid fa-money-bill-1"></i>
-</div>
-
-<span class="font-bold text-gray-800">
-Cash on Delivery
-</span>
-
-</div>
-
-<input type="radio" name="pay" value="COD" checked class="accent-orange-500 w-5 h-5">
-
-</label>
-
-<label onclick="updatePaymentUI('upi')" class="payment-option flex items-center justify-between p-5 bg-gray-50 rounded-2xl border-2 border-transparent cursor-pointer">
-
-<div class="flex items-center gap-4">
-
-<div class="w-10 h-10 bg-blue-100 text-blue-600 rounded-xl flex items-center justify-center text-lg">
-<i class="fa-solid fa-mobile-screen-button"></i>
-</div>
-
-<div class="flex flex-col">
-<span class="font-bold text-gray-800">
-UPI (GPay / PhonePe)
-</span>
-
-<span class="text-[10px] font-bold text-gray-400 uppercase tracking-tight">
-Pay instantly
-</span>
-</div>
-
-</div>
-
-<input type="radio" name="pay" value="UPI" class="accent-orange-500 w-5 h-5">
-
-</label>
-
-</div>
-
-<button onclick="processOrder()" class="w-full bg-orange-500 text-white py-5 rounded-[2rem] font-black text-xl shadow-lg shadow-orange-200">
-Place Order Now
-</button>
-
-</div>
-
-<!-- LOADING -->
-
-<div id="loading" class="hidden flex flex-col items-center justify-center py-20">
-
-<div class="loader mb-6"></div>
-
-<h2 class="text-2xl font-black uppercase italic">
-Processing...
-</h2>
-
-<p class="text-gray-400 text-sm mt-2">
-Placing your order with Royal Sweets
-</p>
-
-</div>
-
-<!-- SUCCESS -->
-
-<div id="success" class="hidden text-center py-10">
-
-<div class="w-24 h-24 bg-green-500 text-white rounded-full flex items-center justify-center text-5xl mx-auto mb-6 shadow-xl shadow-green-100">
-<i class="fa-solid fa-check"></i>
-</div>
-
-<h2 class="text-4xl font-black text-gray-900 mb-2 italic tracking-tighter uppercase">
-Order Placed!
-</h2>
-
-<p class="text-gray-500 font-bold mb-10">
-Success! Track your fresh treats in My Orders.
-</p>
-
-<div class="space-y-4">
-
-<button onclick="window.location.href='my-orders.html'" class="w-full bg-slate-900 text-white py-4 rounded-2xl font-black uppercase tracking-widest">
-Track My Order
-</button>
-
-<button onclick="window.location.href='index.html'" class="w-full text-gray-400 font-bold text-sm">
-Back to Home
-</button>
-
-</div>
-
-</div>
-
-</div>
-
-<script>
-
-const user = JSON.parse(localStorage.getItem("royalSweetsUser"));
-const cart = JSON.parse(localStorage.getItem('activeCart')) || [];
-
-const container=document.getElementById('cartItems');
-
-let total=0;
-
-const grouped=cart.reduce((acc,curr)=>{
-
-acc[curr.name]=(acc[curr.name]||{p:curr.price,c:0});
-acc[curr.name].c++;
-
-return acc;
-
-},{});
-
-for(const name in grouped){
-
-const itemTotal=grouped[name].p*grouped[name].c;
-
-total+=itemTotal;
-
-container.innerHTML+=`
-
-<div class="flex justify-between items-center font-bold">
-
-<div class="flex flex-col text-left">
-<span class="text-gray-800">${name}</span>
-<span class="text-xs text-orange-500">${grouped[name].c} x ₹${grouped[name].p}</span>
-</div>
-
-<span class="text-lg">₹${itemTotal}</span>
-
-</div>
-
 `;
 
-}
+        }
 
-document.getElementById('finalTotal').innerText=total;
-
-
-function updatePaymentUI(){
-
-document.querySelectorAll('.payment-option').forEach(opt=>{
-opt.classList.remove('active','border-orange-500');
-opt.classList.add('border-transparent');
-});
-
-event.currentTarget.classList.add('active','border-orange-500');
-
-}
+        document.getElementById('finalTotal').innerText = total;
 
 
-/* ADDRESS AUTOCOMPLETE (OPENSTREETMAP) */
+        function updatePaymentUI() {
 
-const addressInput=document.getElementById("address");
-const suggestions=document.getElementById("suggestions");
+            document.querySelectorAll('.payment-option').forEach(opt => {
+                opt.classList.remove('active', 'border-orange-500');
+                opt.classList.add('border-transparent');
+            });
 
-addressInput.addEventListener("input",async function(){
+            event.currentTarget.classList.add('active', 'border-orange-500');
 
-const query=this.value;
-
-if(query.length<3){
-suggestions.classList.add("hidden");
-return;
-}
-
-const res=await fetch(`https://nominatim.openstreetmap.org/search?format=json&q=${query}`);
-
-const data=await res.json();
-
-suggestions.innerHTML="";
-
-data.slice(0,5).forEach(place=>{
-
-const div=document.createElement("div");
-
-div.className="suggestion-item";
-
-div.innerText=place.display_name;
-
-div.onclick=()=>{
-addressInput.value=place.display_name;
-suggestions.classList.add("hidden");
-};
-
-suggestions.appendChild(div);
-
-});
-
-suggestions.classList.remove("hidden");
-
-});
+        }
 
 
-/* CURRENT LOCATION */
+        /* ADDRESS AUTOCOMPLETE (OPENSTREETMAP) */
 
-function useLocation(){
+        const addressInput = document.getElementById("address");
+        const suggestions = document.getElementById("suggestions");
 
-if(!navigator.geolocation){
-alert("Geolocation not supported by this browser.");
-return;
-}
+        addressInput.addEventListener("input", async function () {
 
-navigator.geolocation.getCurrentPosition(
-async function(position){
+            const query = this.value;
 
-const lat = position.coords.latitude;
-const lon = position.coords.longitude;
+            if (query.length < 3) {
+                suggestions.classList.add("hidden");
+                return;
+            }
 
-const res = await fetch(
-`https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lon}`
-);
+            const res = await fetch(`https://nominatim.openstreetmap.org/search?format=json&q=${query}`);
 
-const data = await res.json();
+            const data = await res.json();
 
-if(data.display_name){
-document.getElementById("address").value = data.display_name;
-}
+            suggestions.innerHTML = "";
 
-},
-function(error){
+            data.slice(0, 5).forEach(place => {
 
-if(error.code === 1){
-alert("Location permission denied");
-}
-else if(error.code === 2){
-alert("Location unavailable");
-}
-else{
-alert("Location request timeout");
-}
+                const div = document.createElement("div");
 
-}
-);
+                div.className = "suggestion-item";
 
-}
+                div.innerText = place.display_name;
 
-/* PLACE ORDER */
+                div.onclick = () => {
+                    addressInput.value = place.display_name;
+                    suggestions.classList.add("hidden");
+                };
 
-async function processOrder(){
-const paymentMethod = document.querySelector('input[name="pay"]:checked').value;
-if(cart.length===0){
-alert("Cart empty");
-return;
-}
+                suggestions.appendChild(div);
 
-document.getElementById('order-card').classList.add('hidden');
-document.getElementById('loading').classList.remove('hidden');
+            });
 
-try{
+            suggestions.classList.remove("hidden");
 
-await fetch("https://restaurant-site-8y41.onrender.com/api/orders/create",{
+        });
 
-method:"POST",
 
-headers:{
-"Content-Type":"application/json"
-},
+        /* CURRENT LOCATION */
 
-body:JSON.stringify({
+        function useLocation() {
 
-userId:user._id,
-items:cart,
-total:total,
-phone:document.getElementById("phone").value,
-address:document.getElementById("address").value
+            if (!navigator.geolocation) {
+                alert("Geolocation not supported by this browser.");
+                return;
+            }
 
-})
+            navigator.geolocation.getCurrentPosition(
+                async function (position) {
 
-});
+                    const lat = position.coords.latitude;
+                    const lon = position.coords.longitude;
 
-localStorage.removeItem("activeCart");
+                    const res = await fetch(
+                        `https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lon}`
+                    );
 
-document.getElementById('loading').classList.add('hidden');
-document.getElementById('success').classList.remove('hidden');
+                    const data = await res.json();
 
-}catch(err){
+                    if (data.display_name) {
+                        document.getElementById("address").value = data.display_name;
+                    }
 
-alert("Order failed");
+                },
+                function (error) {
 
-}
+                    if (error.code === 1) {
+                        alert("Location permission denied");
+                    }
+                    else if (error.code === 2) {
+                        alert("Location unavailable");
+                    }
+                    else {
+                        alert("Location request timeout");
+                    }
 
-}
+                }
+            );
 
-</script>
+        }
+
+        /* PLACE ORDER */
+
+        async function processOrder() {
+            const paymentMethod = document.querySelector('input[name="pay"]:checked').value;
+            if (cart.length === 0) {
+                alert("Cart empty");
+                return;
+            }
+
+            document.getElementById('order-card').classList.add('hidden');
+            document.getElementById('loading').classList.remove('hidden');
+
+            try {
+
+                await fetch("https://restaurant-site-8y41.onrender.com/api/orders/create", {
+
+                    method: "POST",
+
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+
+                    body: JSON.stringify({
+
+                        userId: user._id,
+                        items: cart,
+                        total: total,
+                        phone: document.getElementById("phone").value,
+                        address: document.getElementById("address").value
+
+                    })
+
+                });
+
+                localStorage.removeItem("activeCart");
+
+                document.getElementById('loading').classList.add('hidden');
+                document.getElementById('success').classList.remove('hidden');
+
+            } catch (err) {
+
+                alert("Order failed");
+
+            }
+
+        }
+
+    </script>
 
 </body>
+
 </html>
