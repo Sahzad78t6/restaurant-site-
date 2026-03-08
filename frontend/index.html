@@ -374,7 +374,7 @@
             </div>
             
             <!-- Horizontal Text Pills Scroll -->
-            <div class="flex gap-4 overflow-x-auto hide-scrollbar snap-x snap-mandatory py-4 mb-12 flex-nowrap reveal" style="mask-image: linear-gradient(to right, transparent, black 5%, black 95%, transparent);">
+            <div id="text-reviews-container" class="flex gap-4 overflow-x-auto hide-scrollbar snap-x snap-mandatory py-4 mb-12 flex-nowrap reveal" style="mask-image: linear-gradient(to right, transparent, black 5%, black 95%, transparent);">
                 <!-- Empty spacer for mask -->
                 <div class="w-4 shrink-0"></div>
                 
@@ -415,7 +415,7 @@
             <h3 class="text-center font-display text-2xl font-bold text-white mb-8 tracking-wider reveal">Video Reviews</h3>
 
             <!-- Horizontal Mock Video Grid Scroll -->
-            <div class="flex gap-4 overflow-x-auto hide-scrollbar snap-x snap-mandatory pb-8 pt-4 reveal" style="mask-image: linear-gradient(to right, transparent, black 1%, black 99%, transparent);">
+            <div id="video-reviews-container" class="flex gap-4 overflow-x-auto hide-scrollbar snap-x snap-mandatory pb-8 pt-4 reveal" style="mask-image: linear-gradient(to right, transparent, black 1%, black 99%, transparent);">
                 <!-- Empty spacer for mask -->
                 <div class="w-[1vw] shrink-0"></div>
 
@@ -736,13 +736,53 @@
 
                 // Maintain a static 10-degree downward tilt on the X axis 
                 cube.style.transform = `rotateX(-10deg) rotateY(${curY}deg)`;
-
+                
                 requestAnimationFrame(animateCube);
             }
-
+            
             // Start loop
             animateCube();
         }
+
+        // --- Auto-Scrolling Reviews Logic ---
+        function setupAutoScroll(containerId, scrollAmount, intervalMs) {
+            const container = document.getElementById(containerId);
+            if (!container) return;
+
+            let isHovering = false;
+
+            // Pause auto-scroll on manual interaction
+            container.addEventListener('mouseenter', () => isHovering = true);
+            container.addEventListener('mouseleave', () => isHovering = false);
+            container.addEventListener('touchstart', () => isHovering = true, { passive: true });
+            container.addEventListener('touchend', () => { setTimeout(() => isHovering = false, 1000) }, { passive: true });
+
+            setInterval(() => {
+                if (isHovering) return;
+
+                const maxScrollLeft = container.scrollWidth - container.clientWidth;
+                
+                if (container.scrollLeft >= maxScrollLeft - 10) {
+                    // Loop back to start smoothly
+                    container.scrollTo({
+                        left: 0,
+                        behavior: 'smooth'
+                    });
+                } else {
+                    // Scroll to next item
+                    container.scrollBy({
+                        left: scrollAmount,
+                        behavior: 'smooth'
+                    });
+                }
+            }, intervalMs);
+        }
+
+        // Start auto-scroll for both review rows
+        // Adjust the 'scrollAmount' depending on typical item widths (e.g. 300 for text pills, 280 for videos)
+        setupAutoScroll('text-reviews-container', 320, 2500); 
+        setupAutoScroll('video-reviews-container', 280, 4000);
+
     </script>
 </body>
 
