@@ -276,9 +276,9 @@
                         </div>
                     </div>
 
-                    <!-- Left (All Items) -->
+                    <!-- Left (All Items Slideshow) -->
                     <div class="cube__face cube__face--left" onclick="window.location.href='menu.html'">
-                        <img src="https://images.unsplash.com/photo-1548940740-20472c4c94bb?auto=format&fit=crop&w=800&q=80" alt="All">
+                        <img id="all-items-slideshow" src="https://images.unsplash.com/photo-1548940740-20472c4c94bb?auto=format&fit=crop&w=800&q=80" alt="All">
                         <div class="cube-overlay">
                             <h4 class="font-black text-2xl tracking-tight mb-1">Explore All</h4>
                             <p class="text-sm text-slate-200 font-medium">See everything we offer</p>
@@ -476,11 +476,32 @@
             dot.addEventListener('click', () => goToSlide(index));
         });
 
-        // Auto slide
+        // Auto slide flat hero
         setInterval(() => {
             currentSlide = (currentSlide + 1) % totalSlides;
             goToSlide(currentSlide);
         }, 5000);
+
+        // Rotating cube 4th face slideshow
+        const fourthFaceImg = document.getElementById("all-items-slideshow");
+        const showcaseImages = [
+            "https://images.unsplash.com/photo-1548940740-20472c4c94bb?auto=format&fit=crop&w=800&q=80",
+            "https://images.unsplash.com/photo-1601050690597-df056fb01793?auto=format&fit=crop&w=800&q=80",
+            "https://images.unsplash.com/photo-1563729784474-d77dbb933a9e?auto=format&fit=crop&w=800&q=80",
+            "https://images.unsplash.com/photo-1551024506-0bccd828d307?auto=format&fit=crop&w=800&q=80"
+        ];
+        let showcaseIndex = 0;
+        
+        if(fourthFaceImg) {
+            setInterval(() => {
+                showcaseIndex = (showcaseIndex + 1) % showcaseImages.length;
+                fourthFaceImg.style.opacity = 0.5; // Quick fade effect
+                setTimeout(() => {
+                    fourthFaceImg.src = showcaseImages[showcaseIndex];
+                    fourthFaceImg.style.opacity = 1;
+                }, 200);
+            }, 3000); // Change image every 3 seconds
+        }
     </script>
 </body>
 
