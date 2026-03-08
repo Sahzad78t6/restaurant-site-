@@ -178,7 +178,14 @@
     </header>
 
     <!-- Hero Section -->
-    <section id="home" class="relative h-screen flex items-center bg-hero-pattern bg-cover bg-center bg-no-repeat bg-fixed">
+    <section id="home" class="relative h-screen flex items-center bg-dark-900 overflow-hidden">
+        <!-- Background Slideshow -->
+        <div class="absolute inset-0 z-0 pointer-events-none">
+            <div id="hero-bg-0" class="absolute inset-0 bg-cover bg-center bg-no-repeat transition-opacity duration-1000 opacity-100" style="background-image: linear-gradient(to right, rgba(10, 10, 10, 0.9), rgba(10, 10, 10, 0.4)), url('https://images.unsplash.com/photo-1589119908995-c6837fa14848?auto=format&fit=crop&w=2000&q=80')"></div>
+            <div id="hero-bg-1" class="absolute inset-0 bg-cover bg-center bg-no-repeat transition-opacity duration-1000 opacity-0" style="background-image: linear-gradient(to right, rgba(10, 10, 10, 0.9), rgba(10, 10, 10, 0.4)), url('https://images.unsplash.com/photo-1606491956689-2ea866880c84?auto=format&fit=crop&w=2000&q=80')"></div>
+            <div id="hero-bg-2" class="absolute inset-0 bg-cover bg-center bg-no-repeat transition-opacity duration-1000 opacity-0" style="background-image: linear-gradient(to right, rgba(10, 10, 10, 0.9), rgba(10, 10, 10, 0.4)), url('https://images.unsplash.com/photo-1546173159-315724a31696?auto=format&fit=crop&w=2000&q=80')"></div>
+        </div>
+
         <div class="max-w-7xl mx-auto px-6 md:px-12 relative z-10 w-full pt-20">
             <div class="max-w-3xl reveal">
                 <span class="inline-block py-1 px-3 rounded-full bg-dark-800/80 border border-brand-orange/30 text-brand-orange text-sm font-semibold tracking-widest uppercase mb-6 backdrop-blur-sm">
@@ -449,6 +456,26 @@
         revealElements.forEach(el => {
             revealOnScroll.observe(el);
         });
+
+        // Hero Background Slideshow
+        const heroBgs = [
+            document.getElementById('hero-bg-0'),
+            document.getElementById('hero-bg-1'),
+            document.getElementById('hero-bg-2')
+        ];
+        let currentHeroBg = 0;
+
+        if (heroBgs[0]) {
+            setInterval(() => {
+                heroBgs[currentHeroBg].classList.remove('opacity-100');
+                heroBgs[currentHeroBg].classList.add('opacity-0');
+                
+                currentHeroBg = (currentHeroBg + 1) % heroBgs.length;
+                
+                heroBgs[currentHeroBg].classList.remove('opacity-0');
+                heroBgs[currentHeroBg].classList.add('opacity-100');
+            }, 4000); // Crossfade every 4 seconds
+        }
 
         // Rotating cube 4th face slideshow
         const fourthFaceImg = document.getElementById("all-items-slideshow");
