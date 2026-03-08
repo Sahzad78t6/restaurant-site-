@@ -1,38 +1,337 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="scroll-smooth">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Our Story | Royal Sweets</title>
+    <title>About Us | Royal Sweets & Cafe</title>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;700&family=Poppins:wght@300;400;500;600&display=swap"
+        rel="stylesheet">
+
+    <!-- Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            red: '#ff3b3b',
+                            darkred: '#8b0000',
+                            orange: '#ff6b00',
+                        },
+                        dark: {
+                            900: '#0a0a0a',
+                            800: '#141414',
+                            700: '#1f1f1f',
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Poppins', 'sans-serif'],
+                        display: ['Oswald', 'sans-serif'],
+                    },
+                    backgroundImage: {
+                        'fire-gradient': "linear-gradient(135deg, #ff3b3b 0%, #ff6b00 100%)",
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        .reveal {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.8s ease-out;
+        }
+
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .glass-nav {
+            background: rgba(10, 10, 10, 0.85);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+    </style>
 </head>
-<body class="bg-white font-sans text-gray-900">
 
-    <nav class="p-6 flex justify-between items-center border-b">
-        <a href="index.html" class="text-gray-500 font-bold"><i class="fa-solid fa-arrow-left"></i> Home</a>
-    </nav>
+<body class="bg-dark-900 text-gray-300 font-sans antialiased overflow-x-hidden">
 
-    <main class="max-w-4xl mx-auto px-6 py-16">
-        <span class="text-orange-500 font-black uppercase tracking-widest text-sm">Authentic Heritage</span>
-        <h1 class="text-5xl font-black mt-4 mb-8">Crafting Sweets <br>with Love Since 1998.</h1>
-        
-        <img src="https://images.unsplash.com/photo-1556910103-1c02745aae4d?auto=format&fit=crop&w=1200" class="w-full h-80 object-cover rounded-[2rem] mb-10 shadow-lg">
+    <!-- Navbar -->
+    <header id="navbar"
+        class="fixed w-full top-0 z-50 transition-all duration-300 bg-dark-900 py-4 border-b border-dark-800">
+        <div class="max-w-7xl mx-auto px-6 md:px-12 flex justify-between items-center">
+            <!-- Logo -->
+            <a href="index.html" class="text-2xl font-display font-bold text-white flex items-center gap-2 group">
+                <i data-lucide="flame" class="text-brand-orange group-hover:text-brand-red transition-colors"></i>
+                ROYAL <span class="text-brand-orange">SWEETS</span>
+            </a>
 
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-12 text-lg leading-relaxed text-gray-600">
-            <p>
-                What started as a small family kitchen in the heart of the city has grown into a beloved destination for sweet lovers. We believe that the best ingredients make the best memories.
-            </p>
-            <p>
-                By ordering directly through this website, you are helping us keep our traditions alive and supporting our local staff without giving away 25% to big tech platforms.
-            </p>
+            <!-- Desktop Nav -->
+            <nav class="hidden md:flex items-center gap-8">
+                <a href="index.html"
+                    class="text-sm font-medium hover:text-brand-orange transition-colors uppercase tracking-wider text-white">Home</a>
+                <a href="about.html"
+                    class="text-sm font-medium text-brand-orange transition-colors uppercase tracking-wider">About</a>
+                <a href="menu.html"
+                    class="text-sm font-medium hover:text-brand-orange transition-colors uppercase tracking-wider text-white">Menu</a>
+                <a href="my-orders.html"
+                    class="text-sm font-medium hover:text-brand-orange transition-colors uppercase tracking-wider text-white">Orders</a>
+
+                <div id="authContainer">
+                    <a href="login.html"
+                        class="text-sm font-medium text-white hover:text-brand-orange transition-colors uppercase tracking-wider flex items-center gap-2">
+                        <i data-lucide="user" class="w-4 h-4"></i> Sign In
+                    </a>
+                </div>
+
+                <a href="menu.html"
+                    class="px-5 py-2 rounded-full bg-fire-gradient text-white font-medium hover:shadow-[0_0_15px_rgba(255,107,0,0.4)] transition-all">Order
+                    Now</a>
+            </nav>
+
+            <!-- Mobile Menu Button -->
+            <button id="mobile-menu-btn" class="md:hidden text-white focus:outline-none">
+                <i data-lucide="menu" class="w-8 h-8"></i>
+            </button>
         </div>
 
-        <div class="mt-20 p-10 bg-slate-900 rounded-[3rem] text-center text-white">
-            <h2 class="text-3xl font-bold mb-4">Visit Us Today</h2>
-            <p class="opacity-70 mb-8">123 Main Street, Hyderabad, India</p>
-            <button class="bg-orange-500 px-8 py-3 rounded-xl font-bold">Open Maps <i class="fa-solid fa-location-arrow ml-2"></i></button>
+        <!-- Mobile Nav Dropdown -->
+        <div id="mobile-menu"
+            class="absolute top-full left-0 w-full bg-dark-800 border-t border-dark-700 hidden flex-col py-4 px-6 gap-4 shadow-xl">
+            <a href="index.html" class="text-white font-medium hover:text-brand-orange mobile-link">Home</a>
+            <a href="about.html" class="text-brand-orange font-medium mobile-link">About</a>
+            <a href="menu.html" class="text-white font-medium hover:text-brand-orange mobile-link">Menu</a>
+            <a href="my-orders.html" class="text-white font-medium hover:text-brand-orange mobile-link">My Orders</a>
+            <div id="authContainerMobile" class="border-t border-dark-700 pt-3">
+                <a href="login.html"
+                    class="text-white font-medium hover:text-brand-orange mobile-link flex items-center gap-2">
+                    <i data-lucide="user" class="w-5 h-5"></i> Sign In
+                </a>
+            </div>
+            <a href="menu.html" class="text-brand-orange font-medium mobile-link">Order Now</a>
         </div>
-    </main>
+    </header>
+
+    <!-- Page Header -->
+    <section class="pt-32 pb-16 bg-dark-800 border-b border-dark-700 mt-20 md:mt-0">
+        <div class="max-w-7xl mx-auto px-6 md:px-12 text-center reveal">
+            <h1 class="text-4xl md:text-6xl font-display font-bold text-white mb-4 uppercase tracking-wider">
+                Our <span class="text-brand-orange">Story</span>
+            </h1>
+            <p class="text-gray-400 max-w-2xl mx-auto text-lg">The heritage, passion, and flavor behind every sweet we craft.</p>
+        </div>
+    </section>
+
+    <!-- About Content -->
+    <section class="py-24 bg-dark-900 min-h-screen">
+        <div class="max-w-7xl mx-auto px-6 md:px-12">
+            <div class="grid md:grid-cols-2 gap-12 items-center reveal">
+                <div class="relative w-full mb-8 md:mb-0">
+                    <div class="absolute -top-4 -left-4 w-24 h-24 bg-brand-orange/20 rounded-full blur-2xl"></div>
+                    <img src="assets/premium_sweets_about.png"
+                        alt="Premium Sweets" class="w-full aspect-[4/3] object-cover rounded-xl shadow-2xl relative z-10 border border-dark-700">
+                    <div
+                        class="absolute -bottom-6 -right-6 bg-dark-800 p-6 rounded-xl border border-dark-700 shadow-xl z-20 hidden sm:block">
+                        <p class="text-brand-orange font-display text-4xl font-bold">25+</p>
+                        <p class="text-sm text-gray-400 uppercase tracking-wide">Years of Tradition</p>
+                    </div>
+                </div>
+                <div>
+                    <h2 class="text-3xl md:text-5xl font-display font-bold text-white mb-6">THE STORY OF <span
+                            class="text-brand-orange">ROYAL SWEETS</span></h2>
+                    <p class="text-gray-400 mb-6 leading-relaxed text-lg">
+                        Royal Sweets is built for people who appreciate the finest ingredients, bold flavors, and
+                        authentic street-style bites. We don't compromise on quality, and we don't cut corners on
+                        tradition.
+                    </p>
+                    <p class="text-gray-400 mb-8 leading-relaxed text-lg">
+                        Our chefs use techniques passed down through generations, preparing every meal with pure passion
+                        to bring you a culinary experience that hits your soul. Every recipe we serve has a piece of 
+                        our family heritage mixed into it.
+                    </p>
+                    <ul class="space-y-4 mb-8">
+                        <li class="flex items-center gap-3 bg-dark-800/50 p-3 rounded-lg border border-dark-700/50"><i data-lucide="check-circle-2"
+                                class="text-brand-orange"></i> Fresh, locally sourced ingredients</li>
+                        <li class="flex items-center gap-3 bg-dark-800/50 p-3 rounded-lg border border-dark-700/50"><i data-lucide="check-circle-2"
+                                class="text-brand-orange"></i> Traditional cooking methods</li>
+                        <li class="flex items-center gap-3 bg-dark-800/50 p-3 rounded-lg border border-dark-700/50"><i data-lucide="check-circle-2"
+                                class="text-brand-orange"></i> 100% authentic family recipes</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-black pt-16 pb-8 border-t border-dark-900">
+        <div class="max-w-7xl mx-auto px-6 md:px-12">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-10 mb-12">
+                <div class="md:col-span-1">
+                    <a href="index.html"
+                        class="text-2xl font-display font-bold text-white flex items-center gap-2 mb-4">
+                        <i data-lucide="crown" class="text-brand-orange"></i>
+                        ROYAL SWEETS
+                    </a>
+                    <p class="text-gray-400 text-sm leading-relaxed mb-6">Serving the finest traditional sweets and
+                        snacks for over 25 years. Quality and tradition packed meticulously in every box.</p>
+                    <div class="flex gap-4">
+                        <a href="#" class="w-10 h-10 rounded-full bg-dark-800 flex items-center justify-center text-gray-400 hover:text-white hover:bg-brand-orange transition-all"><i data-lucide="facebook" class="w-5 h-5"></i></a>
+                        <a href="#" class="w-10 h-10 rounded-full bg-dark-800 flex items-center justify-center text-gray-400 hover:text-white hover:bg-brand-orange transition-all"><i data-lucide="instagram" class="w-5 h-5"></i></a>
+                        <a href="https://wa.me/918260722846" class="w-10 h-10 rounded-full bg-dark-800 flex items-center justify-center text-gray-400 hover:text-white hover:bg-green-500 transition-all"><i data-lucide="message-circle" class="w-5 h-5"></i></a>
+                    </div>
+                </div>
+
+                <div>
+                    <h4 class="text-white font-display text-lg mb-4">Quick Links</h4>
+                    <ul class="space-y-2">
+                        <li><a href="index.html" class="text-gray-400 hover:text-brand-orange transition-colors text-sm">Home</a></li>
+                        <li><a href="menu.html" class="text-gray-400 hover:text-brand-orange transition-colors text-sm">Online Menu</a></li>
+                        <li><a href="my-orders.html" class="text-gray-400 hover:text-brand-orange transition-colors text-sm">Track Order</a></li>
+                    </ul>
+                </div>
+
+                <div>
+                    <h4 class="text-white font-display text-lg mb-4">Store Info</h4>
+                    <ul class="space-y-2">
+                        <li class="text-gray-400 text-sm flex items-center gap-2"><i data-lucide="map-pin" class="w-4 h-4 text-brand-orange"></i> 123 Main Road, Jubilee Hills, Hyderabad</li>
+                        <li class="text-gray-400 text-sm flex items-center gap-2 mt-4"><i data-lucide="clock" class="w-4 h-4 text-brand-orange"></i> 9:00 AM - 10:00 PM</li>
+                    </ul>
+                </div>
+
+                <div>
+                    <h4 class="text-white font-display text-lg mb-4">Support</h4>
+                    <p class="text-gray-400 text-sm mb-4">Party orders? Event catering? Reach out instantly.</p>
+                    <button onclick="window.location.href='https://wa.me/918260722846'"
+                        class="w-full bg-[#25D366] text-white py-3 rounded-lg font-bold flex items-center justify-center gap-2 hover:bg-[#1ebe57] transition-colors shadow-lg shadow-green-900/20 active:scale-95 text-sm uppercase tracking-wide">
+                        Chat on WhatsApp
+                    </button>
+                </div>
+            </div>
+
+            <div class="border-t border-dark-800 pt-8 text-center flex flex-col md:flex-row justify-between items-center gap-4">
+                <p class="text-gray-500 text-sm">© 2026 Royal Sweets & Cafe. All rights reserved.</p>
+                <p class="text-gray-500 text-sm uppercase tracking-wider">Crafted by <span class="text-white font-bold ml-1">Sahazad</span></p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script>
+        lucide.createIcons();
+
+        // Navbar Scroll Effect
+        const navbar = document.getElementById('navbar');
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 50) {
+                navbar.classList.add('glass-nav');
+                navbar.classList.remove('bg-dark-900');
+            } else {
+                navbar.classList.remove('glass-nav');
+                navbar.classList.add('bg-dark-900');
+            }
+        });
+
+        // Mobile Menu Toggle
+        const mobileBtn = document.getElementById('mobile-menu-btn');
+        const mobileMenu = document.getElementById('mobile-menu');
+        const mobileLinks = document.querySelectorAll('.mobile-link');
+
+        mobileBtn.addEventListener('click', () => {
+            mobileMenu.classList.toggle('hidden');
+            mobileMenu.classList.toggle('flex');
+        });
+
+        mobileLinks.forEach(link => {
+            link.addEventListener('click', () => {
+                mobileMenu.classList.add('hidden');
+                mobileMenu.classList.remove('flex');
+            });
+        });
+
+        // Authentication simulation
+        window.addEventListener('DOMContentLoaded', () => {
+            const user = JSON.parse(localStorage.getItem("royalSweetsUser"));
+
+            if (user) {
+                // Desktop Auth Update
+                const authContainer = document.getElementById("authContainer");
+                if (authContainer) {
+                    authContainer.innerHTML = `
+                        <div class="flex items-center gap-3 bg-dark-800 border border-dark-700 px-4 py-2 rounded-full shadow-inner">
+                            <div class="w-6 h-6 bg-brand-orange rounded-full flex items-center justify-center text-white font-black text-xs">
+                                ${user.name.charAt(0).toUpperCase()}
+                            </div>
+                            <span class="text-sm font-semibold text-white tracking-wide">Hi, ${user.name}</span>
+                            <div class="h-4 w-[1px] bg-dark-700 mx-1"></div>
+                            <button onclick="logout()" class="text-gray-400 hover:text-brand-red transition-colors" title="Logout">
+                                <i data-lucide="power" class="w-4 h-4"></i>
+                            </button>
+                        </div>
+                    `;
+                }
+
+                // Mobile Auth Update
+                const authContainerMobile = document.getElementById("authContainerMobile");
+                if (authContainerMobile) {
+                    authContainerMobile.innerHTML = `
+                        <div class="flex items-center justify-between bg-dark-900 p-4 rounded-xl border border-dark-700 mb-2 mt-2">
+                            <div class="flex items-center gap-3">
+                                <div class="w-10 h-10 bg-brand-orange rounded-full flex items-center justify-center shadow-sm text-white font-black text-lg">
+                                    ${user.name.charAt(0).toUpperCase()}
+                                </div>
+                                <div class="flex flex-col">
+                                    <span class="text-[10px] text-gray-400 uppercase tracking-widest font-black">Welcome Back</span>
+                                    <span class="text-white font-bold">${user.name}</span>
+                                </div>
+                            </div>
+                            <button onclick="logout()" class="w-10 h-10 bg-dark-800 border border-dark-700 rounded-xl flex items-center justify-center text-gray-400 hover:text-brand-red border-red-900 transition-colors">
+                                <i data-lucide="log-out" class="w-5 h-5"></i>
+                            </button>
+                        </div>
+                    `;
+                }
+
+                // Re-initialize icons inside dynamic HTML
+                lucide.createIcons();
+            }
+        });
+
+        function logout() {
+            localStorage.removeItem('royalSweetsUser');
+            location.reload();
+        }
+
+        // Scroll Reveal Animations
+        const revealElements = document.querySelectorAll('.reveal');
+        const revealOptions = {
+            threshold: 0.15,
+            rootMargin: "0px 0px -50px 0px"
+        };
+
+        const revealOnScroll = new IntersectionObserver(function (entries, observer) {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('active');
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, revealOptions);
+
+        revealElements.forEach(el => revealOnScroll.observe(el));
+    </script>
 </body>
 </html>
