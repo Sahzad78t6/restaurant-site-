@@ -1,12 +1,49 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="scroll-smooth">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Premium Menu | Royal Sweets</title>
+    <title>Royal Menu | Premium Taste</title>
 
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;700&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+    
+    <!-- Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            red: '#ff3b3b',
+                            darkred: '#8b0000',
+                            orange: '#ff6b00',
+                        },
+                        dark: {
+                            900: '#0a0a0a',
+                            800: '#141414',
+                            700: '#1f1f1f',
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Poppins', 'sans-serif'],
+                        display: ['Oswald', 'sans-serif'],
+                    },
+                    backgroundImage: {
+                        'fire-gradient': "linear-gradient(135deg, #ff3b3b 0%, #ff6b00 100%)",
+                    }
+                }
+            }
+        }
+    </script>
 
     <script>
         if (!localStorage.getItem("royalSweetsUser")) {
@@ -14,255 +51,267 @@
         }
     </script>
 
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;800&display=swap"
-        rel="stylesheet">
-
     <style>
-        body {
-            font-family: 'Plus Jakarta Sans', sans-serif;
-        }
-
         .category-pill.active {
-            background: #f97316;
-            color: white
+            background: #ff6b00;
+            color: white;
+            border-color: #ff6b00;
         }
 
-        .glass-morphism {
-            background: rgba(255, 255, 255, .8);
-            backdrop-filter: blur(10px)
+        .glass-nav {
+            background: rgba(10, 10, 10, 0.85);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+        
+        /* Custom scrollbar for horizontal categories */
+        .hide-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .hide-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
         }
     </style>
 </head>
 
-<body class="bg-slate-50 pb-32">
+<body class="bg-dark-900 text-gray-300 font-sans antialiased pb-32">
 
     <!-- NAV -->
-    <nav class="sticky top-0 z-50 bg-white/80 backdrop-blur-xl border-b border-slate-100 px-6 py-5 shadow-sm">
-        <div class="max-w-4xl mx-auto flex justify-between items-center">
+    <nav class="sticky top-0 z-50 glass-nav px-6 py-5 shadow-sm border-b border-dark-700">
+        <div class="max-w-5xl mx-auto flex justify-between items-center">
             <a href="index.html"
-                class="w-12 h-12 flex items-center justify-center rounded-full bg-slate-50 text-slate-700 shadow-sm border border-slate-200 hover:bg-orange-50 hover:text-orange-500 hover:border-orange-200 transition-all duration-300">
-                <i class="fa-solid fa-arrow-left"></i>
+                class="w-12 h-12 flex items-center justify-center rounded-full bg-dark-800 text-gray-400 shadow-sm border border-dark-700 hover:text-brand-orange hover:border-brand-orange transition-all duration-300">
+                <i data-lucide="arrow-left" class="w-5 h-5"></i>
             </a>
 
-            <h1 class="text-2xl font-black text-slate-800 tracking-tight">Royal Menu</h1>
+            <h1 class="text-3xl font-display font-black text-white tracking-widest uppercase">ROYAL <span class="text-brand-orange">MENU</span></h1>
 
-            <div class="w-12 h-12"></div>
+            <div class="w-12 h-12 flex items-center justify-center rounded-full bg-dark-800 border border-dark-700 shadow-inner">
+                 <i data-lucide="crown" class="w-5 h-5 text-brand-orange"></i>
+            </div>
         </div>
     </nav>
 
     <!-- SEARCH -->
-    <div class="max-w-4xl mx-auto px-6 mt-8">
+    <div class="max-w-5xl mx-auto px-6 mt-12">
+        <div class="relative w-full shadow-lg rounded-2xl group focus-within:ring-2 focus-within:ring-brand-orange/50 transition-all">
+            <i data-lucide="search" class="absolute left-5 top-1/2 -translate-y-1/2 text-gray-500 w-5 h-5 group-focus-within:text-brand-orange transition-colors"></i>
 
-        <div
-            class="relative w-full shadow-sm rounded-2xl group focus-within:ring-4 focus-within:ring-orange-500/20 transition-all">
-            <i
-                class="fa-solid fa-magnifying-glass absolute left-5 top-1/2 -translate-y-1/2 text-slate-400 group-focus-within:text-orange-500"></i>
-
-            <input id="searchInput" onkeyup="searchMenu()" placeholder="Search your cravings..."
-                class="w-full bg-white border border-slate-200 py-4 pl-14 pr-6 rounded-2xl outline-none text-slate-700 font-medium text-lg">
+            <input id="searchInput" onkeyup="searchMenu()" placeholder="Search our royal cravings..."
+                class="w-full bg-dark-800 border border-dark-700 py-4 pl-14 pr-6 rounded-2xl outline-none text-white font-medium text-lg placeholder-gray-500 transition-colors focus:border-brand-orange">
         </div>
 
         <!-- CATEGORY -->
-        <div class="flex gap-4 mt-8 pb-3 overflow-x-auto">
-
-            <button onclick="filterCategory('all')"
-                class="category-pill active px-8 py-3.5 rounded-full font-bold text-sm shadow-sm border">All
-                Items</button>
-
-            <button onclick="filterCategory('Sweets')"
-                class="category-pill bg-white text-slate-500 border px-8 py-3.5 rounded-full font-bold text-sm">Sweets</button>
-
-            <button onclick="filterCategory('Snacks')"
-                class="category-pill bg-white text-slate-500 border px-8 py-3.5 rounded-full font-bold text-sm">Snacks</button>
-
-            <button onclick="filterCategory('Drinks')"
-                class="category-pill bg-white text-slate-500 border px-8 py-3.5 rounded-full font-bold text-sm">Drinks</button>
-
+        <div class="flex gap-4 mt-8 pb-3 overflow-x-auto hide-scrollbar">
+            <button onclick="filterCategory('all', this)"
+                class="category-pill active px-8 py-3.5 rounded-full font-bold text-sm shadow-md border border-dark-700 transition-all whitespace-nowrap">
+                All Items
+            </button>
+            <button onclick="filterCategory('Sweets', this)"
+                class="category-pill bg-dark-800 text-gray-400 border border-dark-700 hover:border-brand-orange px-8 py-3.5 rounded-full font-bold text-sm transition-all whitespace-nowrap">
+                Sweets
+            </button>
+            <button onclick="filterCategory('Snacks', this)"
+                class="category-pill bg-dark-800 text-gray-400 border border-dark-700 hover:border-brand-orange px-8 py-3.5 rounded-full font-bold text-sm transition-all whitespace-nowrap">
+                Snacks
+            </button>
+            <button onclick="filterCategory('Drinks', this)"
+                class="category-pill bg-dark-800 text-gray-400 border border-dark-700 hover:border-brand-orange px-8 py-3.5 rounded-full font-bold text-sm transition-all whitespace-nowrap">
+                Drinks
+            </button>
         </div>
     </div>
 
     <!-- MENU -->
-    <main class="max-w-4xl mx-auto px-6 mt-8 grid grid-cols-1 md:grid-cols-2 gap-6" id="menuContainer"></main>
+    <main class="max-w-5xl mx-auto px-6 mt-10 grid grid-cols-1 md:grid-cols-2 gap-6" id="menuContainer">
+        <!-- Loader during fetch -->
+        <div class="col-span-full flex justify-center py-20 text-brand-orange">
+            <i data-lucide="loader-2" class="w-10 h-10 animate-spin"></i>
+        </div>
+    </main>
 
     <!-- CART BAR -->
     <div id="cartBar"
-        class="fixed bottom-6 sm:bottom-8 left-1/2 -translate-x-1/2 w-[calc(100%-2rem)] sm:w-[calc(100%-3rem)] max-w-2xl bg-slate-900 rounded-[2rem] p-3 pl-4 pr-3 sm:p-4 sm:pl-8 flex justify-between items-center shadow-2xl translate-y-40 transition-transform duration-500 z-50">
+        class="fixed bottom-6 sm:bottom-8 left-1/2 -translate-x-1/2 w-[calc(100%-2rem)] sm:w-[calc(100%-3rem)] max-w-2xl bg-dark-800 border border-dark-700 rounded-3xl p-3 pl-5 pr-3 sm:p-4 sm:pl-8 flex justify-between items-center shadow-[0_20px_50px_rgba(0,0,0,0.5)] translate-y-40 transition-transform duration-500 z-50">
 
-        <div class="flex items-center gap-3 sm:gap-5 shrink-0">
-
-            <div
-                class="w-10 h-10 sm:w-12 sm:h-12 bg-slate-800 rounded-full flex items-center justify-center relative shrink-0">
-                <i class="fa-solid fa-basket-shopping text-orange-400 text-base sm:text-xl"></i>
+        <div class="flex items-center gap-4 sm:gap-6 shrink-0">
+            <div class="w-12 h-12 sm:w-14 sm:h-14 bg-dark-900 border border-brand-orange/30 rounded-full flex items-center justify-center relative shrink-0 shadow-inner">
+                 <i data-lucide="shopping-bag" class="text-brand-orange w-6 h-6 sm:w-7 sm:h-7"></i>
             </div>
-
             <div class="flex flex-col justify-center">
-                <span class="text-slate-400 text-[10px] sm:text-xs font-bold uppercase leading-none mb-1">Total</span>
-                <p class="text-white font-black text-xl sm:text-2xl leading-none">₹<span id="totalPrice">0</span></p>
+                <span class="text-gray-400 text-[10px] sm:text-xs font-bold uppercase tracking-widest leading-none mb-1">Total Amount</span>
+                <p class="text-white font-black text-2xl sm:text-3xl leading-none">₹<span id="totalPrice">0</span></p>
             </div>
-
         </div>
 
         <button onclick="window.location.href='checkout.html'"
-            class="bg-orange-500 text-white px-5 py-3 sm:px-8 sm:py-4 rounded-xl sm:rounded-2xl font-black text-xs sm:text-sm shadow-lg hover:bg-orange-600 active:scale-95 transition-all flex items-center gap-2 shrink-0 whitespace-nowrap">
-            CHECKOUT <i class="fa-solid fa-arrow-right"></i>
+            class="bg-fire-gradient text-white px-6 py-4 sm:px-10 sm:py-5 rounded-2xl font-black text-sm uppercase tracking-wider shadow-[0_0_15px_rgba(255,107,0,0.3)] hover:shadow-[0_0_25px_rgba(255,107,0,0.6)] active:scale-95 transition-all flex items-center gap-3 shrink-0 whitespace-nowrap">
+            Checkout <i data-lucide="arrow-right" class="w-5 h-5"></i>
         </button>
-
     </div>
 
     <script>
+        // Init Icons
+        lucide.createIcons();
 
         let cart = JSON.parse(localStorage.getItem("activeCart")) || [];
 
         /* LOAD MENU */
         async function loadMenu() {
+            try {
+                const res = await fetch("https://restaurant-site-8y41.onrender.com/api/menu");
+                const menu = await res.json();
 
-            const res = await fetch("https://restaurant-site-8y41.onrender.com/api/menu");
-            const menu = await res.json();
+                const container = document.getElementById("menuContainer");
+                container.innerHTML = "";
 
-            const container = document.getElementById("menuContainer");
-            container.innerHTML = "";
+                menu.forEach((item, index) => {
+                    const delay = (index % 10) * 100; // Staggered fade in
+                    
+                    container.innerHTML += `
+                        <div class="menu-item group bg-dark-800 p-5 rounded-3xl shadow-lg border border-dark-700 hover:border-brand-orange/50 flex flex-col sm:flex-row gap-5 transition-all duration-300 hover:-translate-y-1" data-category="${item.category}" style="animation: fadeUp 0.5s ease-out ${delay}ms both;">
+                            
+                            <div class="w-full sm:w-36 h-48 sm:h-36 rounded-2xl overflow-hidden relative">
+                                <img src="${item.image}" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110">
+                                <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent sm:hidden"></div>
+                            </div>
 
-            menu.forEach(item => {
+                            <div class="flex-1 flex flex-col justify-between py-1">
+                                <div>
+                                    <div class="flex justify-between items-start gap-3 mb-2">
+                                        <h3 class="font-display font-bold text-2xl text-white tracking-wide item-name group-hover:text-brand-orange transition-colors">${item.name}</h3>
+                                        <span class="text-brand-orange font-black text-xl bg-brand-orange/10 px-3 py-1 rounded-xl">₹${item.price}</span>
+                                    </div>
+                                    <p class="text-sm text-gray-400 line-clamp-2 font-light">${item.description}</p>
+                                </div>
 
-                container.innerHTML += `
+                                <div class="mt-5 flex justify-between items-center">
+                                    <span class="text-[10px] uppercase font-bold tracking-widest text-gray-500 bg-dark-900 px-3 py-1.5 rounded-full border border-dark-700">
+                                        ${item.category}
+                                    </span>
 
-<div class="menu-item group bg-white p-5 rounded-3xl shadow-sm border flex flex-col sm:flex-row gap-5" data-category="${item.category}">
+                                    <button onclick="addToCart(event, '${item.name}', ${item.price})"
+                                        class="bg-dark-900 border border-dark-700 text-white px-5 py-2.5 rounded-xl text-sm font-bold hover:bg-fire-gradient hover:border-transparent active:scale-95 transition-all flex items-center gap-2">
+                                        <i data-lucide="plus" class="w-4 h-4"></i> Add
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                });
+                
+                // Re-init newly added icons
+                lucide.createIcons();
 
-<div class="w-full sm:w-32 h-40 sm:h-32 rounded-2xl overflow-hidden">
-<img src="${item.image}" class="w-full h-full object-cover">
-</div>
-
-<div class="flex-1 flex flex-col justify-between py-1">
-
-<div>
-
-<div class="flex justify-between items-start gap-3 mb-2">
-<h3 class="font-extrabold text-lg text-slate-800 item-name">${item.name}</h3>
-<span class="text-orange-500 font-black text-lg">₹${item.price}</span>
-</div>
-
-<p class="text-sm text-slate-500">${item.description}</p>
-
-</div>
-
-<div class="mt-4 flex justify-between items-center">
-
-<span class="text-[10px] uppercase font-bold tracking-widest text-slate-400 bg-slate-100 px-3 py-1.5 rounded-full border">
-${item.category}
-</span>
-
-<button onclick="addToCart('${item.name}', ${item.price})"
-class="bg-orange-500 text-white px-5 py-2.5 rounded-xl text-sm font-bold shadow-md hover:bg-orange-600 active:scale-95 transition-all flex items-center gap-2">
-<i class="fa-solid fa-plus text-xs"></i> Add
-</button>
-
-</div>
-
-</div>
-</div>
-
-`;
-
-            });
-
+            } catch (error) {
+                console.error("Error fetching menu:", error);
+                document.getElementById("menuContainer").innerHTML = `<p class="text-red-500 col-span-full text-center">Failed to load menu. Please try again later.</p>`;
+            }
         }
 
         /* ADD TO CART */
-
-        function addToCart(name, price) {
-
+        function addToCart(event, name, price) {
             const item = {
                 name: name,
                 price: price
             };
-
             cart.push(item);
-
             localStorage.setItem("activeCart", JSON.stringify(cart));
-
             updateCartBar();
-
+            
+            // Visual feedback
+            const btn = event.currentTarget;
+            const originalHTML = btn.innerHTML;
+            btn.innerHTML = `<i data-lucide="check" class="w-4 h-4"></i> Added`;
+            btn.classList.add('bg-green-600', 'border-transparent');
+            lucide.createIcons();
+            
+            setTimeout(() => {
+                btn.innerHTML = originalHTML;
+                btn.classList.remove('bg-green-600', 'border-transparent');
+                lucide.createIcons();
+            }, 1000);
         }
 
         /* CART BAR */
-
         function updateCartBar() {
-
             const bar = document.getElementById("cartBar");
-
             if (cart.length > 0) {
-
                 bar.classList.remove("translate-y-40");
-
                 const total = cart.reduce((sum, i) => sum + i.price, 0);
-
                 document.getElementById("totalPrice").innerText = total;
-
             } else {
-
                 bar.classList.add("translate-y-40");
-
             }
-
         }
 
         /* SEARCH */
-
         function searchMenu() {
-
             let input = document.getElementById("searchInput").value.toLowerCase();
-
             let items = document.getElementsByClassName("menu-item");
 
             for (let i = 0; i < items.length; i++) {
-
                 let name = items[i].querySelector(".item-name").innerText.toLowerCase();
-
                 items[i].style.display = name.includes(input) ? "flex" : "none";
-
             }
-
         }
 
         /* FILTER */
-
-        function filterCategory(cat) {
-
+        function filterCategory(cat, btnElement) {
             let items = document.getElementsByClassName("menu-item");
 
-            for (let i = 0; i < items.length; i++) {
-
-                if (cat === "all") items[i].style.display = "flex";
-
-                else items[i].style.display = items[i].dataset.category === cat ? "flex" : "none";
-
+            // Handle pill styling
+            if(btnElement) {
+                document.querySelectorAll('.category-pill').forEach(btn => {
+                    btn.classList.remove('active', 'border-brand-orange');
+                    btn.classList.replace('text-white', 'text-gray-400');
+                    btn.classList.replace('bg-brand-orange', 'bg-dark-800');
+                });
+                btnElement.classList.add('active');
+                btnElement.classList.replace('text-gray-400', 'text-white');
+                btnElement.classList.replace('bg-dark-800', 'bg-brand-orange');
+                btnElement.classList.remove('hover:border-brand-orange'); // Remove hover logic on active
             }
 
+            // Filter items
+            for (let i = 0; i < items.length; i++) {
+                if (cat === "all") items[i].style.display = "flex";
+                else items[i].style.display = items[i].dataset.category === cat ? "flex" : "none";
+            }
         }
 
         /* INIT */
-
         window.onload = async () => {
+            // Add custom animation styles dynamically
+            const style = document.createElement('style');
+            style.textContent = `
+                @keyframes fadeUp {
+                    from { opacity: 0; transform: translateY(20px); }
+                    to { opacity: 1; transform: translateY(0); }
+                }
+            `;
+            document.head.appendChild(style);
 
             await loadMenu();
-
             updateCartBar();
 
             const urlParams = new URLSearchParams(window.location.search);
-
             const initialCategory = urlParams.get("category");
 
             if (initialCategory) {
-
-                filterCategory(initialCategory);
-
+                // Find and click the correct category pill
+                const pills = document.querySelectorAll('.category-pill');
+                for(let pill of pills) {
+                    if(pill.innerText.trim() === initialCategory) {
+                        filterCategory(initialCategory, pill);
+                        return;
+                    }
+                }
+                filterCategory(initialCategory); // Fallback
             }
-
         }
-
     </script>
-
 </body>
-
 </html>
