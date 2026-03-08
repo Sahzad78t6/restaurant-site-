@@ -120,7 +120,7 @@ async function loadOrders(){
 
 try{
 
-const res=await fetch("https://restaurant-site-production.up.railway.app/api/orders");
+const res=await fetch("https://restaurant-site-8y41.onrender.com/api/orders");
 const orders=await res.json();
 
 const container=document.getElementById("ordersContainer");
@@ -265,7 +265,7 @@ window.location.href=`payment.html?orderId=${orderId}`;
 
 async function updateStatus(id,status){
 
-await fetch(`https://restaurant-site-production.up.railway.app/api/orders/status/${id}`,{
+await fetch(`https://restaurant-site-8y41.onrender.com/api/orders/status/${id}`,{
 method:"PUT",
 headers:{ "Content-Type":"application/json" },
 body:JSON.stringify({status})
@@ -300,7 +300,7 @@ watchId = navigator.geolocation.watchPosition(async function(position){
 const lat = position.coords.latitude;
 const lng = position.coords.longitude;
 
-await fetch(`https://restaurant-site-production.up.railway.app/api/orders/location/${orderId}`,{
+await fetch(`https://restaurant-site-8y41.onrender.com/api/orders/location/${orderId}`,{
 
 method:"PUT",
 
