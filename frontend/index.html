@@ -498,7 +498,6 @@
         const cube = document.querySelector('.cube');
         const scene = document.querySelector('.scene');
         
-        // Initial setup
         let curX = -10; 
         let curY = 0;
         let curVelX = 0;
@@ -507,6 +506,11 @@
         let tgtVelY = 0;
         let isSpinHovering = false;
         
+        // Auto-rotation variables
+        let autoRotateY = 0;
+        let lastRotationTime = Date.now();
+        const ROTATION_INTERVAL = 2000; // 2 seconds per face
+        
         if (scene && cube) {
             scene.addEventListener('mouseenter', () => {
                 isSpinHovering = true;
@@ -514,6 +518,9 @@
             
             scene.addEventListener('mouseleave', () => {
                 isSpinHovering = false;
+                // Snap back to the nearest face when mouse leaves
+                autoRotateY = Math.round(curY / 90) * 90;
+                lastRotationTime = Date.now(); // Reset timer so it holds for 2s
             });
             
             scene.addEventListener('mousemove', (e) => {
@@ -523,38 +530,46 @@
                 const centerX = rect.left + rect.width / 2;
                 const centerY = rect.top + rect.height / 2;
                 
-                // Distance from center mapped from -1 to 1
                 const dx = (e.clientX - centerX) / (rect.width / 2);
                 const dy = (e.clientY - centerY) / (rect.height / 2);
                 
-                // Directly control the rotation velocity based on mouse offset
-                // Moving right rotates the cube right, moving up rotates it up, etc.
-                tgtVelY = dx * 2.5; 
+                tgtVelY = dx * 3.5; 
                 tgtVelX = -dy * 2.5; 
             });
             
             function animateCube() {
                 if (!isSpinHovering) {
-                    // Smooth, random 3D drifting curves when not hovered
-                    const time = Date.now();
-                    tgtVelY = Math.sin(time * 0.0004) * 0.8 + 0.8; 
-                    tgtVelX = Math.cos(time * 0.0005) * 1.5;
+                    // Check if it's time to rotate to the next face
+                    const now = Date.now();
+                    if (now - lastRotationTime > ROTATION_INTERVAL) {
+                        autoRotateY -= 90; // Turn right
+                        lastRotationTime = now;
+                    }
+                    
+                    // Smoothly interpolate towards the target 90-degree increment
+                    curY += (autoRotateY - curY) * 0.05;
+                    
+                    // Slowly drift back to a mostly flat X-angle
+                    curX += (-10 - curX) * 0.05; 
+                } else {
+                    // Apply mouse physics
+                    curVelX += (tgtVelX - curVelX) * 0.1;
+                    curVelY += (tgtVelY - curVelY) * 0.1;
+                    
+                    curX += curVelX;
+                    curY += curVelY;
+                    
+                    // Add some friction so it doesn't spin wildly forever
+                    curVelX *= 0.95;
+                    curVelY *= 0.95;
                 }
-                
-                // Smoothly accelerate current velocity towards target velocity
-                curVelX += (tgtVelX - curVelX) * 0.05;
-                curVelY += (tgtVelY - curVelY) * 0.05;
-                
-                // Apply physics to angle
-                curX += curVelX;
-                curY += curVelY;
                 
                 cube.style.transform = `rotateX(${curX}deg) rotateY(${curY}deg)`;
                 
                 requestAnimationFrame(animateCube);
             }
             
-            // Start physics loop
+            // Start loop
             animateCube();
         }
     </script>
