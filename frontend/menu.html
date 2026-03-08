@@ -141,7 +141,7 @@
             <span class="text-[10px] uppercase font-bold tracking-widest text-slate-400 bg-slate-100 px-3 py-1.5 rounded-full border border-slate-200">
                 ${item.category}
             </span>
-            <button onclick='addToCart("${item.name.replace(/'/g, "\\'")}",${item.price})'
+            <button onclick="addToCart(this.getAttribute('data-name'), parseFloat(this.getAttribute('data-price')))" data-name="${item.name.replace(/"/g, '&quot;')}" data-price="${item.price}"
                 class="bg-orange-500 text-white px-5 py-2.5 rounded-xl text-sm font-bold shadow-md shadow-orange-500/20 hover:bg-orange-600 active:scale-95 transition-all flex items-center gap-2">
                 <i class="fa-solid fa-plus text-xs"></i> Add
             </button>
