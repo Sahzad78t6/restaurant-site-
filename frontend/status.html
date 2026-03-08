@@ -1,212 +1,234 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="scroll-smooth">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Track Order | Royal Sweets</title>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;700&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+    
+    <!-- Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;800&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            red: '#ff3b3b',
+                            darkred: '#8b0000',
+                            orange: '#ff6b00',
+                        },
+                        dark: {
+                            900: '#0a0a0a',
+                            800: '#141414',
+                            700: '#1f1f1f',
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Poppins', 'sans-serif'],
+                        display: ['Oswald', 'sans-serif'],
+                    },
+                    backgroundImage: {
+                        'fire-gradient': "linear-gradient(135deg, #ff3b3b 0%, #ff6b00 100%)",
+                    }
+                }
+            }
+        }
+    </script>
     <style>
-        body { font-family: 'Plus Jakarta Sans', sans-serif; }
-        .step-line { height: 4px; background: #e2e8f0; flex-grow: 1; position: relative; top: 20px; z-index: -1; }
-        .step-dot { width: 40px; height: 40px; border-radius: 50%; background: white; border: 4px solid #e2e8f0; display: flex; align-items: center; justify-content: center; transition: all 0.5s; }
-        .step-dot.active { border-color: #f97316; color: #f97316; box-shadow: 0 0 15px rgba(249, 115, 22, 0.3); }
-        .step-dot.completed { background: #f97316; border-color: #f97316; color: white; }
-        .progress-fill { height: 100%; background: #f97316; width: 0%; transition: width 0.5s; }
+        .step-line { height: 4px; background: #1f1f1f; flex-grow: 1; position: relative; top: 20px; z-index: -1; }
+        .step-dot { width: 44px; height: 44px; border-radius: 50%; background: #0a0a0a; border: 4px solid #1f1f1f; display: flex; align-items: center; justify-content: center; transition: all 0.5s; color: #4b5563; }
+        .step-dot.active { border-color: #ff6b00; color: #ff6b00; box-shadow: 0 0 20px rgba(255, 107, 0, 0.4); background: #141414; }
+        .step-dot.completed { background: #ff6b00; border-color: #ff6b00; color: white; box-shadow: 0 0 15px rgba(255, 107, 0, 0.2); }
+        .progress-fill { height: 100%; background: linear-gradient(90deg, #ff3b3b, #ff6b00); width: 0%; transition: width 0.5s ease-in-out; border-radius: 9999px; }
+        
+        /* Nav Glassmorphism */
+        .glass-nav {
+            background: rgba(10, 10, 10, 0.85);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
     </style>
 </head>
 <script>
-
-const user = localStorage.getItem("royalSweetsUser");
-
-if(!user){
-alert("Please login to continue");
-window.location.href="login.html";
-}
-
+    const user = localStorage.getItem("royalSweetsUser");
+    if(!user){
+        alert("Please login to continue");
+        window.location.href="login.html";
+    }
 </script>
-<body class="bg-[#F8F9FA] pb-10">
+<body class="bg-dark-900 text-gray-300 font-sans antialiased min-h-screen pb-10">
 
-    <nav class="bg-white border-b border-gray-100 p-6 sticky top-0 z-50">
+    <!-- TOP NAV -->
+    <nav class="sticky top-0 z-50 glass-nav px-6 py-5 shadow-sm mb-8">
         <div class="max-w-xl mx-auto flex items-center gap-4">
-            <a href="my-orders.html" class="w-10 h-10 flex items-center justify-center rounded-full bg-white shadow-sm border border-gray-100 text-gray-800">
-                <i class="fa-solid fa-chevron-left"></i>
+            <a href="my-orders.html" class="w-12 h-12 flex items-center justify-center rounded-full bg-dark-800 text-gray-400 shadow-sm border border-dark-700 hover:text-brand-orange hover:border-brand-orange transition-all duration-300">
+                <i data-lucide="chevron-left" class="w-6 h-6"></i>
             </a>
-            <h1 class="text-xl font-black uppercase tracking-tight">Order Tracking</h1>
+            <h1 class="text-2xl font-display font-black text-white tracking-widest uppercase">Order <span class="text-brand-orange">Tracking</span></h1>
         </div>
     </nav>
 
-    <main class="max-w-xl mx-auto px-4 mt-8">
+    <main class="max-w-xl mx-auto px-6 mt-8">
         
-        <div class="bg-white rounded-[2.5rem] p-8 shadow-xl border border-gray-50 text-center mb-8">
-            <div class="mb-6">
-                <p class="text-[10px] font-black text-gray-400 uppercase tracking-widest mb-1">Estimated Delivery</p>
-                <h2 class="text-3xl font-black text-gray-800 italic">25 - 35 MINS</h2>
+        <div class="bg-dark-800 rounded-3xl p-8 shadow-[0_10px_40px_rgba(0,0,0,0.5)] border border-dark-700 text-center mb-8 relative overflow-hidden">
+            <!-- decorative background elements -->
+            <div class="absolute top-0 right-0 w-32 h-32 bg-brand-orange/5 rounded-full blur-3xl"></div>
+            <div class="absolute bottom-0 left-0 w-32 h-32 bg-brand-red/5 rounded-full blur-3xl"></div>
+
+            <div class="mb-10 relative z-10">
+                <p class="text-xs font-black text-gray-500 uppercase tracking-widest mb-2">Estimated Arrival</p>
+                <h2 class="text-5xl font-display font-black text-white italic tracking-wide">25 - <span class="text-brand-orange">35 MINS</span></h2>
             </div>
 
-            <div class="flex justify-between items-start relative mb-12 mt-10">
-                <div class="absolute w-full h-1 bg-gray-100 top-5 left-0 -z-10 rounded-full">
-                    <div id="line-progress" class="h-full bg-orange-500 transition-all duration-500" style="width: 0%;"></div>
+            <!-- PROGRESS BAR -->
+            <div class="flex justify-between items-start relative mb-14 mt-12 px-2 z-10">
+                <div class="absolute w-[calc(100%-2rem)] h-1.5 bg-dark-700 top-5 left-4 -z-10 rounded-full">
+                    <div id="line-progress" class="progress-fill shadow-[0_0_10px_rgba(255,107,0,0.5)]"></div>
                 </div>
 
-                <div class="flex flex-col items-center gap-2">
-                    <div id="step-1" class="step-dot active"><i class="fa-solid fa-check"></i></div>
-                    <span class="text-[10px] font-bold text-gray-400 uppercase">Accepted</span>
+                <div class="flex flex-col items-center gap-3">
+                    <div id="step-1" class="step-dot active"><i data-lucide="check" class="w-5 h-5"></i></div>
+                    <span class="text-[10px] font-bold text-gray-400 uppercase tracking-wider">Accepted</span>
                 </div>
-                <div class="flex flex-col items-center gap-2">
-                    <div id="step-2" class="step-dot"><i class="fa-solid fa-fire-burner"></i></div>
-                    <span class="text-[10px] font-bold text-gray-400 uppercase">Kitchen</span>
+                <div class="flex flex-col items-center gap-3">
+                    <div id="step-2" class="step-dot"><i data-lucide="flame" class="w-5 h-5"></i></div>
+                    <span class="text-[10px] font-bold text-gray-400 uppercase tracking-wider">Kitchen</span>
                 </div>
-                <div class="flex flex-col items-center gap-2">
-                    <div id="step-3" class="step-dot"><i class="fa-solid fa-motorcycle"></i></div>
-                    <span class="text-[10px] font-bold text-gray-400 uppercase">On Way</span>
+                <div class="flex flex-col items-center gap-3">
+                    <div id="step-3" class="step-dot"><i data-lucide="bike" class="w-5 h-5"></i></div>
+                    <span class="text-[10px] font-bold text-gray-400 uppercase tracking-wider">On Way</span>
                 </div>
-                <div class="flex flex-col items-center gap-2">
-                    <div id="step-4" class="step-dot"><i class="fa-solid fa-house-chimney"></i></div>
-                    <span class="text-[10px] font-bold text-gray-400 uppercase">Arrived</span>
+                <div class="flex flex-col items-center gap-3">
+                    <div id="step-4" class="step-dot"><i data-lucide="home" class="w-5 h-5"></i></div>
+                    <span class="text-[10px] font-bold text-gray-400 uppercase tracking-wider">Arrived</span>
                 </div>
             </div>
 
-            <div class="bg-orange-50 rounded-2xl p-4 flex items-center gap-4 text-left">
-                <div class="w-12 h-12 bg-orange-500 rounded-full flex items-center justify-center text-white text-xl">
-                    <i id="current-icon" class="fa-solid fa-receipt"></i>
+            <!-- STATUS BOX -->
+            <div class="bg-dark-900 rounded-2xl p-5 border border-dark-700 flex items-center gap-5 text-left shadow-inner relative z-10">
+                <div class="w-14 h-14 bg-fire-gradient rounded-xl flex items-center justify-center text-white shadow-lg shadow-brand-orange/20 shrink-0" id="icon-container">
+                    <i data-lucide="receipt" class="w-6 h-6"></i>
                 </div>
                 <div>
-                    <h4 id="status-title" class="font-black text-orange-600 uppercase text-sm">Order Accepted</h4>
-                    <p id="status-desc" class="text-xs text-orange-400 font-bold">Royal Sweets has confirmed your order.</p>
+                    <h4 id="status-title" class="font-display font-bold text-white text-xl uppercase tracking-wide mb-1">Order Accepted</h4>
+                    <p id="status-desc" class="text-sm text-brand-orange font-medium">Royal Sweets has confirmed your order.</p>
                 </div>
             </div>
         </div>
 
-        <div class="bg-slate-900 rounded-[2rem] p-6 text-white flex items-center justify-between shadow-xl">
+        <!-- SUPPORT -->
+        <div class="bg-dark-800 rounded-3xl p-6 md:p-8 flex items-center justify-between shadow-lg border border-dark-700">
             <div>
-                <h4 class="font-black text-lg italic uppercase">Need Help?</h4>
-                <p class="text-xs text-slate-400 font-bold">Contact our support team</p>
+                <h4 class="font-display font-black text-2xl text-white italic uppercase tracking-wide mb-1">Need Help?</h4>
+                <p class="text-sm text-gray-400 font-medium">Contact our royal support</p>
             </div>
-            <div class="flex gap-2">
-                <a href="tel:+919000000000" class="w-12 h-12 bg-white/10 rounded-xl flex items-center justify-center text-white"><i class="fa-solid fa-phone"></i></a>
-                <a href="https://wa.me/919000000000" class="w-12 h-12 bg-green-500 rounded-xl flex items-center justify-center text-white"><i class="fa-brands fa-whatsapp"></i></a>
+            <div class="flex gap-3">
+                <a href="tel:+919000000000" class="w-12 h-12 md:w-14 md:h-14 bg-dark-900 border border-dark-700 rounded-xl flex items-center justify-center text-white hover:text-brand-orange hover:border-brand-orange transition-colors shadow-inner">
+                    <i data-lucide="phone" class="w-5 h-5 md:w-6 md:h-6"></i>
+                </a>
+                <a href="https://wa.me/919000000000" class="w-12 h-12 md:w-14 md:h-14 bg-green-500/10 border border-green-500/20 rounded-xl flex items-center justify-center text-green-500 hover:bg-green-500 hover:text-white transition-colors shadow-inner">
+                    <i class="fa-brands fa-whatsapp text-2xl"></i>
+                </a>
             </div>
         </div>
 
     </main>
 
-
     <script>
+        lucide.createIcons();
+        const parsedUser = JSON.parse(localStorage.getItem("royalSweetsUser"));
 
-const parsedUser = JSON.parse(localStorage.getItem("royalSweetsUser"));
+        async function updateTracker(){
+            try{
+                const res = await fetch(`https://restaurant-site-8y41.onrender.com/api/orders/user/${parsedUser._id}`);
+                let orders = [];
+                if (res.ok) {
+                    orders = await res.json();
+                }
 
-async function updateTracker(){
+                // Fallback to local storage if API is offline
+                if(!orders || orders.length === 0) {
+                    const localOrdersStr = localStorage.getItem(`orders_${parsedUser.phone}`);
+                    if (localOrdersStr) orders = JSON.parse(localOrdersStr);
+                }
 
-try{
+                if(!orders.length) return;
 
-const res = await fetch(`https://restaurant-site-8y41.onrender.com/api/orders/user/${parsedUser._id}`);
+                // Simple mechanism to get order ID from URL if possible, otherwise use latest
+                const urlParams = new URLSearchParams(window.location.search);
+                const queryId = urlParams.get("id");
+                
+                let order = orders[0]; 
+                if (queryId) {
+                    const matchedOrder = orders.find(o => o._id === queryId);
+                    if (matchedOrder) order = matchedOrder;
+                }
 
-const orders = await res.json();
+                const status = order.status || "Pending";
 
-if(!orders.length) return;
+                const line = document.getElementById('line-progress');
+                const title = document.getElementById('status-title');
+                const desc = document.getElementById('status-desc');
+                const iconContainer = document.getElementById('icon-container');
 
-const order = orders[0];   // latest order
-const status = order.status;
+                const steps = {
+                    Pending: { percent:0, step:1, title:"Order Accepted", desc:"The shop has received your order.", icon:"receipt" },
+                    Accepted: { percent:0, step:1, title:"Order Accepted", desc:"The shop has received your order.", icon:"receipt" },
+                    Kitchen: { percent:33, step:2, title:"In Kitchen", desc:"Your food is being prepared.", icon:"flame" },
+                    "On the Way": { percent:66, step:3, title:"On The Way", desc:"Delivery partner is coming.", icon:"bike" },
+                    "On Way": { percent:66, step:3, title:"On The Way", desc:"Delivery partner is coming.", icon:"bike" },
+                    Arrived: { percent:100, step:4, title:"Delivered", desc:"Your order has arrived.", icon:"home" },
+                    Delivered: { percent:100, step:4, title:"Delivered", desc:"Your order has arrived.", icon:"home" }
+                };
 
-const line = document.getElementById('line-progress');
-const title = document.getElementById('status-title');
-const desc = document.getElementById('status-desc');
-const icon = document.getElementById('current-icon');
+                const data = steps[status] || steps["Pending"];
 
-const steps = {
+                /* progress line */
+                line.style.width = data.percent + "%";
 
-Accepted:{
-percent:0,
-step:1,
-title:"Order Accepted",
-desc:"The shop has received your order.",
-icon:"fa-receipt"
-},
+                /* text update */
+                title.innerText = data.title;
+                desc.innerText = data.desc;
+                
+                // carefully update lucide icon without breaking layout
+                iconContainer.innerHTML = `<i data-lucide="${data.icon}" class="w-6 h-6"></i>`;
+                lucide.createIcons();
 
-Kitchen:{
-percent:33,
-step:2,
-title:"In Kitchen",
-desc:"Your food is being prepared.",
-icon:"fa-fire-burner"
-},
+                /* step dots */
+                for(let i=1;i<=4;i++){
+                    const dot = document.getElementById(`step-${i}`);
+                    if(i < data.step){
+                        dot.classList.add("completed");
+                        dot.classList.remove("active");
+                    }
+                    else if(i === data.step){
+                        dot.classList.add("active");
+                        dot.classList.remove("completed");
+                    }
+                    else{
+                        dot.classList.remove("active","completed");
+                    }
+                }
 
-"On Way":{
-percent:66,
-step:3,
-title:"On The Way",
-desc:"Delivery partner is coming.",
-icon:"fa-motorcycle"
-},
+            }catch(err){
+                console.log("Tracker update error:", err);
+            }
+        }
 
-Arrived:{
-percent:100,
-step:4,
-title:"Delivered",
-desc:"Your order has arrived.",
-icon:"fa-house-chimney-check"
-}
+        /* update periodically */
+        updateTracker();
+        setInterval(updateTracker, 4000);
 
-};
-
-const data = steps[status];
-
-if(!data) return;
-
-/* progress line */
-
-line.style.width = data.percent + "%";
-
-/* text update */
-
-title.innerText = data.title;
-desc.innerText = data.desc;
-icon.className = `fa-solid ${data.icon}`;
-
-/* step dots */
-
-for(let i=1;i<=4;i++){
-
-const dot = document.getElementById(`step-${i}`);
-
-if(i < data.step){
-
-dot.classList.add("completed");
-dot.classList.remove("active");
-
-}
-
-else if(i === data.step){
-
-dot.classList.add("active");
-dot.classList.remove("completed");
-
-}
-
-else{
-
-dot.classList.remove("active","completed");
-
-}
-
-}
-
-}catch(err){
-
-console.log(err);
-
-}
-
-}
-
-/* update every 3 seconds */
-
-updateTracker();
-
-setInterval(updateTracker,3000);
-
-</script>
+    </script>
 </body>
 </html>
