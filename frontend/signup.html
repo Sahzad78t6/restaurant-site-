@@ -133,7 +133,7 @@ const getBaseUrl = () => {
 let pendingGoogleData = null;
 
 // Check if we were redirected here from Google Login
-document.addEventListener("DOMContentLoaded", () => {
+(function prepopulateGoogleData() {
     const rawData = sessionStorage.getItem("pendingGoogleSignup");
     if (rawData) {
         pendingGoogleData = JSON.parse(rawData);
@@ -167,7 +167,7 @@ document.addEventListener("DOMContentLoaded", () => {
         // Let them know what's happening
         setTimeout(() => alert(`Welcome ${pendingGoogleData.name}! Please provide your WhatsApp number to complete your registration.`), 100);
     }
-});
+})();
 
 document.getElementById("signupForm").addEventListener("submit", async function(e){
     e.preventDefault();
@@ -234,6 +234,14 @@ async function handleCredentialResponse(response) {
         });
 
         const data = await res.json();
+
+        if (res.status === 404 && data.googleData) {
+            // User does not exist, but they are already on the signup page!
+            // Just save it to session and reload so our DOMContentLoaded logic kicks in instantly.
+            sessionStorage.setItem("pendingGoogleSignup", JSON.stringify(data.googleData));
+            window.location.reload();
+            return;
+        }
 
         if (res.status !== 200) {
             alert(data.message || "Google Signup failed");
