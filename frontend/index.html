@@ -1023,6 +1023,8 @@
             let scrollLeft;
             let animationId;
             let isHovered = false;
+            let userInteracting = false;
+            let interactionTimeout;
 
             // Wait for images to load before calculating perfect center
             setTimeout(() => {
@@ -1034,7 +1036,7 @@
 
             // Auto Scroll Loop
             function autoScroll() {
-                if (!isHovered && !isDown) {
+                if (!isHovered && !isDown && !userInteracting) {
                     if (isRight) {
                         container.scrollLeft -= speed;
                         // Seamless Loop backward
@@ -1090,11 +1092,20 @@
                 scrollLeft = container.scrollLeft;
             }, {passive:true});
             container.addEventListener('touchend', () => isDown = false);
-            container.addEventListener('touchmove', (e) => {
-                if(!isDown) return;
-                // Note: touch naturally scrolls overflow containers,
-                // but this hooks into our variable state to pause the animation natively.
-            }, {passive:true});
+            
+            // Native Scroll Detection (Trackpad / Touch Swipes)
+            // This prevents the auto-scroll loop from fighting user input
+            container.addEventListener('scroll', () => {
+                // Pause auto-scroll
+                userInteracting = true;
+                
+                // Resume auto-scroll 1.5 seconds after they stop scrolling
+                clearTimeout(interactionTimeout);
+                interactionTimeout = setTimeout(() => {
+                    userInteracting = false;
+                }, 1500);
+            }, {passive: true});
+
         });
 
     </script>
