@@ -118,74 +118,63 @@
         </div>
     </nav>
 
-    <header class="relative px-6 pt-12 pb-24 md:pt-24 md:pb-32 overflow-hidden flex-shrink-0">
-        <div class="max-w-7xl mx-auto flex flex-col md:flex-row items-center gap-12 md:gap-8">
+    <header class="relative w-full h-[500px] md:h-[700px] overflow-hidden flex-shrink-0 bg-slate-900">
+        <!-- Slides -->
+        <div id="hero-slider" class="flex h-full transition-transform duration-700 ease-in-out" style="width: 300%;">
+            <!-- Slide 1 -->
+            <div class="w-1/3 h-full relative">
+                <img src="https://images.unsplash.com/photo-1555066931-4365d14bab8c?auto=format&fit=crop&w=1920&q=80"
+                    class="w-full h-full object-cover">
+                <div class="absolute inset-0 bg-black/60"></div>
+            </div>
+            <!-- Slide 2 -->
+            <div class="w-1/3 h-full relative">
+                <img src="https://images.unsplash.com/photo-1548940740-20472c4c94bb?auto=format&fit=crop&w=1920&q=80"
+                    class="w-full h-full object-cover">
+                <div class="absolute inset-0 bg-black/60"></div>
+            </div>
+            <!-- Slide 3 -->
+            <div class="w-1/3 h-full relative">
+                <img src="https://images.unsplash.com/photo-1601050690597-df056fb01793?auto=format&fit=crop&w=1920&q=80"
+                    class="w-full h-full object-cover">
+                <div class="absolute inset-0 bg-black/60"></div>
+            </div>
+        </div>
 
-            <div class="flex-1 w-full text-center md:text-left z-10">
-                <div
-                    class="inline-flex items-center gap-2 bg-orange-100/80 backdrop-blur-sm border border-orange-200 text-orange-700 px-4 py-2 rounded-full text-xs font-black uppercase tracking-widest mb-8 shadow-sm">
-                    <span class="w-2 h-2 rounded-full bg-orange-500 animate-pulse"></span>
-                    Crafting Sweets Since 1998
-                </div>
-
-                <h1 class="text-5xl md:text-7xl lg:text-[5.5rem] font-black mb-6 leading-[1.1] tracking-tight">
-                    Taste the <br>
-                    <span class="text-gradient">Royal Origin</span> <br>
-                    of Flavors.
-                </h1>
-
-                <p class="text-lg md:text-xl mb-12 text-slate-600 font-medium leading-relaxed max-w-xl mx-auto md:mx-0">
-                    Experience the authentic taste of tradition. Handcrafted delicacies delivered fresh to your door
-                    with <span class="font-bold text-slate-900 border-b-2 border-orange-300">zero platform fees</span>.
-                </p>
-
-                <div class="flex flex-col sm:flex-row gap-4 justify-center md:justify-start">
-                    <button onclick="window.location.href='menu.html'"
-                        class="bg-slate-900 text-white px-8 py-4 rounded-full hover:bg-slate-800 hover:shadow-2xl hover:shadow-slate-900/20 hover:-translate-y-1 transition-all flex items-center justify-center gap-3 group">
-                        Explore Menu
-                        <i class="fa-solid fa-arrow-right group-hover:translate-x-1 transition-transform"></i>
-                    </button>
-                    <button onclick="window.location.href='menu.html'"
-                        class="bg-white border-2 border-slate-200 text-slate-800 px-8 py-4 rounded-full hover:border-slate-900 hover:bg-slate-50 transition-all flex items-center justify-center gap-3">
-                        <i class="fa-solid fa-fire text-orange-500"></i> Popular Items
-                    </button>
-                </div>
+        <!-- Content Overlay -->
+        <div class="absolute inset-0 z-10 flex flex-col items-center justify-center text-center px-6">
+            <div
+                class="mb-6 px-6 py-1.5 bg-orange-500/20 backdrop-blur-md rounded-full border border-orange-500/30 text-orange-400 text-xs font-bold tracking-widest uppercase">
+                Established 1998
             </div>
 
-            <div class="flex-1 w-full relative z-10 h-[400px] md:h-[600px]">
-                <div
-                    class="absolute inset-0 bg-gradient-to-tr from-orange-100 to-amber-50 rounded-[3rem] transform rotate-3 scale-105 -z-10 blur-xl opacity-60">
-                </div>
-                <div class="relative h-full w-full rounded-[2.5rem] overflow-hidden shadow-2xl border-4 border-white">
-                    <img src="https://images.unsplash.com/photo-1555066931-4365d14bab8c?auto=format&fit=crop&w=1200&q=80"
-                        class="w-full h-full object-cover object-center transform hover:scale-105 transition-transform duration-700"
-                        alt="Delicious Sweets">
-                    <div
-                        class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent flex items-end p-8">
-                        <div
-                            class="bg-white/20 backdrop-blur-md border border-white/30 text-white px-6 py-4 rounded-2xl w-full">
-                            <p class="font-bold flex items-center justify-between">
-                                <span>Special Kaju Katli</span>
-                                <span class="bg-orange-500 text-xs px-2 py-1 rounded text-white">Bestseller</span>
-                            </p>
-                        </div>
-                    </div>
-                </div>
-                <div class="absolute -bottom-8 -left-8 bg-white p-4 rounded-2xl shadow-xl border border-slate-100 animate-bounce"
-                    style="animation-duration: 3s;">
-                    <div class="flex items-center gap-3">
-                        <div
-                            class="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center text-green-600 text-xl">
-                            <i class="fa-solid fa-leaf"></i>
-                        </div>
-                        <div>
-                            <p class="text-xs text-slate-500 font-bold uppercase tracking-wider">Quality</p>
-                            <p class="text-slate-800 font-black">100% Pure Veg</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
+            <h1 class="text-5xl md:text-7xl lg:text-[6rem] font-black mb-4 leading-none tracking-tight text-white drop-shadow-lg">
+                Freshness in <br>
+                <span class="text-orange-500 drop-shadow-md">Every Bite.</span>
+            </h1>
 
+            <p class="text-lg md:text-xl mb-10 text-slate-200 font-medium max-w-2xl mx-auto leading-relaxed drop-shadow-md">
+                Experience the authentic taste of tradition, delivered straight to your door with <span
+                    class="text-white border-b-2 border-orange-500 pb-0.5">zero platform fees</span>.
+            </p>
+
+            <div class="flex flex-col sm:flex-row gap-4">
+                <button onclick="window.location.href='menu.html'"
+                    class="bg-white text-orange-500 px-8 py-3.5 rounded-full hover:bg-slate-50 transition-all font-bold tracking-wide shadow-xl active:scale-95">
+                    VIEW FULL MENU
+                </button>
+                <button
+                    class="bg-black/30 backdrop-blur-sm border-2 border-white/70 text-white px-8 py-3.5 rounded-full hover:bg-white hover:text-slate-900 transition-all font-bold tracking-wide active:scale-95">
+                    JOIN FAMILY
+                </button>
+            </div>
+        </div>
+
+        <!-- Dots -->
+        <div class="absolute bottom-8 left-0 right-0 z-20 flex justify-center gap-3" id="hero-dots">
+            <button class="w-8 h-2.5 rounded-full bg-orange-500 transition-all duration-300"></button>
+            <button class="w-2.5 h-2.5 rounded-full bg-white/50 hover:bg-white/80 transition-all duration-300"></button>
+            <button class="w-2.5 h-2.5 rounded-full bg-white/50 hover:bg-white/80 transition-all duration-300"></button>
         </div>
     </header>
 
@@ -198,7 +187,7 @@
                         class="text-gradient">Masterpieces</span></h2>
             </div>
 
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 max-w-4xl mx-auto gap-8">
                 <!-- Category 1 -->
                 <div class="group cursor-pointer card-hover transition-all duration-300">
                     <div class="bg-slate-50 rounded-3xl p-3 border border-slate-100 relative overflow-hidden">
@@ -241,8 +230,8 @@
                     </div>
                 </div>
 
-                <!-- Category 3 -->
-                <div class="group cursor-pointer card-hover transition-all duration-300">
+                <!-- Category 3 (Hidden) -->
+                <div class="hidden group cursor-pointer card-hover transition-all duration-300">
                     <div class="bg-slate-50 rounded-3xl p-3 border border-slate-100 relative overflow-hidden">
                         <div
                             class="absolute top-6 right-6 z-10 w-10 h-10 bg-white/50 backdrop-blur-md rounded-full flex items-center justify-center text-slate-700 opacity-0 group-hover:opacity-100 transform translate-y-2 group-hover:translate-y-0 transition-all duration-300">
@@ -262,8 +251,8 @@
                     </div>
                 </div>
 
-                <!-- Category 4 -->
-                <div class="group cursor-pointer card-hover transition-all duration-300">
+                <!-- Category 4 (Hidden) -->
+                <div class="hidden group cursor-pointer card-hover transition-all duration-300">
                     <div class="bg-slate-50 rounded-3xl p-3 border border-slate-100 relative overflow-hidden">
                         <div
                             class="absolute top-6 right-6 z-10 w-10 h-10 bg-white/50 backdrop-blur-md rounded-full flex items-center justify-center text-slate-700 opacity-0 group-hover:opacity-100 transform translate-y-2 group-hover:translate-y-0 transition-all duration-300">
@@ -445,6 +434,39 @@
             localStorage.removeItem('royalSweetsUser');
             location.reload();
         }
+
+        // Hero Slider Logic
+        const slider = document.getElementById("hero-slider");
+        const dots = document.querySelectorAll("#hero-dots button");
+        let currentSlide = 0;
+        const totalSlides = 3;
+
+        function goToSlide(index) {
+            currentSlide = index;
+            // Update slider position
+            slider.style.transform = `translateX(-${(100 / totalSlides) * currentSlide}%)`;
+            
+            // Update dots
+            dots.forEach((dot, i) => {
+                if (i === currentSlide) {
+                    dot.classList.remove('bg-white/50', 'w-2.5');
+                    dot.classList.add('bg-orange-500', 'w-8');
+                } else {
+                    dot.classList.remove('bg-orange-500', 'w-8');
+                    dot.classList.add('bg-white/50', 'w-2.5');
+                }
+            });
+        }
+
+        dots.forEach((dot, index) => {
+            dot.addEventListener('click', () => goToSlide(index));
+        });
+
+        // Auto slide
+        setInterval(() => {
+            currentSlide = (currentSlide + 1) % totalSlides;
+            goToSlide(currentSlide);
+        }, 5000);
     </script>
 </body>
 
