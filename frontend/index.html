@@ -61,44 +61,21 @@
             transform: translateY(0);
         }
 
-        /* Continuous Floating Marquee (Hardware Accelerated) */
-        @keyframes scroll-left {
-            0% {
-                transform: translate3d(0, 0, 0);
-            }
-
-            100% {
-                transform: translate3d(-50%, 0, 0);
-            }
-        }
-
-        @keyframes scroll-right {
-            0% {
-                transform: translate3d(-50%, 0, 0);
-            }
-
-            100% {
-                transform: translate3d(0, 0, 0);
-            }
-        }
-
+        /* Native scrolling containers optimized for JS auto-scroll */
         .marquee-track {
             display: flex;
             width: max-content;
-            animation: scroll-left 30s linear infinite;
         }
 
-        .marquee-track.reverse {
-            animation: scroll-right 30s linear infinite;
+        .marquee-container {
+            overflow-x: auto;
+            scroll-behavior: auto; /* Managed by JS for smooth grabbing */
+            -webkit-overflow-scrolling: touch;
+            cursor: grab;
         }
 
-        .marquee-track.slow {
-            animation-duration: 45s;
-            /* Slower for videos */
-        }
-
-        .marquee-track:hover {
-            animation-play-state: paused;
+        .marquee-container:active {
+            cursor: grabbing;
         }
 
         /* Hide Scrollbars completely */
@@ -425,9 +402,9 @@
             </div>
 
             <!-- Horizontal Text Pills Continuous Marquee - Row 1 (LTR) -->
-            <div class="overflow-hidden pt-4 mb-4 reveal"
-                style="mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent);">
-                <div class="marquee-track gap-4 pl-4 hover:cursor-crosshair">
+            <div class="marquee-container hide-scrollbar overflow-hidden pt-4 mb-4 reveal"
+                style="mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent);" data-speed="1" data-direction="left">
+                <div class="marquee-track gap-4 pl-4 shrink-0">
 
                     <!-- --- SET 1 --- -->
                     <div
@@ -457,25 +434,25 @@
 
                     <!-- --- SET 2 (DUPLICATE FOR INFINITE LOOP) --- -->
                     <div
-                        class="shrink-0 bg-dark-800 border border-dark-700 rounded-full px-6 py-3 flex items-center gap-3 shadow-[0_5px_15px_rgba(0,0,0,0.3)] hover:border-brand-orange/50 transition-colors">
+                        class="shrink-0 bg-dark-800 border border-dark-700 rounded-full px-6 py-3 flex items-center gap-3 shadow-[0_8px_20px_rgba(255,107,0,0.15)] hover:shadow-[0_8px_25px_rgba(255,107,0,0.35)] hover:border-brand-orange/50 hover:bg-dark-700 transition-colors">
                         <img src="https://i.pravatar.cc/150?u=a042581f4e29026024d"
                             class="w-8 h-8 rounded-full border border-dark-700" alt="User">
                         <span class="text-sm font-medium text-gray-300">Perfect sweetness and crunchy texture</span>
                     </div>
                     <div
-                        class="shrink-0 bg-dark-800 border border-dark-700 rounded-full px-6 py-3 flex items-center gap-3 shadow-[0_5px_15px_rgba(0,0,0,0.3)] hover:border-brand-orange/50 transition-colors">
+                        class="shrink-0 bg-dark-800 border border-dark-700 rounded-full px-6 py-3 flex items-center gap-3 shadow-[0_8px_20px_rgba(255,107,0,0.15)] hover:shadow-[0_8px_25px_rgba(255,107,0,0.35)] hover:border-brand-orange/50 hover:bg-dark-700 transition-colors">
                         <img src="https://i.pravatar.cc/150?u=a042581f4e29026704d"
                             class="w-8 h-8 rounded-full border border-dark-700" alt="User">
                         <span class="text-sm font-medium text-gray-300">Fresh, aromatic and not oily at all</span>
                     </div>
                     <div
-                        class="shrink-0 bg-dark-800 border border-dark-700 rounded-full px-6 py-3 flex items-center gap-3 shadow-[0_5px_15px_rgba(0,0,0,0.3)] hover:border-brand-orange/50 transition-colors">
+                        class="shrink-0 bg-dark-800 border border-dark-700 rounded-full px-6 py-3 flex items-center gap-3 shadow-[0_8px_20px_rgba(255,107,0,0.15)] hover:shadow-[0_8px_25px_rgba(255,107,0,0.35)] hover:border-brand-orange/50 hover:bg-dark-700 transition-colors">
                         <img src="https://i.pravatar.cc/150?u=a04258114e29026702d"
                             class="w-8 h-8 rounded-full border border-dark-700" alt="User">
                         <span class="text-sm font-medium text-gray-300">Reminded me of my village festivals</span>
                     </div>
                     <div
-                        class="shrink-0 bg-dark-800 border border-dark-700 rounded-full px-6 py-3 flex items-center gap-3 shadow-[0_5px_15px_rgba(0,0,0,0.3)] hover:border-brand-orange/50 transition-colors">
+                        class="shrink-0 bg-dark-800 border border-dark-700 rounded-full px-6 py-3 flex items-center gap-3 shadow-[0_8px_20px_rgba(255,107,0,0.15)] hover:shadow-[0_8px_25px_rgba(255,107,0,0.35)] hover:border-brand-orange/50 hover:bg-dark-700 transition-colors">
                         <img src="https://i.pravatar.cc/150?img=33" class="w-8 h-8 rounded-full border border-dark-700"
                             alt="User">
                         <span class="text-sm font-medium text-gray-300">Ordered again within a week!</span>
@@ -485,31 +462,31 @@
             </div>
 
             <!-- Horizontal Text Pills Continuous Marquee - Row 2 (RTL) -->
-            <div class="overflow-hidden pb-4 mb-12 reveal"
-                style="mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent);">
-                <div class="marquee-track reverse gap-4 pl-4 hover:cursor-crosshair">
+            <div class="marquee-container hide-scrollbar overflow-hidden pb-4 mb-12 reveal"
+                style="mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent);" data-speed="1" data-direction="right">
+                <div class="marquee-track gap-4 pl-4 shrink-0">
 
                     <!-- --- SET 1 --- -->
                     <div
-                        class="shrink-0 bg-dark-800 border border-dark-700 rounded-full px-6 py-3 flex items-center gap-3 shadow-[0_5px_15px_rgba(0,0,0,0.3)] hover:border-brand-orange/50 transition-colors">
+                        class="shrink-0 bg-dark-800 border border-dark-700 rounded-full px-6 py-3 flex items-center gap-3 shadow-[0_8px_20px_rgba(255,107,0,0.15)] hover:shadow-[0_8px_25px_rgba(255,107,0,0.35)] hover:border-brand-orange/50 hover:bg-dark-700 transition-colors">
                         <img src="https://i.pravatar.cc/150?img=12" class="w-8 h-8 rounded-full border border-dark-700"
                             alt="User">
                         <span class="text-sm font-medium text-gray-300">Authentic royal style</span>
                     </div>
                     <div
-                        class="shrink-0 bg-dark-800 border border-dark-700 rounded-full px-6 py-3 flex items-center gap-3 shadow-[0_5px_15px_rgba(0,0,0,0.3)] hover:border-brand-orange/50 transition-colors">
+                        class="shrink-0 bg-dark-800 border border-dark-700 rounded-full px-6 py-3 flex items-center gap-3 shadow-[0_8px_20px_rgba(255,107,0,0.15)] hover:shadow-[0_8px_25px_rgba(255,107,0,0.35)] hover:border-brand-orange/50 hover:bg-dark-700 transition-colors">
                         <img src="https://i.pravatar.cc/150?img=5" class="w-8 h-8 rounded-full border border-dark-700"
                             alt="User">
                         <span class="text-sm font-medium text-gray-300">My parents absolutely loved it!</span>
                     </div>
                     <div
-                        class="shrink-0 bg-dark-800 border border-dark-700 rounded-full px-6 py-3 flex items-center gap-3 shadow-[0_5px_15px_rgba(0,0,0,0.3)] hover:border-brand-orange/50 transition-colors">
+                        class="shrink-0 bg-dark-800 border border-dark-700 rounded-full px-6 py-3 flex items-center gap-3 shadow-[0_8px_20px_rgba(255,107,0,0.15)] hover:shadow-[0_8px_25px_rgba(255,107,0,0.35)] hover:border-brand-orange/50 hover:bg-dark-700 transition-colors">
                         <img src="https://i.pravatar.cc/150?u=a04258114e29026702d"
                             class="w-8 h-8 rounded-full border border-dark-700" alt="User">
                         <span class="text-sm font-medium text-gray-300">Will definitely cater from here.</span>
                     </div>
                     <div
-                        class="shrink-0 bg-dark-800 border border-dark-700 rounded-full px-6 py-3 flex items-center gap-3 shadow-[0_5px_15px_rgba(0,0,0,0.3)] hover:border-brand-orange/50 transition-colors">
+                        class="shrink-0 bg-dark-800 border border-dark-700 rounded-full px-6 py-3 flex items-center gap-3 shadow-[0_8px_20px_rgba(255,107,0,0.15)] hover:shadow-[0_8px_25px_rgba(255,107,0,0.35)] hover:border-brand-orange/50 hover:bg-dark-700 transition-colors">
                         <img src="https://i.pravatar.cc/150?img=33" class="w-8 h-8 rounded-full border border-dark-700"
                             alt="User">
                         <span class="text-sm font-medium text-gray-300">Best sweet shop in town!</span>
@@ -517,25 +494,25 @@
 
                     <!-- --- SET 2 (DUPLICATE FOR INFINITE LOOP) --- -->
                     <div
-                        class="shrink-0 bg-dark-800 border border-dark-700 rounded-full px-6 py-3 flex items-center gap-3 shadow-[0_5px_15px_rgba(0,0,0,0.3)] hover:border-brand-orange/50 transition-colors">
+                        class="shrink-0 bg-dark-800 border border-dark-700 rounded-full px-6 py-3 flex items-center gap-3 shadow-[0_8px_20px_rgba(255,107,0,0.15)] hover:shadow-[0_8px_25px_rgba(255,107,0,0.35)] hover:border-brand-orange/50 hover:bg-dark-700 transition-colors">
                         <img src="https://i.pravatar.cc/150?img=12" class="w-8 h-8 rounded-full border border-dark-700"
                             alt="User">
                         <span class="text-sm font-medium text-gray-300">Authentic royal style</span>
                     </div>
                     <div
-                        class="shrink-0 bg-dark-800 border border-dark-700 rounded-full px-6 py-3 flex items-center gap-3 shadow-[0_5px_15px_rgba(0,0,0,0.3)] hover:border-brand-orange/50 transition-colors">
+                        class="shrink-0 bg-dark-800 border border-dark-700 rounded-full px-6 py-3 flex items-center gap-3 shadow-[0_8px_20px_rgba(255,107,0,0.15)] hover:shadow-[0_8px_25px_rgba(255,107,0,0.35)] hover:border-brand-orange/50 hover:bg-dark-700 transition-colors">
                         <img src="https://i.pravatar.cc/150?img=5" class="w-8 h-8 rounded-full border border-dark-700"
                             alt="User">
                         <span class="text-sm font-medium text-gray-300">My parents absolutely loved it!</span>
                     </div>
                     <div
-                        class="shrink-0 bg-dark-800 border border-dark-700 rounded-full px-6 py-3 flex items-center gap-3 shadow-[0_5px_15px_rgba(0,0,0,0.3)] hover:border-brand-orange/50 transition-colors">
+                        class="shrink-0 bg-dark-800 border border-dark-700 rounded-full px-6 py-3 flex items-center gap-3 shadow-[0_8px_20px_rgba(255,107,0,0.15)] hover:shadow-[0_8px_25px_rgba(255,107,0,0.35)] hover:border-brand-orange/50 hover:bg-dark-700 transition-colors">
                         <img src="https://i.pravatar.cc/150?u=a04258114e29026702d"
                             class="w-8 h-8 rounded-full border border-dark-700" alt="User">
                         <span class="text-sm font-medium text-gray-300">Will definitely cater from here.</span>
                     </div>
                     <div
-                        class="shrink-0 bg-dark-800 border border-dark-700 rounded-full px-6 py-3 flex items-center gap-3 shadow-[0_5px_15px_rgba(0,0,0,0.3)] hover:border-brand-orange/50 transition-colors">
+                        class="shrink-0 bg-dark-800 border border-dark-700 rounded-full px-6 py-3 flex items-center gap-3 shadow-[0_8px_20px_rgba(255,107,0,0.15)] hover:shadow-[0_8px_25px_rgba(255,107,0,0.35)] hover:border-brand-orange/50 hover:bg-dark-700 transition-colors">
                         <img src="https://i.pravatar.cc/150?img=33" class="w-8 h-8 rounded-full border border-dark-700"
                             alt="User">
                         <span class="text-sm font-medium text-gray-300">Best sweet shop in town!</span>
@@ -548,9 +525,9 @@
             </h3>
 
             <!-- Continuous Video Grid Scroll -->
-            <div class="overflow-hidden pb-8 pt-4 reveal"
-                style="mask-image: linear-gradient(to right, transparent, black 5%, black 95%, transparent);">
-                <div class="marquee-track slow gap-4 pl-4 hover:cursor-crosshair">
+            <div class="marquee-container hide-scrollbar overflow-hidden pb-8 pt-4 reveal"
+                style="mask-image: linear-gradient(to right, transparent, black 5%, black 95%, transparent);" data-speed="0.8" data-direction="left">
+                <div class="marquee-track gap-4 pl-4 shrink-0">
 
                     <!-- --- SET 1 ---  -->
                     <!-- Video Card 1 -->
@@ -581,7 +558,7 @@
                     </div>
                     <!-- Video Card 3 -->
                     <div
-                        class="w-52 h-80 md:w-64 md:h-96 shrink-0 relative rounded-2xl overflow-hidden group border border-dark-700 hover:border-brand-orange shadow-[0_10px_30px_rgba(0,0,0,0.5)] transition-all hover:-translate-y-2">
+                        class="w-52 h-80 md:w-64 md:h-96 shrink-0 relative rounded-2xl overflow-hidden group border border-dark-700 hover:border-brand-orange shadow-[0_10px_30px_rgba(255,107,0,0.15)] hover:shadow-[0_15px_40px_rgba(255,107,0,0.4)] transition-all duration-300 hover:-translate-y-2">
                         <img src="https://images.unsplash.com/photo-1576867758508-c30f4a86de34?auto=format&fit=crop&w=600&q=80"
                             alt="Review 3"
                             class="absolute inset-0 w-full h-full object-cover group-hover:scale-110 transition-transform duration-700">
@@ -594,7 +571,7 @@
                     </div>
                     <!-- Video Card 4 -->
                     <div
-                        class="w-52 h-80 md:w-64 md:h-96 shrink-0 relative rounded-2xl overflow-hidden group border border-dark-700 hover:border-brand-orange shadow-[0_10px_30px_rgba(0,0,0,0.5)] transition-all hover:-translate-y-2">
+                        class="w-52 h-80 md:w-64 md:h-96 shrink-0 relative rounded-2xl overflow-hidden group border border-dark-700 hover:border-brand-orange shadow-[0_10px_30px_rgba(255,107,0,0.15)] hover:shadow-[0_15px_40px_rgba(255,107,0,0.4)] transition-all duration-300 hover:-translate-y-2">
                         <img src="https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&w=600&q=80"
                             alt="Review 4"
                             class="absolute inset-0 w-full h-full object-cover group-hover:scale-110 transition-transform duration-700">
@@ -607,7 +584,7 @@
                     </div>
                     <!-- Video Card 5 -->
                     <div
-                        class="w-52 h-80 md:w-64 md:h-96 shrink-0 relative rounded-2xl overflow-hidden group border border-dark-700 hover:border-brand-orange shadow-[0_10px_30px_rgba(0,0,0,0.5)] transition-all hover:-translate-y-2">
+                        class="w-52 h-80 md:w-64 md:h-96 shrink-0 relative rounded-2xl overflow-hidden group border border-dark-700 hover:border-brand-orange shadow-[0_10px_30px_rgba(255,107,0,0.15)] hover:shadow-[0_15px_40px_rgba(255,107,0,0.4)] transition-all duration-300 hover:-translate-y-2">
                         <img src="https://images.unsplash.com/photo-1552664730-d307ca884978?auto=format&fit=crop&w=600&q=80"
                             alt="Review 5"
                             class="absolute inset-0 w-full h-full object-cover group-hover:scale-110 transition-transform duration-700">
@@ -620,7 +597,7 @@
                     </div>
                     <!-- Video Card 6 -->
                     <div
-                        class="w-64 h-96 shrink-0 relative rounded-2xl overflow-hidden group border border-dark-700 hover:border-brand-orange shadow-[0_10px_30px_rgba(0,0,0,0.5)] transition-all hover:-translate-y-2">
+                        class="w-64 h-96 shrink-0 relative rounded-2xl overflow-hidden group border border-dark-700 hover:border-brand-orange shadow-[0_10px_30px_rgba(255,107,0,0.15)] hover:shadow-[0_15px_40px_rgba(255,107,0,0.4)] transition-all duration-300 hover:-translate-y-2">
                         <img src="https://images.unsplash.com/photo-1506807804456-4b89eb021a8a?auto=format&fit=crop&w=600&q=80"
                             alt="Review 6"
                             class="absolute inset-0 w-full h-full object-cover group-hover:scale-110 transition-transform duration-700">
@@ -635,7 +612,7 @@
                     <!-- --- SET 2 (DUPLICATE FOR INFINITE LOOP) ---  -->
                     <!-- Video Card 1 -->
                     <div
-                        class="w-64 h-96 shrink-0 relative rounded-2xl overflow-hidden group border border-dark-700 hover:border-brand-orange shadow-[0_10px_30px_rgba(0,0,0,0.5)] transition-all hover:-translate-y-2">
+                        class="w-64 h-96 shrink-0 relative rounded-2xl overflow-hidden group border border-dark-700 hover:border-brand-orange shadow-[0_10px_30px_rgba(255,107,0,0.15)] hover:shadow-[0_15px_40px_rgba(255,107,0,0.4)] transition-all duration-300 hover:-translate-y-2">
                         <img src="https://images.unsplash.com/photo-1542282088-fe8426682b8f?auto=format&fit=crop&w=600&q=80"
                             alt="Review 1"
                             class="absolute inset-0 w-full h-full object-cover group-hover:scale-110 transition-transform duration-700">
@@ -648,7 +625,7 @@
                     </div>
                     <!-- Video Card 2 -->
                     <div
-                        class="w-64 h-96 shrink-0 relative rounded-2xl overflow-hidden group border border-dark-700 hover:border-brand-orange shadow-[0_10px_30px_rgba(0,0,0,0.5)] transition-all hover:-translate-y-2">
+                        class="w-64 h-96 shrink-0 relative rounded-2xl overflow-hidden group border border-dark-700 hover:border-brand-orange shadow-[0_10px_30px_rgba(255,107,0,0.15)] hover:shadow-[0_15px_40px_rgba(255,107,0,0.4)] transition-all duration-300 hover:-translate-y-2">
                         <img src="https://images.unsplash.com/photo-1627448749114-6fe1efd2ca49?auto=format&fit=crop&w=600&q=80"
                             alt="Review 2"
                             class="absolute inset-0 w-full h-full object-cover group-hover:scale-110 transition-transform duration-700">
@@ -661,7 +638,7 @@
                     </div>
                     <!-- Video Card 3 -->
                     <div
-                        class="w-64 h-96 shrink-0 relative rounded-2xl overflow-hidden group border border-dark-700 hover:border-brand-orange shadow-[0_10px_30px_rgba(0,0,0,0.5)] transition-all hover:-translate-y-2">
+                        class="w-64 h-96 shrink-0 relative rounded-2xl overflow-hidden group border border-dark-700 hover:border-brand-orange shadow-[0_10px_30px_rgba(255,107,0,0.15)] hover:shadow-[0_15px_40px_rgba(255,107,0,0.4)] transition-all duration-300 hover:-translate-y-2">
                         <img src="https://images.unsplash.com/photo-1576867758508-c30f4a86de34?auto=format&fit=crop&w=600&q=80"
                             alt="Review 3"
                             class="absolute inset-0 w-full h-full object-cover group-hover:scale-110 transition-transform duration-700">
@@ -674,7 +651,7 @@
                     </div>
                     <!-- Video Card 4 -->
                     <div
-                        class="w-64 h-96 shrink-0 relative rounded-2xl overflow-hidden group border border-dark-700 hover:border-brand-orange shadow-[0_10px_30px_rgba(0,0,0,0.5)] transition-all hover:-translate-y-2">
+                        class="w-64 h-96 shrink-0 relative rounded-2xl overflow-hidden group border border-dark-700 hover:border-brand-orange shadow-[0_10px_30px_rgba(255,107,0,0.15)] hover:shadow-[0_15px_40px_rgba(255,107,0,0.4)] transition-all duration-300 hover:-translate-y-2">
                         <img src="https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&w=600&q=80"
                             alt="Review 4"
                             class="absolute inset-0 w-full h-full object-cover group-hover:scale-110 transition-transform duration-700">
@@ -687,7 +664,7 @@
                     </div>
                     <!-- Video Card 5 -->
                     <div
-                        class="w-64 h-96 shrink-0 relative rounded-2xl overflow-hidden group border border-dark-700 hover:border-brand-orange shadow-[0_10px_30px_rgba(0,0,0,0.5)] transition-all hover:-translate-y-2">
+                        class="w-64 h-96 shrink-0 relative rounded-2xl overflow-hidden group border border-dark-700 hover:border-brand-orange shadow-[0_10px_30px_rgba(255,107,0,0.15)] hover:shadow-[0_15px_40px_rgba(255,107,0,0.4)] transition-all duration-300 hover:-translate-y-2">
                         <img src="https://images.unsplash.com/photo-1552664730-d307ca884978?auto=format&fit=crop&w=600&q=80"
                             alt="Review 5"
                             class="absolute inset-0 w-full h-full object-cover group-hover:scale-110 transition-transform duration-700">
@@ -700,7 +677,7 @@
                     </div>
                     <!-- Video Card 6 -->
                     <div
-                        class="w-64 h-96 shrink-0 relative rounded-2xl overflow-hidden group border border-dark-700 hover:border-brand-orange shadow-[0_10px_30px_rgba(0,0,0,0.5)] transition-all hover:-translate-y-2">
+                        class="w-64 h-96 shrink-0 relative rounded-2xl overflow-hidden group border border-dark-700 hover:border-brand-orange shadow-[0_10px_30px_rgba(255,107,0,0.15)] hover:shadow-[0_15px_40px_rgba(255,107,0,0.4)] transition-all duration-300 hover:-translate-y-2">
                         <img src="https://images.unsplash.com/photo-1506807804456-4b89eb021a8a?auto=format&fit=crop&w=600&q=80"
                             alt="Review 6"
                             class="absolute inset-0 w-full h-full object-cover group-hover:scale-110 transition-transform duration-700">
@@ -1035,9 +1012,90 @@
             animateCube();
         }
 
-        // Removed native JS scrolling for marquee loops, restored high-performance CSS transforms.
+        // --- Review Marquee Auto-Scroll & Drag Logic ---
+        document.querySelectorAll('.marquee-container').forEach(container => {
+            const track = container.querySelector('.marquee-track');
+            const speed = parseFloat(container.dataset.speed || 1);
+            const isRight = container.dataset.direction === 'right';
+            
+            let isDown = false;
+            let startX;
+            let scrollLeft;
+            let animationId;
+            let isHovered = false;
 
+            // Wait for images to load before calculating perfect center
+            setTimeout(() => {
+                // If moving right, start at the exact middle so it can scroll backwards
+                if (isRight) {
+                     container.scrollLeft = track.scrollWidth / 2;
+                }
+            }, 100);
 
+            // Auto Scroll Loop
+            function autoScroll() {
+                if (!isHovered && !isDown) {
+                    if (isRight) {
+                        container.scrollLeft -= speed;
+                        // Seamless Loop backward
+                        if (container.scrollLeft <= 0) {
+                            container.scrollLeft = track.scrollWidth / 2;
+                        }
+                    } else {
+                        container.scrollLeft += speed;
+                        // Seamless Loop forward
+                        if (container.scrollLeft >= (track.scrollWidth / 2)) {
+                            container.scrollLeft = 0;
+                        }
+                    }
+                }
+                animationId = requestAnimationFrame(autoScroll);
+            }
+            
+            // Start the loop
+            autoScroll();
+
+            // Hover Pause
+            container.addEventListener('mouseenter', () => isHovered = true);
+            container.addEventListener('mouseleave', () => {
+                isHovered = false;
+                isDown = false; // Failsafe
+            });
+
+            // Drag to Scroll Logic
+            container.addEventListener('mousedown', (e) => {
+                isDown = true;
+                startX = e.pageX - container.offsetLeft;
+                scrollLeft = container.scrollLeft;
+                container.style.cursor = 'grabbing';
+            });
+
+            container.addEventListener('mouseup', () => {
+                isDown = false;
+                container.style.cursor = 'grab';
+            });
+
+            container.addEventListener('mousemove', (e) => {
+                if (!isDown) return;
+                e.preventDefault();
+                const x = e.pageX - container.offsetLeft;
+                const walk = (x - startX) * 2; // Drag sensitivity
+                container.scrollLeft = scrollLeft - walk;
+            });
+            
+            // Touch support
+            container.addEventListener('touchstart', (e) => {
+                isDown = true;
+                startX = e.touches[0].pageX - container.offsetLeft;
+                scrollLeft = container.scrollLeft;
+            }, {passive:true});
+            container.addEventListener('touchend', () => isDown = false);
+            container.addEventListener('touchmove', (e) => {
+                if(!isDown) return;
+                // Note: touch naturally scrolls overflow containers,
+                // but this hooks into our variable state to pause the animation natively.
+            }, {passive:true});
+        });
 
     </script>
 </body>
