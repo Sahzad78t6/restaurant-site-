@@ -17,65 +17,78 @@ body { font-family: 'Plus Jakarta Sans', sans-serif; }
 
 </head>
 
-<body class="bg-[#F8F9FA] min-h-screen flex flex-col items-center justify-center p-4 py-12">
+<body class="bg-slate-50 min-h-screen flex flex-col items-center justify-center p-4 py-12 relative overflow-hidden">
 
-<div class="w-full max-w-md bg-white rounded-[3rem] p-10 shadow-xl border border-gray-50">
-
-<div class="text-center mb-10">
-
-<div class="w-16 h-16 bg-slate-900 rounded-2xl mx-auto mb-4 flex items-center justify-center text-white text-2xl shadow-lg shadow-slate-100">
-<i class="fa-solid fa-user-plus text-orange-500"></i>
-</div>
-
-<h2 class="text-3xl font-black text-gray-800 uppercase italic tracking-tighter">
-Create Account
-</h2>
-
-<p class="text-gray-400 text-sm font-bold mt-1">
-Join the Royal Sweets family
-</p>
-
-</div>
-
-<form id="signupForm" class="space-y-4">
-
-<div class="relative">
-<input id="name" type="text" placeholder="Full Name"
-class="w-full bg-gray-50 p-5 rounded-2xl outline-none focus:ring-2 focus:ring-orange-500">
-</div>
-
-<div class="relative">
-<input id="email" type="email" placeholder="Email Address"
-class="w-full bg-gray-50 p-5 rounded-2xl outline-none focus:ring-2 focus:ring-orange-500">
-</div>
-
-<div class="relative">
-<input id="phone" type="tel" placeholder="WhatsApp Number"
-class="w-full bg-gray-50 p-5 rounded-2xl outline-none focus:ring-2 focus:ring-orange-500">
-</div>
-
-<div class="relative">
-<input id="password" type="password" placeholder="Create Password"
-class="w-full bg-gray-50 p-5 rounded-2xl outline-none focus:ring-2 focus:ring-orange-500">
-</div>
-
-<button
-type="submit"
-class="w-full bg-orange-500 text-white py-5 rounded-2xl font-black uppercase tracking-widest shadow-xl">
-
-Register Now
-
-</button>
-
-</form>
-
-<p class="text-center mt-8 text-sm font-bold text-gray-500">
-Already a member?
-<a href="login.html" class="text-orange-500 underline">
-Login here
+<a href="login.html" class="absolute top-8 left-8 w-12 h-12 bg-white rounded-full flex items-center justify-center shadow-sm border border-slate-200 hover:bg-slate-50 transition-colors z-10 hover:-translate-x-1 duration-300">
+    <i class="fa-solid fa-arrow-left text-slate-600"></i>
 </a>
-</p>
 
+<!-- Decorative bg elements -->
+<div class="fixed top-[-10%] right-[-10%] w-[40%] h-[40%] bg-orange-500/10 rounded-full blur-3xl pointer-events-none"></div>
+<div class="fixed bottom-[-10%] left-[-10%] w-[40%] h-[40%] bg-orange-400/10 rounded-full blur-3xl pointer-events-none"></div>
+
+<div class="w-full max-w-[420px] relative z-10">
+    <div class="bg-white/80 backdrop-blur-xl rounded-[2.5rem] p-10 shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-white">
+
+        <div class="text-center mb-10">
+            <div class="w-16 h-16 bg-gradient-to-br from-slate-800 to-slate-900 rounded-2xl mx-auto mb-6 flex items-center justify-center text-white text-2xl shadow-lg shadow-slate-900/20 transform rotate-3 hover:rotate-0 transition-all duration-300">
+                <i class="fa-solid fa-user-plus text-orange-400"></i>
+            </div>
+            <h2 class="text-3xl font-black text-slate-800 tracking-tight">
+                Create Account
+            </h2>
+            <p class="text-slate-500 font-medium mt-2">
+                Join the Royal Sweets family today.
+            </p>
+        </div>
+
+        <form id="signupForm" class="space-y-4">
+            
+            <div class="relative group">
+                <div class="absolute inset-y-0 left-0 pl-5 flex items-center pointer-events-none text-slate-400 group-focus-within:text-orange-500 transition-colors z-10">
+                    <i class="fa-regular fa-user"></i>
+                </div>
+                <input id="name" type="text" placeholder="Full Name" required
+                    class="relative w-full bg-slate-50/50 border border-slate-200 py-4 pl-12 pr-4 rounded-xl outline-none focus:bg-white focus:border-orange-500 focus:ring-4 focus:ring-orange-500/10 transition-all font-medium text-slate-700 placeholder:text-slate-400">
+            </div>
+
+            <div class="relative group">
+                <div class="absolute inset-y-0 left-0 pl-5 flex items-center pointer-events-none text-slate-400 group-focus-within:text-orange-500 transition-colors z-10">
+                    <i class="fa-regular fa-envelope"></i>
+                </div>
+                <input id="email" type="email" placeholder="Email Address" required
+                    class="relative w-full bg-slate-50/50 border border-slate-200 py-4 pl-12 pr-4 rounded-xl outline-none focus:bg-white focus:border-orange-500 focus:ring-4 focus:ring-orange-500/10 transition-all font-medium text-slate-700 placeholder:text-slate-400">
+            </div>
+
+            <div class="relative group">
+                <div class="absolute inset-y-0 left-0 pl-5 flex items-center pointer-events-none text-slate-400 group-focus-within:text-orange-500 transition-colors z-10">
+                    <i class="fa-solid fa-phone text-[14px]"></i>
+                </div>
+                <input id="phone" type="tel" placeholder="WhatsApp Number" required
+                    class="relative w-full bg-slate-50/50 border border-slate-200 py-4 pl-12 pr-4 rounded-xl outline-none focus:bg-white focus:border-orange-500 focus:ring-4 focus:ring-orange-500/10 transition-all font-medium text-slate-700 placeholder:text-slate-400">
+            </div>
+
+            <div class="relative group">
+                <div class="absolute inset-y-0 left-0 pl-5 flex items-center pointer-events-none text-slate-400 group-focus-within:text-orange-500 transition-colors z-10">
+                    <i class="fa-solid fa-lock text-[14px]"></i>
+                </div>
+                <input id="password" type="password" placeholder="Create Password" required
+                    class="relative w-full bg-slate-50/50 border border-slate-200 py-4 pl-12 pr-4 rounded-xl outline-none focus:bg-white focus:border-orange-500 focus:ring-4 focus:ring-orange-500/10 transition-all font-medium text-slate-700 placeholder:text-slate-400">
+            </div>
+
+            <button type="submit"
+                class="w-full bg-orange-500 text-white py-4 rounded-xl font-bold tracking-wide shadow-lg shadow-orange-500/30 hover:shadow-orange-500/40 hover:-translate-y-0.5 active:scale-[0.98] transition-all flex justify-center items-center mt-2">
+                Create Account
+            </button>
+        </form>
+
+        <p class="text-center mt-8 text-sm font-medium text-slate-500">
+            Already a member? 
+            <a href="login.html" class="text-orange-600 font-bold hover:underline underline-offset-4 decoration-2 transition-all">
+                Sign in
+            </a>
+        </p>
+    </div>
 </div>
 
 <script>
