@@ -405,8 +405,30 @@
 
         async function processOrder() {
             const paymentMethod = document.querySelector('input[name="pay"]:checked').value;
+            
             if (cart.length === 0) {
-                alert("Cart empty");
+                alert("Please add items to your cart before checking out.");
+                return;
+            }
+
+            const phoneInput = document.getElementById("phone").value.trim();
+            const addressInput = document.getElementById("address").value.trim();
+
+            if (!phoneInput) {
+                alert("Please enter your phone number.");
+                return;
+            }
+
+            // Basic phone validation: check if it contains at least 10 digits
+            const phoneRegex = /^\d{10,}$/;
+            const digitsOnly = phoneInput.replace(/\D/g, '');
+            if (!phoneRegex.test(digitsOnly)) {
+                alert("Please enter a valid phone number (at least 10 digits).");
+                return;
+            }
+
+            if (!addressInput) {
+                alert("Please enter a delivery address.");
                 return;
             }
 
