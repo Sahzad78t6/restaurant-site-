@@ -157,9 +157,12 @@ document.addEventListener("DOMContentLoaded", () => {
         // Update the button text 
         document.querySelector("button[type='submit']").innerText = "Complete Registration";
 
-        // Hide the "Or continue with Google" section since they are already using Google
-        document.getElementById("g_id_onload").parentElement.style.display = "none";
-        document.querySelector(".mt-6.flex.items-center.justify-between").style.display = "none";
+        // Hide the "Or continue with Google" section safely
+        const googleButtonContainer = document.querySelector(".g_id_signin");
+        const orDivider = document.querySelector(".mt-6.flex.items-center.justify-between");
+        
+        if(googleButtonContainer) googleButtonContainer.style.display = "none";
+        if(orDivider) orDivider.style.display = "none";
         
         // Let them know what's happening
         setTimeout(() => alert(`Welcome ${pendingGoogleData.name}! Please provide your WhatsApp number to complete your registration.`), 100);

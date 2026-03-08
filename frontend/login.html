@@ -164,8 +164,10 @@ async function handleCredentialResponse(response) {
         });
 
         const data = await res.json();
+        console.log("Backend response for Google Auth:", data);
 
         if (res.status === 404 && data.googleData) {
+            console.log("Redirecting to signup with data:", data.googleData);
             // User does not exist yet. Redirect them to signup to collect their phone number!
             sessionStorage.setItem("pendingGoogleSignup", JSON.stringify(data.googleData));
             window.location.href = "signup.html";
