@@ -2,113 +2,130 @@
 <html lang="en">
 
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Premium Menu | Royal Sweets</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Premium Menu | Royal Sweets</title>
 
-<script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
 
-<script>
-if(!localStorage.getItem("royalSweetsUser")){
-window.location.href="login.html";
-}
-</script>
+    <script>
+        if (!localStorage.getItem("royalSweetsUser")) {
+            window.location.href = "login.html";
+        }
+    </script>
 
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;800&display=swap"
+        rel="stylesheet">
 
-<style>
-body{font-family:'Plus Jakarta Sans',sans-serif;}
-.category-pill.active{background:#f97316;color:white}
-.glass-morphism{background:rgba(255,255,255,.8);backdrop-filter:blur(10px)}
-</style>
+    <style>
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+        }
+
+        .category-pill.active {
+            background: #f97316;
+            color: white
+        }
+
+        .glass-morphism {
+            background: rgba(255, 255, 255, .8);
+            backdrop-filter: blur(10px)
+        }
+    </style>
 </head>
 
 <body class="bg-slate-50 pb-32">
 
-<!-- NAV -->
-<nav class="sticky top-0 z-50 bg-white/80 backdrop-blur-xl border-b border-slate-100 px-6 py-5 shadow-sm">
-<div class="max-w-4xl mx-auto flex justify-between items-center">
-<a href="index.html"
-class="w-12 h-12 flex items-center justify-center rounded-full bg-slate-50 text-slate-700 shadow-sm border border-slate-200 hover:bg-orange-50 hover:text-orange-500 hover:border-orange-200 transition-all duration-300">
-<i class="fa-solid fa-arrow-left"></i>
-</a>
+    <!-- NAV -->
+    <nav class="sticky top-0 z-50 bg-white/80 backdrop-blur-xl border-b border-slate-100 px-6 py-5 shadow-sm">
+        <div class="max-w-4xl mx-auto flex justify-between items-center">
+            <a href="index.html"
+                class="w-12 h-12 flex items-center justify-center rounded-full bg-slate-50 text-slate-700 shadow-sm border border-slate-200 hover:bg-orange-50 hover:text-orange-500 hover:border-orange-200 transition-all duration-300">
+                <i class="fa-solid fa-arrow-left"></i>
+            </a>
 
-<h1 class="text-2xl font-black text-slate-800 tracking-tight">Royal Menu</h1>
+            <h1 class="text-2xl font-black text-slate-800 tracking-tight">Royal Menu</h1>
 
-<div class="w-12 h-12"></div>
-</div>
-</nav>
+            <div class="w-12 h-12"></div>
+        </div>
+    </nav>
 
-<!-- SEARCH -->
-<div class="max-w-4xl mx-auto px-6 mt-8">
+    <!-- SEARCH -->
+    <div class="max-w-4xl mx-auto px-6 mt-8">
 
-<div class="relative w-full shadow-sm rounded-2xl group focus-within:ring-4 focus-within:ring-orange-500/20 transition-all">
-<i class="fa-solid fa-magnifying-glass absolute left-5 top-1/2 -translate-y-1/2 text-slate-400 group-focus-within:text-orange-500"></i>
+        <div
+            class="relative w-full shadow-sm rounded-2xl group focus-within:ring-4 focus-within:ring-orange-500/20 transition-all">
+            <i
+                class="fa-solid fa-magnifying-glass absolute left-5 top-1/2 -translate-y-1/2 text-slate-400 group-focus-within:text-orange-500"></i>
 
-<input id="searchInput"
-onkeyup="searchMenu()"
-placeholder="Search your cravings..."
-class="w-full bg-white border border-slate-200 py-4 pl-14 pr-6 rounded-2xl outline-none text-slate-700 font-medium text-lg">
-</div>
+            <input id="searchInput" onkeyup="searchMenu()" placeholder="Search your cravings..."
+                class="w-full bg-white border border-slate-200 py-4 pl-14 pr-6 rounded-2xl outline-none text-slate-700 font-medium text-lg">
+        </div>
 
-<!-- CATEGORY -->
-<div class="flex gap-4 mt-8 pb-3 overflow-x-auto">
+        <!-- CATEGORY -->
+        <div class="flex gap-4 mt-8 pb-3 overflow-x-auto">
 
-<button onclick="filterCategory('all')" class="category-pill active px-8 py-3.5 rounded-full font-bold text-sm shadow-sm border">All Items</button>
+            <button onclick="filterCategory('all')"
+                class="category-pill active px-8 py-3.5 rounded-full font-bold text-sm shadow-sm border">All
+                Items</button>
 
-<button onclick="filterCategory('Sweets')" class="category-pill bg-white text-slate-500 border px-8 py-3.5 rounded-full font-bold text-sm">Sweets</button>
+            <button onclick="filterCategory('Sweets')"
+                class="category-pill bg-white text-slate-500 border px-8 py-3.5 rounded-full font-bold text-sm">Sweets</button>
 
-<button onclick="filterCategory('Snacks')" class="category-pill bg-white text-slate-500 border px-8 py-3.5 rounded-full font-bold text-sm">Snacks</button>
+            <button onclick="filterCategory('Snacks')"
+                class="category-pill bg-white text-slate-500 border px-8 py-3.5 rounded-full font-bold text-sm">Snacks</button>
 
-<button onclick="filterCategory('Drinks')" class="category-pill bg-white text-slate-500 border px-8 py-3.5 rounded-full font-bold text-sm">Drinks</button>
+            <button onclick="filterCategory('Drinks')"
+                class="category-pill bg-white text-slate-500 border px-8 py-3.5 rounded-full font-bold text-sm">Drinks</button>
 
-</div>
-</div>
+        </div>
+    </div>
 
-<!-- MENU -->
-<main class="max-w-4xl mx-auto px-6 mt-8 grid grid-cols-1 md:grid-cols-2 gap-6" id="menuContainer"></main>
+    <!-- MENU -->
+    <main class="max-w-4xl mx-auto px-6 mt-8 grid grid-cols-1 md:grid-cols-2 gap-6" id="menuContainer"></main>
 
-<!-- CART BAR -->
-<div id="cartBar"
-class="fixed bottom-8 left-1/2 -translate-x-1/2 w-[calc(100%-3rem)] max-w-2xl bg-slate-900 rounded-[2rem] p-4 pl-8 flex justify-between items-center shadow-2xl translate-y-40 transition-transform duration-500 z-50">
+    <!-- CART BAR -->
+    <div id="cartBar"
+        class="fixed bottom-6 sm:bottom-8 left-1/2 -translate-x-1/2 w-[calc(100%-2rem)] sm:w-[calc(100%-3rem)] max-w-2xl bg-slate-900 rounded-[2rem] p-3 pl-4 pr-3 sm:p-4 sm:pl-8 flex justify-between items-center shadow-2xl translate-y-40 transition-transform duration-500 z-50">
 
-<div class="flex items-center gap-5">
+        <div class="flex items-center gap-3 sm:gap-5 shrink-0">
 
-<div class="w-12 h-12 bg-slate-800 rounded-full flex items-center justify-center relative">
-<i class="fa-solid fa-basket-shopping text-orange-400 text-xl"></i>
-</div>
+            <div
+                class="w-10 h-10 sm:w-12 sm:h-12 bg-slate-800 rounded-full flex items-center justify-center relative shrink-0">
+                <i class="fa-solid fa-basket-shopping text-orange-400 text-base sm:text-xl"></i>
+            </div>
 
-<div>
-<span class="text-slate-400 text-xs font-bold uppercase">Total Amount</span>
-<p class="text-white font-black text-2xl">₹<span id="totalPrice">0</span></p>
-</div>
+            <div class="flex flex-col justify-center">
+                <span class="text-slate-400 text-[10px] sm:text-xs font-bold uppercase leading-none mb-1">Total</span>
+                <p class="text-white font-black text-xl sm:text-2xl leading-none">₹<span id="totalPrice">0</span></p>
+            </div>
 
-</div>
+        </div>
 
-<button onclick="window.location.href='checkout.html'"
-class="bg-orange-500 text-white px-8 py-4 rounded-2xl font-black text-sm shadow-lg flex items-center gap-3">
-CHECKOUT <i class="fa-solid fa-arrow-right text-xs"></i>
-</button>
+        <button onclick="window.location.href='checkout.html'"
+            class="bg-orange-500 text-white px-5 py-3 sm:px-8 sm:py-4 rounded-xl sm:rounded-2xl font-black text-xs sm:text-sm shadow-lg hover:bg-orange-600 active:scale-95 transition-all flex items-center gap-2 shrink-0 whitespace-nowrap">
+            CHECKOUT <i class="fa-solid fa-arrow-right"></i>
+        </button>
 
-</div>
+    </div>
 
-<script>
+    <script>
 
-let cart = JSON.parse(localStorage.getItem("activeCart")) || [];
+        let cart = JSON.parse(localStorage.getItem("activeCart")) || [];
 
-/* LOAD MENU */
-async function loadMenu(){
+        /* LOAD MENU */
+        async function loadMenu() {
 
-const res = await fetch("https://restaurant-site-8y41.onrender.com/api/menu");
-const menu = await res.json();
+            const res = await fetch("https://restaurant-site-8y41.onrender.com/api/menu");
+            const menu = await res.json();
 
-const container=document.getElementById("menuContainer");
-container.innerHTML="";
+            const container = document.getElementById("menuContainer");
+            container.innerHTML = "";
 
-menu.forEach(item=>{
+            menu.forEach(item => {
 
-container.innerHTML += `
+                container.innerHTML += `
 
 <div class="menu-item group bg-white p-5 rounded-3xl shadow-sm border flex flex-col sm:flex-row gap-5" data-category="${item.category}">
 
@@ -147,104 +164,105 @@ class="bg-orange-500 text-white px-5 py-2.5 rounded-xl text-sm font-bold shadow-
 
 `;
 
-});
+            });
 
-}
+        }
 
-/* ADD TO CART */
+        /* ADD TO CART */
 
-function addToCart(name,price){
+        function addToCart(name, price) {
 
-const item={
-name:name,
-price:price
-};
+            const item = {
+                name: name,
+                price: price
+            };
 
-cart.push(item);
+            cart.push(item);
 
-localStorage.setItem("activeCart",JSON.stringify(cart));
+            localStorage.setItem("activeCart", JSON.stringify(cart));
 
-updateCartBar();
+            updateCartBar();
 
-}
+        }
 
-/* CART BAR */
+        /* CART BAR */
 
-function updateCartBar(){
+        function updateCartBar() {
 
-const bar=document.getElementById("cartBar");
+            const bar = document.getElementById("cartBar");
 
-if(cart.length>0){
+            if (cart.length > 0) {
 
-bar.classList.remove("translate-y-40");
+                bar.classList.remove("translate-y-40");
 
-const total=cart.reduce((sum,i)=>sum+i.price,0);
+                const total = cart.reduce((sum, i) => sum + i.price, 0);
 
-document.getElementById("totalPrice").innerText=total;
+                document.getElementById("totalPrice").innerText = total;
 
-}else{
+            } else {
 
-bar.classList.add("translate-y-40");
+                bar.classList.add("translate-y-40");
 
-}
+            }
 
-}
+        }
 
-/* SEARCH */
+        /* SEARCH */
 
-function searchMenu(){
+        function searchMenu() {
 
-let input=document.getElementById("searchInput").value.toLowerCase();
+            let input = document.getElementById("searchInput").value.toLowerCase();
 
-let items=document.getElementsByClassName("menu-item");
+            let items = document.getElementsByClassName("menu-item");
 
-for(let i=0;i<items.length;i++){
+            for (let i = 0; i < items.length; i++) {
 
-let name=items[i].querySelector(".item-name").innerText.toLowerCase();
+                let name = items[i].querySelector(".item-name").innerText.toLowerCase();
 
-items[i].style.display=name.includes(input)?"flex":"none";
+                items[i].style.display = name.includes(input) ? "flex" : "none";
 
-}
+            }
 
-}
+        }
 
-/* FILTER */
+        /* FILTER */
 
-function filterCategory(cat){
+        function filterCategory(cat) {
 
-let items=document.getElementsByClassName("menu-item");
+            let items = document.getElementsByClassName("menu-item");
 
-for(let i=0;i<items.length;i++){
+            for (let i = 0; i < items.length; i++) {
 
-if(cat==="all") items[i].style.display="flex";
+                if (cat === "all") items[i].style.display = "flex";
 
-else items[i].style.display=items[i].dataset.category===cat?"flex":"none";
+                else items[i].style.display = items[i].dataset.category === cat ? "flex" : "none";
 
-}
+            }
 
-}
+        }
 
-/* INIT */
+        /* INIT */
 
-window.onload=async()=>{
+        window.onload = async () => {
 
-await loadMenu();
+            await loadMenu();
 
-updateCartBar();
+            updateCartBar();
 
-const urlParams=new URLSearchParams(window.location.search);
+            const urlParams = new URLSearchParams(window.location.search);
 
-const initialCategory=urlParams.get("category");
+            const initialCategory = urlParams.get("category");
 
-if(initialCategory){
+            if (initialCategory) {
 
-filterCategory(initialCategory);
+                filterCategory(initialCategory);
 
-}
+            }
 
-}
+        }
 
-</script>
+    </script>
 
 </body>
+
 </html>
