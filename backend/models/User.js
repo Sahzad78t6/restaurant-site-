@@ -18,8 +18,11 @@ type:String
 },
 
 password:{
-type:String,
-required:true
+type:String
+},
+
+googleId:{
+type:String
 },
 
 role:{

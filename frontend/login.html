@@ -18,6 +18,9 @@
 body { font-family: 'Plus Jakarta Sans', sans-serif; }
 </style>
 
+<!-- Google Identity SDK -->
+<script src="https://accounts.google.com/gsi/client" async defer></script>
+
 </head>
 
 <body class="bg-slate-50 min-h-screen flex flex-col items-center justify-center p-4 relative overflow-hidden">
@@ -70,6 +73,32 @@ body { font-family: 'Plus Jakarta Sans', sans-serif; }
             </button>
         </form>
 
+        <div class="mt-8 flex items-center justify-between">
+            <span class="border-b border-slate-200 w-1/5 lg:w-1/4"></span>
+            <span class="text-xs text-center text-slate-500 uppercase font-bold tracking-widest">or continue with</span>
+            <span class="border-b border-slate-200 w-1/5 lg:w-1/4"></span>
+        </div>
+
+        <div class="mt-6 flex justify-center">
+            <div id="g_id_onload"
+                 data-client_id="202166681296-2vbnjbi9cln832c8dg2bus3u2sjgrbrg.apps.googleusercontent.com"
+                 data-context="signin"
+                 data-ux_mode="popup"
+                 data-callback="handleCredentialResponse"
+                 data-auto_prompt="false">
+            </div>
+            <!-- Google Sign-In Button Container -->
+            <div class="g_id_signin"
+                 data-type="standard"
+                 data-shape="rectangular"
+                 data-theme="outline"
+                 data-text="signin_with"
+                 data-size="large"
+                 data-logo_alignment="left"
+                 data-width="340">
+            </div>
+        </div>
+
         <p class="text-center mt-8 text-sm font-medium text-slate-500">
             Don't have an account? 
             <a href="signup.html" class="text-orange-600 font-bold hover:underline underline-offset-4 decoration-2 transition-all">
@@ -81,73 +110,83 @@ body { font-family: 'Plus Jakarta Sans', sans-serif; }
 
 <script>
 
+// Helper to detect if testing locally to avoid frustrating CORS/Network errors before deploying on Render
+const getBaseUrl = () => {
+    return (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') 
+        ? "http://localhost:5000" 
+        : "https://restaurant-site-8y41.onrender.com";
+};
+
+// 1. Traditional Login
 document.getElementById("loginForm").addEventListener("submit", async function(e){
+    e.preventDefault();
+    const email=document.getElementById("email").value;
+    const password=document.getElementById("password").value;
 
-e.preventDefault();
+    try{
+        const res = await fetch(`${getBaseUrl()}/api/auth/login`,{
+            method:"POST",
+            headers:{ "Content-Type":"application/json" },
+            body:JSON.stringify({ email, password })
+        });
 
-const email=document.getElementById("email").value;
-const password=document.getElementById("password").value;
+        const data = await res.json();
+        if(res.status!==200){
+            alert(data.message);
+            return;
+        }
 
-try{
+        /* SAVE USER */
+        localStorage.setItem("royalSweetsUser",JSON.stringify(data));
 
-const res = await fetch("https://restaurant-site-8y41.onrender.com/api/auth/login",{
-
-method:"POST",
-
-headers:{
-"Content-Type":"application/json"
-},
-
-body:JSON.stringify({
-email,
-password
-})
-
+        /* ROLE BASED REDIRECT */
+        if(data.role==="delivery"){
+            window.location.href="delivery-dashboard.html";
+        } else if(data.role==="admin"){
+            window.location.href="admin-dashboard.html";
+        } else{
+            window.location.href="menu.html";
+        }
+    }catch(err){
+        console.log(err);
+        alert("Login failed");
+    }
 });
 
-const data = await res.json();
+// 2. Seamless Google Auth Callback
+async function handleCredentialResponse(response) {
+    try {
+        // Send Google token to our backend
+        const res = await fetch(`${getBaseUrl()}/api/auth/google`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ token: response.credential })
+        });
 
-if(res.status!==200){
+        const data = await res.json();
 
-alert(data.message);
-return;
+        if (res.status !== 200) {
+            alert(data.message || "Google Login failed");
+            return;
+        }
 
+        /* SAVE USER */
+        localStorage.setItem("royalSweetsUser", JSON.stringify(data));
+
+        /* ROLE BASED REDIRECT */
+        if(data.role==="delivery"){
+            window.location.href="delivery-dashboard.html";
+        } else if(data.role==="admin"){
+            window.location.href="admin-dashboard.html";
+        } else{
+            window.location.href="menu.html";
+        }
+
+    } catch(err) {
+        console.log("Google error: ", err);
+        alert("Google Verification failed");
+    }
 }
-
-/* SAVE USER */
-
-localStorage.setItem("royalSweetsUser",JSON.stringify(data));
-
-
-/* ROLE BASED REDIRECT */
-
-if(data.role==="delivery"){
-
-window.location.href="delivery-dashboard.html";
-
-}
-
-else if(data.role==="admin"){
-
-window.location.href="admin-dashboard.html";
-
-}
-
-else{
-
-window.location.href="menu.html";
-
-}
-
-}catch(err){
-
-console.log(err);
-
-alert("Login failed");
-
-}
-
-});
 
 </script>
 
