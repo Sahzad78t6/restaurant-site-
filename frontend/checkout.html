@@ -464,6 +464,7 @@
 
             const phone = document.getElementById("phone").value.trim();
             const address = document.getElementById("address").value.trim();
+            const paymentMethod = document.querySelector('input[name="pay"]:checked').value;
             
             // Basic number validation (must be roughly 10 digits to be vaguely valid)
             const cleanPhone = phone.replace(/\D/g, ''); 
@@ -478,46 +479,62 @@
                 return;
             }
 
+            // UPI Payment Helper
+            function payWithUPI(amount) {
+                const upiID = "8260722846@ybl";
+                const name = "Royal Sweets";
+                const url = `upi://pay?pa=${upiID}&pn=${encodeURIComponent(name)}&am=${amount}&cu=INR`;
+                window.location.href = url;
+            }
+
             document.getElementById("order-card").classList.add("hidden");
             document.getElementById("loading").classList.remove("hidden");
             document.getElementById("loading").classList.add("flex");
 
-            // Build request
+            // Build payload
             const orderPayload = {
                 userId: user.id || "anonymous",
                 items: cart,
                 totalAmount: total,
-                status: "Pending",
+                status: paymentMethod === 'UPI' ? "Payment Pending" : "Pending",
                 deliveryAddress: address,
-                phoneNumber: phone
+                phoneNumber: phone,
+                paymentMethod: paymentMethod
             };
 
             console.log("SENDING ORDER TO BACKEND: ", orderPayload);
 
             try {
-                // In production, uncomment the fetch call
-                // const res = await fetch("https://restaurant-site-8y41.onrender.com/api/orders/create", {
-                //     method: "POST",
-                //     headers: { "Content-Type": "application/json" },
-                //     body: JSON.stringify(orderPayload)
-                // });
-                
-                // if (!res.ok) throw new Error("Order rejected by server");
-                
-                // Dummy network wait for now since create order API is unconfirmed in previous context
-                await new Promise(resolve => setTimeout(resolve, 2000));
-
+                // Determine order array to save locally
                 let existingOrders = JSON.parse(localStorage.getItem(`orders_${user.phone}`)) || [];
-                existingOrders.push({
+                const newOrder = {
                     _id: "ORD-" + Math.floor(Math.random() * 90000 + 10000),
                     items: cart,
                     totalAmount: total,
-                    status: "Pending",
+                    status: paymentMethod === 'UPI' ? "Payment Pending" : "Pending",
                     createdAt: new Date().toISOString(),
                     address: address,
-                    phone: phone
-                });
+                    phone: phone,
+                    paymentMethod: paymentMethod
+                };
 
+                // If UPI, trigger the native deep link and bypass the success screen temporarily
+                if (paymentMethod === "UPI") {
+                    existingOrders.push(newOrder);
+                    localStorage.setItem(`orders_${user.phone}`, JSON.stringify(existingOrders));
+                    localStorage.removeItem("activeCart"); // clear cart!
+                    
+                    // Small delay to ensure loading state shows before redirect
+                    setTimeout(() => {
+                        payWithUPI(total);
+                    }, 500);
+                    return;
+                }
+
+                // Normal COD flow dummy wait
+                await new Promise(resolve => setTimeout(resolve, 2000));
+
+                existingOrders.push(newOrder);
                 localStorage.setItem(`orders_${user.phone}`, JSON.stringify(existingOrders));
 
                 document.getElementById("loading").classList.add("hidden");
