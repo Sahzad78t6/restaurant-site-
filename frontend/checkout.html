@@ -250,9 +250,14 @@
         <!-- LOADING STATE -->
         <div id="loading"
             class="hidden flex-col items-center justify-center p-12 bg-dark-800 rounded-3xl shadow-[0_10px_40px_rgba(0,0,0,0.5)] border border-dark-700 min-h-[500px]">
-            <div class="w-20 h-20 border-4 border-dark-700 border-t-brand-orange rounded-full animate-spin mb-6"></div>
-            <h3 class="text-2xl font-display font-black text-white tracking-widest uppercase mb-2">Processing</h3>
-            <p class="text-gray-400 font-medium">Securing your order details...</p>
+            <div class="relative w-24 h-24 mb-10 flex items-center justify-center">
+                <div class="absolute inset-0 border-4 border-dark-700 rounded-full"></div>
+                <div class="absolute inset-0 border-4 border-brand-orange rounded-full border-t-transparent animate-spin">
+                </div>
+                <i data-lucide="utensils" class="text-brand-orange w-8 h-8 animate-pulse"></i>
+            </div>
+            <h2 class="text-3xl font-display font-bold text-white tracking-wide mb-3">Processing Order</h2>
+            <p class="text-gray-400 font-medium text-center">Please wait while we confirm your details with Royal Sweets...</p>
         </div>
 
         <!-- QR CODE MODAL FOR UPI -->
@@ -272,15 +277,6 @@
                 I have paid
             </button>
             <p class="text-xs text-gray-500 mt-4 leading-relaxed max-w-xs">Your payment will be manually verified before the order is prepared.</p>
-        </div>
-            <div class="relative w-24 h-24 mb-10 flex items-center justify-center">
-                <div class="absolute inset-0 border-4 border-dark-700 rounded-full"></div>
-                <div class="absolute inset-0 border-4 border-brand-orange rounded-full border-t-transparent animate-spin">
-                </div>
-                <i data-lucide="utensils" class="text-brand-orange w-8 h-8 animate-pulse"></i>
-            </div>
-            <h2 class="text-3xl font-display font-bold text-white tracking-wide mb-3">Processing Order</h2>
-            <p class="text-gray-400 font-medium text-center">Please wait while we confirm your details with Royal Sweets...</p>
         </div>
 
         <!-- SUCCESS STATE -->
