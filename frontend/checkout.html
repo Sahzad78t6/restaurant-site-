@@ -16,10 +16,6 @@
     <!-- Icons -->
     <script src="https://unpkg.com/lucide@latest"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-
-    <!-- QR Code Generator -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
-
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
@@ -222,23 +218,6 @@
                             <span class="text-xs font-medium text-gray-500 mt-1">Pay when your food arrives</span>
                         </div>
                     </div>
-                    <input type="radio" name="pay" value="COD" checked class="accent-brand-orange w-5 h-5 cursor-pointer">
-                </label>
-
-                <label onclick="updatePaymentUI('upi')"
-                    class="payment-option flex items-center justify-between p-5 bg-dark-900 rounded-2xl border-2 border-transparent cursor-pointer transition-all hover:bg-dark-800 hover:border-dark-700">
-                    <div class="flex items-center gap-5">
-                        <div
-                            class="w-12 h-12 bg-blue-500/10 border border-blue-500/20 text-blue-500 rounded-xl flex items-center justify-center shadow-sm">
-                            <i data-lucide="smartphone" class="w-6 h-6"></i>
-                        </div>
-                        <div class="flex flex-col">
-                            <span class="font-bold text-white text-lg">UPI Payment</span>
-                            <span class="text-xs font-medium text-gray-500 mt-1">GPay, PhonePe, Paytm</span>
-                        </div>
-                    </div>
-                    <input type="radio" name="pay" value="UPI" class="accent-brand-orange w-5 h-5 cursor-pointer">
-                </label>
             </div>
 
             <button onclick="processOrder()"
@@ -259,26 +238,6 @@
             <h2 class="text-3xl font-display font-bold text-white tracking-wide mb-3">Processing Order</h2>
             <p class="text-gray-400 font-medium text-center">Please wait while we confirm your details with Royal Sweets...</p>
         </div>
-
-        <!-- QR CODE MODAL FOR UPI -->
-        <div id="upiModal"
-            class="hidden flex-col items-center justify-center p-8 bg-dark-800 rounded-3xl shadow-[0_10px_40px_rgba(0,0,0,0.5)] border border-dark-700 min-h-[500px] text-center">
-            <h3 class="text-2xl font-display font-black text-white tracking-widest uppercase mb-2">Scan & Pay</h3>
-            <p class="text-gray-400 font-medium mb-8">Scan the QR code below using any UPI app (GPay, PhonePe, Paytm)</p>
-            
-            <div class="bg-white p-4 rounded-2xl mb-6 inline-block">
-                <div id="qrcode" class="w-48 h-48 mx-auto flex items-center justify-center"></div>
-            </div>
-
-            <p class="text-3xl font-black text-brand-orange tracking-tight mb-8">₹<span id="qrTotal"></span></p>
-
-            <button onclick="confirmUpiPayment()"
-                class="w-full max-w-xs bg-green-500 text-white py-4 rounded-xl font-bold uppercase tracking-widest hover:bg-green-600 transition-all shadow-[0_0_15px_rgba(34,197,94,0.3)]">
-                I have paid
-            </button>
-            <p class="text-xs text-gray-500 mt-4 leading-relaxed max-w-xs">Your payment will be manually verified before the order is prepared.</p>
-        </div>
-
         <!-- SUCCESS STATE -->
         <div id="success"
             class="hidden text-center py-16 px-6 bg-dark-800 rounded-3xl shadow-[0_10px_40px_rgba(0,0,0,0.5)] border border-dark-700 min-h-[500px] flex-col justify-center">
@@ -485,7 +444,6 @@
 
             const phone = document.getElementById("phone").value.trim();
             const address = document.getElementById("address").value.trim();
-            const paymentMethod = document.querySelector('input[name="pay"]:checked').value;
             
             // Basic number validation (must be roughly 10 digits to be vaguely valid)
             const cleanPhone = phone.replace(/\D/g, ''); 
@@ -500,87 +458,46 @@
                 return;
             }
 
-            // UPI Payment Helper
-            function payWithUPI(amount) {
-                const upiID = "8260722846@ybl";
-                const name = "Royal Sweets";
-                const tr = "TXN" + Date.now(); // Transaction reference
-                
-                // Add Merchant Code (mc=0000 generic retail) and Transaction Ref (tr) to prevent security blocks
-                const url = `upi://pay?pa=${upiID}&pn=${encodeURIComponent(name)}&tr=${tr}&am=${amount}&cu=INR&mc=0000`;
-                window.location.href = url;
-            }
-
             document.getElementById("order-card").classList.add("hidden");
             document.getElementById("loading").classList.remove("hidden");
             document.getElementById("loading").classList.add("flex");
 
-            // Build payload
+            // Build request
             const orderPayload = {
                 userId: user.id || "anonymous",
                 items: cart,
                 totalAmount: total,
-                status: paymentMethod === 'UPI' ? "Payment Pending" : "Pending",
+                status: "Pending",
                 deliveryAddress: address,
-                phoneNumber: phone,
-                paymentMethod: paymentMethod
+                phoneNumber: phone
             };
 
             console.log("SENDING ORDER TO BACKEND: ", orderPayload);
 
             try {
-                // Determine order array to save locally
+                // In production, uncomment the fetch call
+                // const res = await fetch("https://restaurant-site-8y41.onrender.com/api/orders/create", {
+                //     method: "POST",
+                //     headers: { "Content-Type": "application/json" },
+                //     body: JSON.stringify(orderPayload)
+                // });
+                
+                // if (!res.ok) throw new Error("Order rejected by server");
+                
+                // Dummy network wait for now since create order API is unconfirmed in previous context
+                await new Promise(resolve => setTimeout(resolve, 2000));
+
                 let existingOrders = JSON.parse(localStorage.getItem(`orders_${user.phone}`)) || [];
-                const newOrder = {
+                existingOrders.push({
                     _id: "ORD-" + Math.floor(Math.random() * 90000 + 10000),
                     items: cart,
                     totalAmount: total,
-                    status: paymentMethod === 'UPI' ? "Payment Pending" : "Pending",
+                    status: "Pending",
                     createdAt: new Date().toISOString(),
                     address: address,
-                    phone: phone,
-                    paymentMethod: paymentMethod
-                };
+                    phone: phone
+                });
 
-                // If UPI, generate QR Code and show Scan & Pay Modal
-                if (paymentMethod === "UPI") {
-                    existingOrders.push(newOrder);
-                    localStorage.setItem(`orders_${user.phone}`, JSON.stringify(existingOrders));
-                    localStorage.removeItem("activeCart"); // clear cart!
-                    
-                    setTimeout(() => {
-                        // Generate UPI URI
-                        const upiID = "8260722846@ybl";
-                        const name = "Royal Sweets";
-                        const tr = "TXN" + Date.now();
-                        const url = `upi://pay?pa=${upiID}&pn=${encodeURIComponent(name)}&tr=${tr}&am=${total}&cu=INR&mc=0000`;
-                        
-                        document.getElementById("qrTotal").innerText = total;
-                        document.getElementById("qrcode").innerHTML = ""; // clear old
-                        
-                        document.getElementById("loading").classList.add("hidden");
-                        document.getElementById("loading").classList.remove("flex");
-
-                        // Render QR
-                        new QRCode(document.getElementById("qrcode"), {
-                            text: url,
-                            width: 192,
-                            height: 192,
-                            colorDark : "#0a0a0a",
-                            colorLight : "#ffffff",
-                            correctLevel : QRCode.CorrectLevel.H
-                        });
-
-                        document.getElementById("upiModal").classList.remove("hidden");
-                        document.getElementById("upiModal").classList.add("flex");
-                    }, 800);
-                    return;
-                }
-
-                // Normal COD flow dummy wait
-                await new Promise(resolve => setTimeout(resolve, 2000));
-
-                existingOrders.push(newOrder);
                 localStorage.setItem(`orders_${user.phone}`, JSON.stringify(existingOrders));
 
                 document.getElementById("loading").classList.add("hidden");
@@ -598,16 +515,6 @@
                 document.getElementById("order-card").classList.remove("hidden");
             }
 
-        }
-
-        // Called when user clicks "I have paid" on the QR modal
-        function confirmUpiPayment() {
-            document.getElementById("upiModal").classList.add("hidden");
-            document.getElementById("upiModal").classList.remove("flex");
-            
-            document.getElementById("success").classList.remove("hidden");
-            document.getElementById("success").classList.add("flex");
-            // NOTE: In production, there would be an API call here to verify the external payment status via gateway hooks
         }
 
         /* INIT */
