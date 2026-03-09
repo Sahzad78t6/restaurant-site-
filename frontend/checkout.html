@@ -466,26 +466,24 @@
             const orderPayload = {
                 userId: user.id || "anonymous",
                 items: cart,
-                totalAmount: total,
+                total: total,
                 status: "Pending",
-                deliveryAddress: address,
-                phoneNumber: phone
+                address: address,
+                phone: phone
             };
 
             console.log("SENDING ORDER TO BACKEND: ", orderPayload);
 
             try {
                 // In production, uncomment the fetch call
-                // const res = await fetch("https://restaurant-site-8y41.onrender.com/api/orders/create", {
-                //     method: "POST",
-                //     headers: { "Content-Type": "application/json" },
-                //     body: JSON.stringify(orderPayload)
-                // });
+                const res = await fetch("https://restaurant-site-8y41.onrender.com/api/orders/create", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify(orderPayload)
+                });
                 
-                // if (!res.ok) throw new Error("Order rejected by server");
-                
-                // Dummy network wait for now since create order API is unconfirmed in previous context
-                await new Promise(resolve => setTimeout(resolve, 2000));
+                if (!res.ok) throw new Error("Order rejected by server");
+
 
                 let existingOrders = JSON.parse(localStorage.getItem(`orders_${user.phone}`)) || [];
                 existingOrders.push({
