@@ -464,7 +464,7 @@
 
             // Build request
             const orderPayload = {
-                userId: user.id || "anonymous",
+                userId: user._id,
                 items: cart,
                 total: total,
                 status: "Pending",
