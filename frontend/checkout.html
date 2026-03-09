@@ -17,6 +17,8 @@
     <script src="https://unpkg.com/lucide@latest"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
+    <!-- QR Code Generator -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
 
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
@@ -544,16 +546,38 @@
                     paymentMethod: paymentMethod
                 };
 
-                // If UPI, trigger the native deep link and bypass the success screen temporarily
+                // If UPI, generate QR Code and show Scan & Pay Modal
                 if (paymentMethod === "UPI") {
                     existingOrders.push(newOrder);
                     localStorage.setItem(`orders_${user.phone}`, JSON.stringify(existingOrders));
                     localStorage.removeItem("activeCart"); // clear cart!
                     
-                    // Small delay to ensure loading state shows before redirect
                     setTimeout(() => {
-                        payWithUPI(total);
-                    }, 500);
+                        // Generate UPI URI
+                        const upiID = "8260722846@ybl";
+                        const name = "Royal Sweets";
+                        const tr = "TXN" + Date.now();
+                        const url = `upi://pay?pa=${upiID}&pn=${encodeURIComponent(name)}&tr=${tr}&am=${total}&cu=INR&mc=0000`;
+                        
+                        document.getElementById("qrTotal").innerText = total;
+                        document.getElementById("qrcode").innerHTML = ""; // clear old
+                        
+                        document.getElementById("loading").classList.add("hidden");
+                        document.getElementById("loading").classList.remove("flex");
+
+                        // Render QR
+                        new QRCode(document.getElementById("qrcode"), {
+                            text: url,
+                            width: 192,
+                            height: 192,
+                            colorDark : "#0a0a0a",
+                            colorLight : "#ffffff",
+                            correctLevel : QRCode.CorrectLevel.H
+                        });
+
+                        document.getElementById("upiModal").classList.remove("hidden");
+                        document.getElementById("upiModal").classList.add("flex");
+                    }, 800);
                     return;
                 }
 
@@ -578,6 +602,16 @@
                 document.getElementById("order-card").classList.remove("hidden");
             }
 
+        }
+
+        // Called when user clicks "I have paid" on the QR modal
+        function confirmUpiPayment() {
+            document.getElementById("upiModal").classList.add("hidden");
+            document.getElementById("upiModal").classList.remove("flex");
+            
+            document.getElementById("success").classList.remove("hidden");
+            document.getElementById("success").classList.add("flex");
+            // NOTE: In production, there would be an API call here to verify the external payment status via gateway hooks
         }
 
         /* INIT */
