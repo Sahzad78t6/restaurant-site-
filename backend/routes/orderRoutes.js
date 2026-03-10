@@ -237,4 +237,36 @@ router.put("/location/:id", async (req, res) => {
     res.json(order);
 
 });
+
+/* CANCEL ORDER */
+router.put("/cancel/:id", async (req, res) => {
+    try {
+        const { reason } = req.body;
+        const order = await Order.findById(req.params.id);
+        
+        if (!order) return res.status(404).json({ success: false, message: "Order not found" });
+
+        // Check if order is too far along to cancel
+        const uncancelableStatuses = ["On Way", "Arrived", "Delivered"];
+        if (uncancelableStatuses.includes(order.status)) {
+            return res.status(400).json({ 
+                success: false, 
+                message: "This order cannot be cancelled as it is already " + order.status 
+            });
+        }
+
+        // Cancel the order
+        order.status = "Cancelled";
+        if (reason) order.cancellationReason = reason;
+        
+        await order.save();
+
+        res.json({ success: true, message: "Order cancelled successfully", order });
+
+    } catch (err) {
+        console.log("Cancel Error:", err);
+        res.status(500).json({ success: false, message: "Server error during cancellation" });
+    }
+});
+
 module.exports = router;

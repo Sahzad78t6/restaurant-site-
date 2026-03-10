@@ -36,7 +36,7 @@ required:true
 
 status:{
 type:String,
-enum:["Accepted","Kitchen","On Way","Arrived"],
+enum:["Accepted","Kitchen","On Way","Arrived", "Cancelled"],
 default:"Accepted"
 },
 paymentMethod:{
@@ -58,6 +58,10 @@ ref:"User",
 default:null
 },
 deliveryBoyName:{
+type:String,
+default:null
+},
+cancellationReason:{
 type:String,
 default:null
 }
