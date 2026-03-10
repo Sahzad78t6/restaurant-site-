@@ -115,6 +115,7 @@
 
 </head>
 
+<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
 <script>
     const userCheck = localStorage.getItem("royalSweetsUser");
     if (!userCheck) {
@@ -218,6 +219,21 @@
                             <span class="text-xs font-medium text-gray-500 mt-1">Pay when your food arrives</span>
                         </div>
                     </div>
+                </label>
+
+                <label onclick="updatePaymentUI('online')"
+                    class="payment-option flex items-center justify-between p-5 bg-dark-900 rounded-2xl border-2 border-transparent cursor-pointer transition-all hover:bg-dark-800">
+                    <div class="flex items-center gap-5">
+                        <div
+                            class="w-12 h-12 bg-blue-500/10 border border-blue-500/20 text-blue-500 rounded-xl flex items-center justify-center shadow-sm">
+                            <i data-lucide="smartphone" class="w-6 h-6"></i>
+                        </div>
+                        <div class="flex flex-col">
+                            <span class="font-bold text-white text-lg">Online Payment</span>
+                            <span class="text-xs font-medium text-gray-500 mt-1">Pay via UPI / Cards / Netbanking</span>
+                        </div>
+                    </div>
+                </label>
             </div>
 
             <button onclick="processOrder()"
@@ -276,6 +292,7 @@
         const container = document.getElementById('cartItems');
 
         let total = 0;
+        let selectedPaymentMethod = 'cod';
 
         function renderCart() {
             container.innerHTML = "";
@@ -347,6 +364,7 @@
         }
 
         function updatePaymentUI(selected) {
+            selectedPaymentMethod = selected;
             document.querySelectorAll('.payment-option').forEach(el => {
                 el.classList.remove('active', 'border-brand-orange', 'bg-dark-900');
                 el.classList.add('border-transparent');
@@ -475,44 +493,123 @@
             console.log("SENDING ORDER TO BACKEND: ", orderPayload);
 
             try {
-                // In production, uncomment the fetch call
-                const res = await fetch("https://restaurant-site-8y41.onrender.com/api/orders/create", {
-                    method: "POST",
-                    headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify(orderPayload)
-                });
-                
-                if (!res.ok) throw new Error("Order rejected by server");
+                if (selectedPaymentMethod === 'cod') {
+                    // COD FLOW
+                    const res = await fetch("https://restaurant-site-8y41.onrender.com/api/orders/create", {
+                        method: "POST",
+                        headers: { "Content-Type": "application/json" },
+                        body: JSON.stringify(orderPayload)
+                    });
+                    
+                    if (!res.ok) throw new Error("Order rejected by server");
 
+                    finalizeOrder(address, phone);
 
-                let existingOrders = JSON.parse(localStorage.getItem(`orders_${user.phone}`)) || [];
-                existingOrders.push({
-                    _id: "ORD-" + Math.floor(Math.random() * 90000 + 10000),
-                    items: cart,
-                    totalAmount: total,
-                    status: "Pending",
-                    createdAt: new Date().toISOString(),
-                    address: address,
-                    phone: phone
-                });
+                } else if (selectedPaymentMethod === 'online') {
+                    // RAZORPAY FLOW
+                    const rzpReq = await fetch("https://restaurant-site-8y41.onrender.com/api/orders/razorpay/create-order", {
+                        method: "POST",
+                        headers: { "Content-Type": "application/json" },
+                        body: JSON.stringify({ amount: total })
+                    });
+                    
+                    if (!rzpReq.ok) throw new Error("Could not create Razorpay order");
+                    
+                    const orderData = await rzpReq.json();
+                    
+                    const options = {
+                        "key": "rzp_live_SPMT8sf7wug9lY", 
+                        "amount": orderData.amount, 
+                        "currency": "INR",
+                        "name": "Royal Sweets",
+                        "description": "Order Payment",
+                        "order_id": orderData.id, 
+                        "handler": async function (response){
+                            // Payment success callback
+                            try {
+                                const verifyRes = await fetch("https://restaurant-site-8y41.onrender.com/api/orders/razorpay/verify", {
+                                    method: "POST",
+                                    headers: { "Content-Type": "application/json" },
+                                    body: JSON.stringify({
+                                        razorpay_order_id: response.razorpay_order_id,
+                                        razorpay_payment_id: response.razorpay_payment_id,
+                                        razorpay_signature: response.razorpay_signature,
+                                        ...orderPayload // merge physical order details
+                                    })
+                                });
 
-                localStorage.setItem(`orders_${user.phone}`, JSON.stringify(existingOrders));
+                                const verifyData = await verifyRes.json();
 
-                document.getElementById("loading").classList.add("hidden");
-                document.getElementById("loading").classList.remove("flex");
-                
-                document.getElementById("success").classList.remove("hidden");
-                document.getElementById("success").classList.add("flex");
+                                if(verifyData.success) {
+                                    finalizeOrder(address, phone);
+                                } else {
+                                    throw new Error("Payment verification failed");
+                                }
 
-                localStorage.removeItem("activeCart"); // clear cart!
+                            } catch (verifyErr) {
+                                alert("Failed to verify payment. Please contact support.");
+                                resetCheckoutUI();
+                            }
+                        },
+                        "prefill": {
+                            "name": user.name || "Customer",
+                            "email": user.email || "",
+                            "contact": phone
+                        },
+                        "theme": {
+                            "color": "#ff6b00"
+                        },
+                        "modal": {
+                            "ondismiss": function(){
+                                // User closed modal
+                                resetCheckoutUI();
+                            }
+                        }
+                    };
+                    const rzp1 = new Razorpay(options);
+                    rzp1.on('payment.failed', function (response){
+                            alert("Payment Failed. Reason: " + response.error.description);
+                            resetCheckoutUI();
+                    });
+                    rzp1.open();
+
+                }
 
             } catch (err) {
                 console.error("Order failed", err);
                 alert("Something went wrong connecting to the server. Order failed.");
-                document.getElementById("loading").classList.add("hidden");
-                document.getElementById("order-card").classList.remove("hidden");
+                resetCheckoutUI();
             }
 
+        }
+
+        function finalizeOrder(address, phone) {
+            let existingOrders = JSON.parse(localStorage.getItem(`orders_${user.phone}`)) || [];
+            existingOrders.push({
+                _id: "ORD-" + Math.floor(Math.random() * 90000 + 10000),
+                items: cart,
+                totalAmount: total,
+                status: "Pending",
+                createdAt: new Date().toISOString(),
+                address: address,
+                phone: phone
+            });
+
+            localStorage.setItem(`orders_${user.phone}`, JSON.stringify(existingOrders));
+
+            document.getElementById("loading").classList.add("hidden");
+            document.getElementById("loading").classList.remove("flex");
+            
+            document.getElementById("success").classList.remove("hidden");
+            document.getElementById("success").classList.add("flex");
+
+            localStorage.removeItem("activeCart"); // clear cart!
+        }
+
+        function resetCheckoutUI() {
+            document.getElementById("loading").classList.add("hidden");
+            document.getElementById("loading").classList.remove("flex");
+            document.getElementById("order-card").classList.remove("hidden");
         }
 
         /* INIT */
