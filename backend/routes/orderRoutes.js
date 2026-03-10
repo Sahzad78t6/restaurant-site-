@@ -130,6 +130,45 @@ router.post("/razorpay/verify", async (req, res) => {
     }
 
 });
+
+/* RAZORPAY VERIFY DELIVERY PAYMENT (For existing orders) */
+router.post("/razorpay/verify-delivery", async (req, res) => {
+    try {
+        const {
+            razorpay_order_id,
+            razorpay_payment_id,
+            razorpay_signature,
+            orderId
+        } = req.body;
+
+        const sign = razorpay_order_id + "|" + razorpay_payment_id;
+
+        const expectedSign = crypto
+            .createHmac("sha256", process.env.RAZORPAY_KEY_SECRET)
+            .update(sign.toString())
+            .digest("hex");
+
+        if (razorpay_signature === expectedSign) {
+            // Signature valid, update existing order
+            const order = await Order.findByIdAndUpdate(
+                orderId,
+                {
+                    paymentCollected: true,
+                    paymentMethod: "Online"
+                },
+                { new: true }
+            );
+
+            res.json({ success: true, message: "Delivery payment verified successfully", order });
+        } else {
+            res.status(400).json({ success: false, message: "Invalid signature" });
+        }
+    } catch (err) {
+        console.log("Delivery Verify Error:", err);
+        res.status(500).json({ message: "Razorpay delivery verification failed" });
+    }
+});
+
 /* GET ALL ORDERS (Delivery Panel) */
 
 router.get("/", async (req, res) => {
@@ -146,6 +185,17 @@ router.get("/", async (req, res) => {
 
     }
 
+});
+
+/* GET SINGLE ORDER BY ID */
+router.get("/:id", async (req, res) => {
+    try {
+        const order = await Order.findById(req.params.id);
+        if (!order) return res.status(404).json({ message: "Order not found" });
+        res.json(order);
+    } catch (err) {
+        res.status(500).json({ message: "Error fetching order" });
+    }
 });
 
 
