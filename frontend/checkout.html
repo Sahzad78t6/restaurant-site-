@@ -503,7 +503,8 @@
                     
                     if (!res.ok) throw new Error("Order rejected by server");
 
-                    finalizeOrder(address, phone);
+                    const createdOrder = await res.json();
+                    finalizeOrder(createdOrder);
 
                 } else if (selectedPaymentMethod === 'online') {
                     // RAZORPAY FLOW
@@ -541,7 +542,7 @@
                                 const verifyData = await verifyRes.json();
 
                                 if(verifyData.success) {
-                                    finalizeOrder(address, phone);
+                                    finalizeOrder(verifyData.order);
                                 } else {
                                     throw new Error("Payment verification failed");
                                 }
@@ -583,16 +584,16 @@
 
         }
 
-        function finalizeOrder(address, phone) {
+        function finalizeOrder(orderObj) {
             let existingOrders = JSON.parse(localStorage.getItem(`orders_${user.phone}`)) || [];
             existingOrders.push({
-                _id: "ORD-" + Math.floor(Math.random() * 90000 + 10000),
-                items: cart,
-                totalAmount: total,
-                status: "Pending",
-                createdAt: new Date().toISOString(),
-                address: address,
-                phone: phone
+                _id: orderObj._id,
+                items: orderObj.items || cart,
+                totalAmount: orderObj.total || total,
+                status: orderObj.status || "Pending",
+                createdAt: orderObj.createdAt || new Date().toISOString(),
+                address: orderObj.address || address,
+                phone: orderObj.phone || phone
             });
 
             localStorage.setItem(`orders_${user.phone}`, JSON.stringify(existingOrders));
