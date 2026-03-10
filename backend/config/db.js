@@ -10,6 +10,7 @@ console.log("MongoDB Connected");
 
 } catch (error) {
 
+    
 console.log(error);
 process.exit(1);
 
