@@ -93,6 +93,10 @@ try{
         .update(sign.toString())
         .digest("hex");
 
+    console.log("== RAZORPAY VERIFY ==");
+    console.log("Expected: ", expectedSign);
+    console.log("Received: ", razorpay_signature);
+    
     if (razorpay_signature === expectedSign) {
 
         // Signature valid. Create Physical order in Mongo.
