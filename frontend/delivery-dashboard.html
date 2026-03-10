@@ -116,12 +116,33 @@ const statusTheme={
 let activeOrderId=null;
 let watchId=null;
 
+let deliveryBoyName = localStorage.getItem("royalSweetsDeliveryBoy");
+if (!deliveryBoyName) {
+    deliveryBoyName = prompt("Welcome! Please enter your name to access the Delivery Dashboard:");
+    if (deliveryBoyName && deliveryBoyName.trim() !== "") {
+         localStorage.setItem("royalSweetsDeliveryBoy", deliveryBoyName.trim());
+    } else {
+         alert("Name is required to accept orders.");
+         window.location.href = "index.html";
+    }
+}
+
+const statusRank = {
+    'Accepted': 1,
+    'Kitchen': 2,
+    'On Way': 3,
+    'Arrived': 4
+};
+
 async function loadOrders(){
 
 try{
 
 const res=await fetch("https://restaurant-site-8y41.onrender.com/api/orders");
-const orders=await res.json();
+let orders=await res.json();
+
+// Filter out completed orders
+orders = orders.filter(o => o.status !== "Arrived");
 
 const container=document.getElementById("ordersContainer");
 
@@ -133,6 +154,12 @@ orders.reverse().forEach(order=>{
 
 const theme=statusTheme[order.status] || statusTheme['Accepted'];
 
+const isClaimedByOther = order.deliveryBoyName && order.deliveryBoyName !== deliveryBoyName;
+const disableStr = isClaimedByOther ? "opacity-50 cursor-not-allowed pointer-events-none grayscale" : "";
+const claimedBadge = order.deliveryBoyName 
+      ? `<span class="text-[9px] font-bold text-orange-500 uppercase ml-2 bg-orange-50 px-2 py-0.5 rounded border border-orange-100 flex items-center gap-1 mt-1 w-fit"><i class="fa-solid fa-user"></i> ${order.deliveryBoyName}</span>` 
+      : "";
+
 container.innerHTML+=`
 
 <div class="order-card bg-white rounded-[2.5rem] border border-gray-100 shadow-sm overflow-hidden flex flex-col">
@@ -140,9 +167,12 @@ container.innerHTML+=`
 <div class="p-6 pb-4 flex justify-between items-start border-b border-gray-50 bg-gray-50/50">
 
 <div>
-<span class="text-[10px] font-black px-3 py-1 rounded-full uppercase border ${theme}">
+<div class="flex flex-col">
+<span class="text-[10px] font-black px-3 py-1 rounded-full uppercase border ${theme} w-fit">
 ${order.status}
 </span>
+${claimedBadge}
+</div>
 
 <h2 class="text-xl font-black text-gray-800 mt-3 italic tracking-tighter">
 #${order._id.slice(-6)}
@@ -201,18 +231,18 @@ Collect Payment
 
 <div class="grid grid-cols-3 gap-2 mb-4">
 
-<button onclick="updateStatus('${order._id}','Kitchen')"
-class="bg-orange-50 text-orange-600 py-3 rounded-2xl text-[10px] font-black uppercase hover:bg-orange-600 hover:text-white">
+<button onclick="updateStatus('${order._id}', 'Kitchen', '${order.status}')"
+class="bg-orange-50 text-orange-600 py-3 rounded-2xl text-[10px] font-black uppercase hover:bg-orange-600 hover:text-white transition-colors ${disableStr}">
 Kitchen
 </button>
 
-<button onclick="startDelivery('${order._id}')"
-class="bg-blue-50 text-blue-600 py-3 rounded-2xl text-[10px] font-black uppercase hover:bg-blue-600 hover:text-white">
+<button onclick="startDelivery('${order._id}', '${order.status}')"
+class="bg-blue-50 text-blue-600 py-3 rounded-2xl text-[10px] font-black uppercase hover:bg-blue-600 hover:text-white transition-colors ${disableStr}">
 On Way
 </button>
 
-<button onclick="arrivedCheck('${order._id}','${order.paymentMethod}',${order.paymentCollected})"
-class="bg-green-50 text-green-600 py-3 rounded-2xl text-[10px] font-black uppercase hover:bg-green-600 hover:text-white">
+<button onclick="arrivedCheck('${order._id}', '${order.paymentMethod}', ${order.paymentCollected}, '${order.status}')"
+class="bg-green-50 text-green-600 py-3 rounded-2xl text-[10px] font-black uppercase hover:bg-green-600 hover:text-white transition-colors ${disableStr}">
 Arrived
 </button>
 
@@ -263,21 +293,35 @@ window.location.href=`payment.html?orderId=${orderId}`;
 
 }
 
-async function updateStatus(id,status){
+async function updateStatus(id, newStatus, currentStatus){
 
-await fetch(`https://restaurant-site-8y41.onrender.com/api/orders/status/${id}`,{
-method:"PUT",
-headers:{ "Content-Type":"application/json" },
-body:JSON.stringify({status})
-});
+if (currentStatus && statusRank[newStatus] < statusRank[currentStatus]) {
+    const confirmRevert = confirm(`Are you sure you want to revert this order back to '${newStatus}'?`);
+    if (!confirmRevert) return;
+}
 
-loadOrders();
+try {
+    const res = await fetch(`https://restaurant-site-8y41.onrender.com/api/orders/status/${id}`,{
+        method:"PUT",
+        headers:{ "Content-Type":"application/json" },
+        body:JSON.stringify({ status: newStatus, deliveryBoyName })
+    });
+    
+    const data = await res.json();
+    if (!data.success && data.message) {
+         alert(data.message);
+    }
+
+    loadOrders();
+} catch(err){
+    console.error("Status Update Error:", err);
+}
 
 }
 
-function startDelivery(orderId){
+function startDelivery(orderId, currentStatus){
 
-updateStatus(orderId,"On Way");
+updateStatus(orderId,"On Way", currentStatus);
 
 startTracking(orderId);
 
@@ -325,7 +369,7 @@ enableHighAccuracy:true
 
 }
 
-function arrivedCheck(id,paymentMethod,paymentCollected){
+function arrivedCheck(id,paymentMethod,paymentCollected, currentStatus){
 
 if(paymentMethod==="COD" && !paymentCollected){
 
@@ -341,7 +385,7 @@ navigator.geolocation.clearWatch(watchId);
 
 }
 
-updateStatus(id,"Arrived");
+updateStatus(id,"Arrived", currentStatus);
 
 }
 

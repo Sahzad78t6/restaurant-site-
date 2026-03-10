@@ -116,6 +116,7 @@ router.post("/razorpay/verify", async (req, res) => {
 
             res.json({ success: true, message: "Payment verified successfully", order });
 
+
         } else {
             res.status(400).json({ success: false, message: "Invalid signature" });
         }
@@ -167,17 +168,29 @@ router.get("/user/:id", async (req, res) => {
 });
 
 
-/* UPDATE ORDER STATUS */
-
 router.put("/status/:id", async (req, res) => {
 
     try {
 
-        const { status } = req.body;
+        const { status, deliveryBoyName } = req.body;
 
-        await Order.findByIdAndUpdate(req.params.id, { status });
+        const order = await Order.findById(req.params.id);
+        if (!order) return res.status(404).json({ message: "Order not found" });
 
-        res.json({ message: "Status updated" });
+        // If a delivery boy is trying to update/claim
+        if (deliveryBoyName) {
+            // If already claimed by someone else, reject
+            if (order.deliveryBoyName && order.deliveryBoyName !== deliveryBoyName) {
+                return res.status(403).json({ success: false, message: "This order is already claimed by another delivery boy." });
+            }
+            // Lock this order to the delivery boy
+            order.deliveryBoyName = deliveryBoyName;
+        }
+
+        order.status = status;
+        await order.save();
+
+        res.json({ success: true, message: "Status updated" });
 
     } catch (err) {
 

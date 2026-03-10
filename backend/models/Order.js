@@ -56,6 +56,10 @@ deliveryBoyId:{
 type:mongoose.Schema.Types.ObjectId,
 ref:"User",
 default:null
+},
+deliveryBoyName:{
+type:String,
+default:null
 }
 
 },{
