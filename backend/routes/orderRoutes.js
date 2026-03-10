@@ -107,7 +107,9 @@ try{
             total,
             phone,
             address,
-            status: "Paid (Online)"
+            status: "Accepted",
+            paymentMethod: "Online",
+            paymentCollected: true
         });
 
         await order.save();
