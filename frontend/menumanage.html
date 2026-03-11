@@ -1,0 +1,542 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Menu Management | Royal Sweets Admin</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;800&display=swap"
+        rel="stylesheet">
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Plus Jakarta Sans', 'sans-serif'],
+                    },
+                    colors: {
+                        brand: {
+                            orange: '#ff6b00',
+                            dark: '#0a0a0a'
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+        }
+
+        .glass-header {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid #f3f4f6;
+        }
+
+        .item-card {
+            transition: all 0.2s ease-in-out;
+        }
+
+        .item-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Toggle Switch CSS */
+        .toggle-checkbox:checked {
+            right: 0;
+            border-color: #10B981;
+        }
+
+        .toggle-checkbox:checked+.toggle-label {
+            background-color: #10B981;
+        }
+
+        .toggle-checkbox {
+            right: 0;
+            z-index: 1;
+            border-color: #E5E7EB;
+            transition: all 0.3s;
+        }
+
+        .toggle-label {
+            width: 3rem;
+            height: 1.5rem;
+            background-color: #E5E7EB;
+            border-radius: 9999px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .toggle-circle {
+            top: 0.125rem;
+            left: 0.125rem;
+            width: 1.25rem;
+            height: 1.25rem;
+            background-color: white;
+            border-radius: 50%;
+            transition: all 0.3s;
+        }
+
+        .toggle-checkbox:checked~.toggle-circle {
+            transform: translateX(1.5rem);
+        }
+
+        /* Modal */
+        .modal-overlay {
+            background: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(4px);
+        }
+    </style>
+</head>
+
+<body class="bg-gray-50 text-gray-800 min-h-screen pb-20">
+
+    <!-- Auth Check -->
+    <script>
+        const user = JSON.parse(localStorage.getItem("royalSweetsUser"));
+        if (!user || user.role !== "admin") {
+            alert("Unauthorized Access. Admin privileges required.");
+            window.location.href = "login.html";
+        }
+    </script>
+
+    <!-- Top Navigation -->
+    <nav class="sticky top-0 z-50 glass-header px-6 py-4 mb-6 shadow-sm relative">
+        <div class="max-w-7xl mx-auto flex justify-between items-center">
+            <div class="flex items-center gap-4">
+                <a href="admin.html"
+                    class="w-10 h-10 flex items-center justify-center rounded-xl bg-gray-100 text-gray-500 hover:text-brand-orange hover:bg-orange-50 transition">
+                    <i data-lucide="arrow-left" class="w-5 h-5"></i>
+                </a>
+                <div class="flex items-center gap-3 border-l pl-4 border-gray-200">
+                    <div
+                        class="w-10 h-10 bg-brand-dark rounded-xl flex items-center justify-center text-brand-orange shadow-md">
+                        <i data-lucide="clipboard-list" class="w-5 h-5"></i>
+                    </div>
+                    <div>
+                        <h1 class="text-xl font-black tracking-tight text-gray-900 uppercase">Menu Editor</h1>
+                        <p class="text-[10px] font-bold text-gray-400 uppercase tracking-widest leading-none">Management
+                            Dashboard</p>
+                    </div>
+                </div>
+            </div>
+            <div class="flex flex-wrap gap-3">
+                <button onclick="openAddModal()"
+                    class="bg-brand-orange text-white px-5 py-2.5 rounded-xl text-xs font-bold uppercase tracking-wider shadow-md hover:bg-orange-600 active:scale-95 transition-all flex items-center gap-2">
+                    <i data-lucide="plus" class="w-4 h-4"></i> Add Item
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <main class="max-w-7xl mx-auto px-6">
+
+        <!-- Summary Stats -->
+        <div class="flex items-center gap-6 mb-8 bg-white p-4 rounded-2xl border border-gray-200 shadow-sm w-max pr-10">
+            <div class="flex items-center gap-4 border-r border-gray-100 pr-6">
+                <div class="w-12 h-12 rounded-full bg-blue-50 text-blue-500 flex items-center justify-center">
+                    <i data-lucide="layers" class="w-5 h-5"></i>
+                </div>
+                <div>
+                    <p class="text-[10px] font-bold text-gray-400 uppercase tracking-widest leading-tight">Total Items
+                    </p>
+                    <h3 id="statTotalItems" class="text-2xl font-black text-gray-800 leading-none">0</h3>
+                </div>
+            </div>
+            <div class="flex items-center gap-4">
+                <div class="w-12 h-12 rounded-full bg-green-50 text-green-500 flex items-center justify-center">
+                    <i data-lucide="check-circle" class="w-5 h-5"></i>
+                </div>
+                <div>
+                    <p class="text-[10px] font-bold text-gray-400 uppercase tracking-widest leading-tight">Available</p>
+                    <h3 id="statAvailableItems" class="text-2xl font-black text-gray-800 leading-none">0</h3>
+                </div>
+            </div>
+        </div>
+
+        <!-- Filter/Search -->
+        <div class="flex flex-col md:flex-row justify-between items-center gap-4 mb-6">
+            <div class="relative w-full md:w-96">
+                <i data-lucide="search" class="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 w-4 h-4"></i>
+                <input type="text" id="searchInput" onkeyup="searchMenuItems()" placeholder="Search menu items..."
+                    class="w-full bg-white border border-gray-200 py-3 pl-11 pr-4 rounded-xl outline-none focus:border-brand-orange text-sm font-medium shadow-sm transition">
+            </div>
+            <div class="flex items-center gap-3 w-full md:w-auto overflow-x-auto pb-2 md:pb-0">
+                <span class="text-xs font-bold text-gray-400 uppercase">Filter:</span>
+                <select id="categoryFilter" onchange="filterMenuItems()"
+                    class="bg-white border border-gray-200 text-gray-600 text-sm font-bold rounded-lg px-4 py-2.5 outline-none focus:border-brand-orange shadow-sm cursor-pointer">
+                    <option value="All">All Categories</option>
+                    <option value="Sweets">Sweets</option>
+                    <option value="Snacks">Snacks</option>
+                    <option value="Drinks">Drinks</option>
+                </select>
+                <select id="statusFilter" onchange="filterMenuItems()"
+                    class="bg-white border border-gray-200 text-gray-600 text-sm font-bold rounded-lg px-4 py-2.5 outline-none focus:border-brand-orange shadow-sm cursor-pointer ml-2">
+                    <option value="All">All Statuses</option>
+                    <option value="Available">Available</option>
+                    <option value="Out of Stock">Out of Stock</option>
+                </select>
+            </div>
+        </div>
+
+        <!-- Menu Grid -->
+        <div id="loader" class="py-20 flex flex-col items-center justify-center text-gray-400">
+            <i data-lucide="loader-2" class="w-10 h-10 animate-spin mb-4 text-brand-orange"></i>
+            <p class="text-sm font-bold tracking-widest uppercase">Loading Menu Data...</p>
+        </div>
+
+        <div id="noItems"
+            class="hidden py-20 bg-white rounded-3xl border border-gray-200 border-dashed text-center shadow-sm">
+            <div class="w-20 h-20 bg-gray-50 rounded-full flex items-center justify-center mx-auto mb-4 text-gray-300">
+                <i data-lucide="layers-2" class="w-10 h-10"></i>
+            </div>
+            <h3 class="text-xl font-black text-gray-800 mb-1">No Items Found</h3>
+            <p class="text-sm font-medium text-gray-500">Try adjusting your search or filters.</p>
+        </div>
+
+        <div id="menuGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 hidden">
+            <!-- Dynamic items go here -->
+        </div>
+
+    </main>
+
+    <!-- Add Item Modal -->
+    <div id="addModal"
+        class="fixed inset-0 modal-overlay z-[100] hidden items-center justify-center p-4 opacity-0 transition-opacity duration-300 flex">
+        <div class="bg-white rounded-[2rem] shadow-2xl w-full max-w-lg overflow-hidden transform scale-95 transition-transform duration-300"
+            id="addModalContent">
+
+            <div class="px-8 py-6 border-b border-gray-100 flex justify-between items-center bg-gray-50/50">
+                <h2 class="text-xl font-black text-gray-800 flex items-center gap-3">
+                    <div
+                        class="w-8 h-8 rounded-full bg-brand-orange/10 text-brand-orange flex items-center justify-center">
+                        <i data-lucide="plus" class="w-4 h-4"></i>
+                    </div>
+                    Add New Menu Item
+                </h2>
+                <button onclick="closeAddModal()"
+                    class="w-8 h-8 rounded-full bg-gray-100 text-gray-500 flex items-center justify-center hover:bg-gray-200 transition">
+                    <i data-lucide="x" class="w-4 h-4"></i>
+                </button>
+            </div>
+
+            <form id="addMenuForm" onsubmit="addMenuItem(event)" class="p-8 space-y-5">
+                <div>
+                    <label class="block text-xs font-bold text-gray-500 uppercase tracking-wider mb-2">Item Name</label>
+                    <input type="text" id="addName" required
+                        class="w-full bg-gray-50 border border-gray-200 px-4 py-3 rounded-xl outline-none focus:border-brand-orange focus:bg-white transition text-sm font-medium">
+                </div>
+
+                <div class="grid grid-cols-2 gap-4">
+                    <div>
+                        <label
+                            class="block text-xs font-bold text-gray-500 uppercase tracking-wider mb-2">Category</label>
+                        <select id="addCategory"
+                            class="w-full bg-gray-50 border border-gray-200 px-4 py-3 rounded-xl outline-none focus:border-brand-orange focus:bg-white transition text-sm font-bold cursor-pointer">
+                            <option value="Sweets">Sweets</option>
+                            <option value="Snacks">Snacks</option>
+                            <option value="Drinks">Drinks</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold text-gray-500 uppercase tracking-wider mb-2">Price
+                            (₹)</label>
+                        <input type="number" id="addPrice" required min="1"
+                            class="w-full bg-gray-50 border border-gray-200 px-4 py-3 rounded-xl outline-none focus:border-brand-orange focus:bg-white transition text-sm font-bold">
+                    </div>
+                </div>
+
+                <div>
+                    <label class="block text-xs font-bold text-gray-500 uppercase tracking-wider mb-2">Image Source
+                        (URL)</label>
+                    <input type="url" id="addImageUrl" placeholder="https://example.com/image.jpg"
+                        class="w-full bg-gray-50 border border-gray-200 px-4 py-3 rounded-xl outline-none focus:border-brand-orange focus:bg-white transition text-sm font-medium">
+                    <p class="text-[10px] text-gray-400 mt-1 font-medium italic"><i
+                            class="fa-solid fa-circle-info mr-1"></i> Paste a direct link to the image</p>
+                </div>
+
+                <div>
+                    <label
+                        class="block text-xs font-bold text-gray-500 uppercase tracking-wider mb-2">Description</label>
+                    <textarea id="addDescription" rows="3"
+                        class="w-full bg-gray-50 border border-gray-200 px-4 py-3 rounded-xl outline-none focus:border-brand-orange focus:bg-white transition text-sm font-medium resize-none"></textarea>
+                </div>
+
+                <div class="pt-4 border-t border-gray-100 flex gap-3">
+                    <button type="button" onclick="closeAddModal()"
+                        class="flex-1 bg-gray-100 text-gray-600 font-bold py-4 rounded-xl hover:bg-gray-200 transition">Cancel</button>
+                    <button type="submit" id="addSubmitBtn"
+                        class="flex-1 bg-brand-orange text-white font-bold py-4 rounded-xl shadow-md hover:bg-orange-600 active:scale-95 transition flex justify-center items-center gap-2">
+                        <span>Save Item</span>
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+
+    <script>
+        lucide.createIcons();
+        let allMenuItems = [];
+
+        // DOM Load
+        window.onload = loadMenuData;
+
+        async function loadMenuData() {
+            try {
+                const loader = document.getElementById("loader");
+                const grid = document.getElementById("menuGrid");
+                const noItems = document.getElementById("noItems");
+
+                loader.classList.remove('hidden');
+                grid.classList.add('hidden');
+                noItems.classList.add('hidden');
+
+                const res = await fetch("https://restaurant-site-8y41.onrender.com/api/menu");
+                allMenuItems = await res.json();
+
+                updateStats();
+                renderMenuItems();
+            } catch (err) {
+                console.error("Failed to load menu", err);
+                alert("Could not load menu data from server.");
+            }
+        }
+
+        function updateStats() {
+            document.getElementById("statTotalItems").innerText = allMenuItems.length;
+            const availableCount = allMenuItems.filter(i => i.isAvailable !== false).length;
+            document.getElementById("statAvailableItems").innerText = availableCount;
+        }
+
+        function filterMenuItems() {
+            renderMenuItems();
+        }
+
+        function searchMenuItems() {
+            renderMenuItems();
+        }
+
+        function renderMenuItems() {
+            const grid = document.getElementById("menuGrid");
+            const noItems = document.getElementById("noItems");
+            const loader = document.getElementById("loader");
+
+            const searchTerm = document.getElementById("searchInput").value.toLowerCase();
+            const catFilter = document.getElementById("categoryFilter").value;
+            const statFilter = document.getElementById("statusFilter").value;
+
+            loader.classList.add("hidden");
+            grid.innerHTML = "";
+
+            let filtered = allMenuItems.filter(item => {
+                const nameMatch = (item.name || "").toLowerCase().includes(searchTerm);
+                const catMatch = catFilter === "All" || item.category === catFilter;
+
+                let isAvail = item.isAvailable !== false; // default true
+                let statMatch = true;
+                if (statFilter === "Available") statMatch = isAvail === true;
+                if (statFilter === "Out of Stock") statMatch = isAvail === false;
+
+                return nameMatch && catMatch && statMatch;
+            });
+
+            if (filtered.length === 0) {
+                grid.classList.add("hidden");
+                noItems.classList.remove("hidden");
+                return;
+            }
+
+            grid.classList.remove("hidden");
+            noItems.classList.add("hidden");
+
+            // Sort alphabetical
+            filtered.sort((a, b) => (a.name || "").localeCompare(b.name || "")).forEach(item => {
+
+                let isAvail = item.isAvailable !== false;
+
+                const toggleHtml = `
+                    <div class="relative inline-block w-12 h-6 align-middle select-none transition duration-200 ease-in ml-2 mt-1">
+                        <input type="checkbox" id="toggle-${item._id}" onclick="toggleAvailability('${item._id}')" class="toggle-checkbox absolute block w-6 h-6 rounded-full bg-white border-4 appearance-none cursor-pointer" ${isAvail ? 'checked' : ''}/>
+                        <label for="toggle-${item._id}" class="toggle-label block overflow-hidden h-6 rounded-full bg-gray-300 cursor-pointer"></label>
+                        <span class="toggle-circle absolute block"></span>
+                    </div>
+                `;
+
+                grid.insertAdjacentHTML('beforeend', `
+                    <div class="item-card bg-white rounded-2xl border border-gray-200 overflow-hidden shadow-sm flex flex-col h-full">
+                        <div class="h-40 w-full relative bg-gray-100 shrink-0">
+                            <img src="${item.image || 'https://via.placeholder.com/300x200?text=No+Image'}" 
+                                 class="w-full h-full object-cover select-none ${!isAvail ? 'grayscale opacity-70' : ''}" 
+                                 onerror="this.src='https://via.placeholder.com/300x200?text=No+Image'">
+                            
+                            <div class="absolute top-3 left-3 flex gap-2">
+                                <span class="bg-gray-900/80 backdrop-blur-sm text-white px-3 py-1 text-[10px] font-bold uppercase rounded-lg border border-white/10 tracking-widest shadow-sm">
+                                    ${item.category || "Unknown"}
+                                </span>
+                            </div>
+
+                            ${!isAvail ? `
+                            <div class="absolute top-0 right-0 w-full h-full flex justify-center items-center bg-white/20 backdrop-blur-[2px]">
+                                <span class="bg-red-500 text-white font-black px-4 py-1.5 rounded-lg text-xs uppercase tracking-widest shadow-md rotate-[-10deg] border-2 border-white">Out of Stock</span>
+                            </div>
+                            ` : ''}
+                        </div>
+
+                        <div class="p-5 flex-grow flex flex-col justify-between">
+                            <div>
+                                <div class="flex justify-between items-start mb-2 gap-2">
+                                    <h3 class="font-black text-gray-800 text-lg leading-tight line-clamp-2 ${!isAvail ? 'text-gray-400' : ''}">${item.name}</h3>
+                                    <span class="text-brand-orange font-black text-lg shrink-0 mt-[-2px]">₹${item.price}</span>
+                                </div>
+                                <p class="text-xs text-gray-500 line-clamp-2 font-medium mb-4">${item.description || "No description available"}</p>
+                            </div>
+
+                            <div class="mt-auto border-t border-gray-100 pt-4 flex flex-col gap-3">
+                                <div class="flex justify-between items-center bg-gray-50 px-3 py-2 rounded-xl border border-gray-100">
+                                    <span class="text-xs font-bold text-gray-500 uppercase tracking-wider">Available Status</span>
+                                    ${toggleHtml}
+                                </div>
+                                <button onclick="deleteMenuItem('${item._id}', '${item.name.replace(/'/g, "\\'")}')" class="w-full bg-white border border-red-200 text-red-500 hover:bg-red-50 hover:border-red-300 py-3 rounded-xl text-xs font-bold uppercase tracking-widest flex items-center justify-center gap-2 transition">
+                                    <i data-lucide="trash-2" class="w-4 h-4"></i> Delete
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                `);
+            });
+            lucide.createIcons();
+        }
+
+        async function toggleAvailability(id) {
+            try {
+                // Determine immediate visual state to override locally for fast feedback
+                const idx = allMenuItems.findIndex(i => i._id === id);
+                if (idx > -1) {
+                    const cb = document.getElementById(`toggle-${id}`);
+                    // Call API
+                    const res = await fetch(`https://restaurant-site-8y41.onrender.com/api/menu/toggle/${id}`, { method: "PUT" });
+                    const data = await res.json();
+
+                    if (data.success) {
+                        allMenuItems[idx].isAvailable = data.isAvailable;
+                        updateStats();
+                        renderMenuItems(); // re-render to apply "Out of Stock" grey overlays
+                    } else {
+                        // Revert checkbox
+                        alert("Could not update status.");
+                        if (cb) cb.checked = !cb.checked;
+                    }
+                }
+            } catch (e) {
+                console.error("Toggle Error:", e);
+                alert("Network error.");
+                // Re-render to restore exact state
+                renderMenuItems();
+            }
+        }
+
+        async function deleteMenuItem(id, name) {
+            const confirmed = confirm(`Are you absolutely sure you want to delete '${name}' ? This cannot be undone.`);
+            if (!confirmed) return;
+
+            try {
+                const res = await fetch(`https://restaurant-site-8y41.onrender.com/api/menu/${id}`, { method: "DELETE" });
+                const data = await res.json();
+
+                if (data.success) {
+                    // Remove from local array
+                    allMenuItems = allMenuItems.filter(i => i._id !== id);
+                    updateStats();
+                    renderMenuItems();
+                } else {
+                    alert("Delete failed.");
+                }
+            } catch (e) {
+                console.error("Delete Error:", e);
+                alert("Network error.");
+            }
+        }
+
+        // --- MODAL LOGIC ---
+        function openAddModal() {
+            const m = document.getElementById("addModal");
+            const mc = document.getElementById("addModalContent");
+            m.classList.remove("hidden");
+            // Add slight delay for animation
+            setTimeout(() => {
+                m.classList.remove("opacity-0");
+                mc.classList.remove("scale-95");
+                mc.classList.add("scale-100");
+            }, 10);
+        }
+
+        function closeAddModal() {
+            const m = document.getElementById("addModal");
+            const mc = document.getElementById("addModalContent");
+            // Reverse animation
+            m.classList.add("opacity-0");
+            mc.classList.remove("scale-100");
+            mc.classList.add("scale-95");
+            setTimeout(() => {
+                m.classList.add("hidden");
+                document.getElementById("addMenuForm").reset();
+            }, 300);
+        }
+
+        async function addMenuItem(e) {
+            e.preventDefault();
+            const btn = document.getElementById("addSubmitBtn");
+            const ogHtml = btn.innerHTML;
+            btn.disabled = true;
+            btn.innerHTML = `<i data-lucide="loader-2" class="w-5 h-5 animate-spin"></i> Saving...`;
+            lucide.createIcons();
+
+            const payload = {
+                name: document.getElementById("addName").value.trim(),
+                price: parseFloat(document.getElementById("addPrice").value),
+                category: document.getElementById("addCategory").value,
+                image: document.getElementById("addImageUrl").value.trim() || "",
+                description: document.getElementById("addDescription").value.trim() || "",
+                isAvailable: true // Always true on creation
+            };
+
+            try {
+                const res = await fetch("https://restaurant-site-8y41.onrender.com/api/menu/add", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify(payload)
+                });
+                const savedItem = await res.json();
+
+                if (savedItem._id) {
+                    allMenuItems.push(savedItem);
+                    updateStats();
+                    renderMenuItems();
+                    closeAddModal();
+                } else {
+                    alert("Failed to save item properly.");
+                }
+            } catch (err) {
+                console.error("Add Item Error:", err);
+                alert("Network Error.");
+            } finally {
+                btn.disabled = false;
+                btn.innerHTML = ogHtml;
+                lucide.createIcons();
+            }
+        }
+    </script>
+</body>
+
+</html>
