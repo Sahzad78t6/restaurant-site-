@@ -2,8 +2,63 @@ const express = require("express");
 const router = express.Router();
 
 const Order = require("../models/Order");
+const User = require("../models/User"); // Imported User model to find delivery boys
 const Razorpay = require("razorpay");
 const crypto = require("crypto");
+require("dotenv").config();
+const twilio = require("twilio");
+
+// Initialize Twilio Client
+const twilioClient = twilio(process.env.TWILIO_ACCOUNT_SID, process.env.TWILIO_AUTH_TOKEN);
+
+// Helper function to send notifications
+async function notifyDeliveryBoys(order) {
+    try {
+        const deliveryBoys = await User.find({ role: "delivery" });
+        if (!deliveryBoys || deliveryBoys.length === 0) {
+            console.log("No delivery boys found to notify.");
+            return;
+        }
+
+        const messageBody = `🚨 NEW ORDER ALERT! 🚨\nOrder #${order._id.toString().slice(-6)}\nAmount: ₹${order.total}\nPhone: ${order.phone}\nAddress: ${order.address}\nPlease check the Delivery Dashboard!`;
+
+        for (const boy of deliveryBoys) {
+            if (boy.phone) {
+                // Ensure phone number has country code for Twilio (assuming +91 for India if missing)
+                let formattedPhone = boy.phone;
+                if (!formattedPhone.startsWith('+')) {
+                    formattedPhone = '+91' + formattedPhone; 
+                }
+
+                // Send SMS
+                try {
+                    await twilioClient.messages.create({
+                        body: messageBody,
+                        from: process.env.TWILIO_PHONE_NUMBER,
+                        to: formattedPhone
+                    });
+                    console.log(`SMS sent to delivery boy: ${formattedPhone}`);
+                } catch (smsErr) {
+                    console.error(`Failed to send SMS to ${formattedPhone}:`, smsErr.message);
+                }
+
+                // Send WhatsApp
+                try {
+                    await twilioClient.messages.create({
+                        body: messageBody,
+                        from: process.env.TWILIO_WHATSAPP_NUMBER,
+                        to: `whatsapp:${formattedPhone}`
+                    });
+                    console.log(`WhatsApp sent to delivery boy: ${formattedPhone}`);
+                } catch (waErr) {
+                    console.error(`Failed to send WhatsApp to ${formattedPhone}:`, waErr.message);
+                }
+            }
+        }
+    } catch (err) {
+        console.error("Error notifying delivery boys:", err);
+    }
+}
 
 const razorpay = new Razorpay({
     key_id: process.env.RAZORPAY_KEY_ID,
@@ -28,6 +83,9 @@ router.post("/create", async (req, res) => {
         });
 
         await order.save();
+        
+        // Notify Delivery Boys asynchronously
+        notifyDeliveryBoys(order);
 
         res.json(order);
 
@@ -113,6 +171,9 @@ router.post("/razorpay/verify", async (req, res) => {
             });
 
             await order.save();
+            
+            // Notify Delivery Boys asynchronously
+            notifyDeliveryBoys(order);
 
             res.json({ success: true, message: "Payment verified successfully", order });
 
