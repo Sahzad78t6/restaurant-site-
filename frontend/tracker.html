@@ -78,8 +78,8 @@
         <!-- Metrics Grid -->
         <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
             <!-- Visits Card -->
-            <div
-                class="bg-dark-800 border border-dark-700 rounded-2xl p-6 relative overflow-hidden group hover:border-brand-orange/50 transition-colors">
+            <div onclick="showDetails('visits')"
+                class="cursor-pointer active:scale-95 bg-dark-800 border border-dark-700 rounded-2xl p-6 relative overflow-hidden group hover:border-brand-orange/50 transition-all shadow-md">
                 <div
                     class="absolute -right-6 -bottom-6 opacity-5 group-hover:scale-110 transition-transform duration-500">
                     <i data-lucide="users" class="w-32 h-32 text-brand-orange"></i>
@@ -100,8 +100,8 @@
             </div>
 
             <!-- Orders Card -->
-            <div
-                class="bg-dark-800 border border-dark-700 rounded-2xl p-6 relative overflow-hidden group hover:border-brand-orange/50 transition-colors">
+            <div onclick="showDetails('orders')"
+                class="cursor-pointer active:scale-95 bg-dark-800 border border-dark-700 rounded-2xl p-6 relative overflow-hidden group hover:border-brand-orange/50 transition-all shadow-md">
                 <div
                     class="absolute -right-6 -bottom-6 opacity-5 group-hover:scale-110 transition-transform duration-500">
                     <i data-lucide="shopping-bag" class="w-32 h-32 text-brand-orange"></i>
@@ -122,8 +122,8 @@
             </div>
 
             <!-- Revenue Card -->
-            <div
-                class="bg-dark-800 border border-dark-700 rounded-2xl p-6 relative overflow-hidden group hover:border-brand-orange/50 transition-colors">
+            <div onclick="showDetails('revenue')"
+                class="cursor-pointer active:scale-95 bg-dark-800 border border-dark-700 rounded-2xl p-6 relative overflow-hidden group hover:border-brand-orange/50 transition-all shadow-md">
                 <div
                     class="absolute -right-6 -bottom-6 opacity-5 group-hover:scale-110 transition-transform duration-500">
                     <i data-lucide="indian-rupee" class="w-32 h-32 text-brand-orange"></i>
@@ -141,6 +141,29 @@
                 <div class="relative z-10">
                     <h4 class="text-4xl font-display font-bold text-white tracking-wide">₹<span
                             id="revenueCount">--</span></h4>
+                </div>
+            </div>
+        </div>
+
+        <!-- Detailed View Section -->
+        <div id="detailsSection" class="hidden">
+            <h3 class="text-xl font-bold text-white mb-4 border-b border-dark-700 pb-2" id="detailsTitle">Details</h3>
+            <div class="bg-dark-800 border border-dark-700 rounded-xl overflow-hidden shadow-lg">
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left text-sm text-gray-400" id="detailsTable">
+                        <!-- Head headers populated by JS -->
+                        <thead class="bg-dark-900/50 text-xs uppercase text-gray-500" id="detailsHead">
+                        </thead>
+                        <!-- Body rows populated by JS -->
+                        <tbody class="divide-y divide-dark-700" id="detailsBody">
+                        </tbody>
+                    </table>
+                </div>
+                <!-- Empty State -->
+                <div id="emptyState"
+                    class="hidden py-12 text-center text-gray-500 flex-col items-center justify-center gap-2">
+                    <i data-lucide="inbox" class="w-8 h-8 opacity-50 mx-auto"></i>
+                    <p>No records found for this timeframe.</p>
                 </div>
             </div>
         </div>
@@ -182,6 +205,10 @@
             fetchStats();
         }
 
+        let globalVisitsData = [];
+        let globalOrdersData = [];
+        let currentActiveView = null; // 'visits', 'orders', 'revenue'
+
         async function fetchStats() {
             try {
                 // Show loading state
@@ -198,6 +225,16 @@
                     document.getElementById('ordersCount').innerText = data.orders;
                     // Format revenue
                     document.getElementById('revenueCount').innerText = new Intl.NumberFormat('en-IN').format(data.revenue);
+
+                    // Save detailed arrays globally
+                    globalVisitsData = data.visitsData || [];
+                    globalOrdersData = data.ordersData || [];
+
+                    // Re-render table if open
+                    if (currentActiveView) {
+                        showDetails(currentActiveView);
+                    }
+
                 } else {
                     console.error("Failed to load stats:", data.error);
                     alert("Could not load stats data.");
@@ -206,6 +243,90 @@
             } catch (e) {
                 console.error("Error fetching stats:", e);
                 // alert("Network error while trying to fetch stats.");
+            }
+        }
+
+        function showDetails(viewType) {
+            currentActiveView = viewType;
+            const detailsSection = document.getElementById('detailsSection');
+            const detailsTitle = document.getElementById('detailsTitle');
+            const detailsHead = document.getElementById('detailsHead');
+            const detailsBody = document.getElementById('detailsBody');
+            const detailsTable = document.getElementById('detailsTable');
+            const emptyState = document.getElementById('emptyState');
+
+            detailsSection.classList.remove('hidden');
+
+            // Reset UI
+            detailsHead.innerHTML = '';
+            detailsBody.innerHTML = '';
+            emptyState.classList.add('hidden');
+            detailsTable.classList.remove('hidden');
+
+            let rowsHTML = '';
+
+            if (viewType === 'visits') {
+                detailsTitle.innerHTML = 'Detailed View: <span class="text-blue-400">Total Visits</span>';
+                detailsHead.innerHTML = `
+                    <tr>
+                        <th class="px-6 py-4 font-medium tracking-wider">Date & Time</th>
+                        <th class="px-6 py-4 font-medium tracking-wider">Page Accessed</th>
+                    </tr>
+                `;
+
+                if (globalVisitsData.length === 0) {
+                    detailsTable.classList.add('hidden');
+                    emptyState.classList.remove('hidden');
+                } else {
+                    globalVisitsData.forEach(v => {
+                        rowsHTML += `
+                            <tr class="hover:bg-dark-900/40 transition">
+                                <td class="px-6 py-4 whitespace-nowrap">${new Date(v.timestamp).toLocaleString()}</td>
+                                <td class="px-6 py-4 whitespace-nowrap"><span class="bg-blue-500/10 text-blue-400 px-2 py-1 rounded-md text-xs font-mono border border-blue-500/20">${v.page}</span></td>
+                            </tr>
+                        `;
+                    });
+                }
+            } else if (viewType === 'orders' || viewType === 'revenue') {
+                detailsTitle.innerHTML = viewType === 'orders'
+                    ? 'Detailed View: <span class="text-brand-orange">Completed Orders</span>'
+                    : 'Detailed View: <span class="text-green-400">Revenue Breakdown</span>';
+
+                detailsHead.innerHTML = `
+                    <tr>
+                        <th class="px-6 py-4 font-medium tracking-wider">Date</th>
+                        <th class="px-6 py-4 font-medium tracking-wider">Order ID</th>
+                        <th class="px-6 py-4 font-medium tracking-wider">Customer</th>
+                        <th class="px-6 py-4 font-medium tracking-wider text-right">Revenue</th>
+                    </tr>
+                `;
+
+                if (globalOrdersData.length === 0) {
+                    detailsTable.classList.add('hidden');
+                    emptyState.classList.remove('hidden');
+                } else {
+                    globalOrdersData.forEach(o => {
+                        const idSnippet = o._id.substring(o._id.length - 6).toUpperCase();
+                        rowsHTML += `
+                            <tr class="hover:bg-dark-900/40 transition">
+                                <td class="px-6 py-4 whitespace-nowrap text-xs">${new Date(o.createdAt).toLocaleString()}</td>
+                                <td class="px-6 py-4 whitespace-nowrap font-mono text-gray-300">...${idSnippet}</td>
+                                <td class="px-6 py-4 whitespace-nowrap">
+                                    <div class="text-gray-300">${o.customerName}</div>
+                                    <div class="text-[10px] text-gray-500">${o.phone}</div>
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap text-right font-medium text-white">₹ ${new Intl.NumberFormat('en-IN').format(o.revenue)}</td>
+                            </tr>
+                        `;
+                    });
+                }
+            }
+
+            detailsBody.innerHTML = rowsHTML;
+
+            // Scroll down a bit on mobile
+            if (window.innerWidth < 768) {
+                detailsSection.scrollIntoView({ behavior: 'smooth' });
             }
         }
 

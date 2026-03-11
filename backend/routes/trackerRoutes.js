@@ -42,29 +42,44 @@ router.get("/stats", async (req, res) => {
         }
 
         // 1. Get Visits in Timeframe
-        const visitsCount = await Visit.countDocuments({
+        const visits = await Visit.find({
             timestamp: { $gte: cutoffDate }
-        });
+        }).sort({ timestamp: -1 });
+        const visitsCount = visits.length;
 
         // 2. Get Orders & Revenue in Timeframe
         const orders = await Order.find({
             createdAt: { $gte: cutoffDate },
             status: { $nin: ["Cancelled", "cancelled"] }
-        });
+        }).sort({ createdAt: -1 });
 
         const ordersCount = orders.length;
 
         // Calculate revenue
         let revenue = 0;
-        orders.forEach(order => {
-            // Use totalAmount directly if it exists, otherwise calculate from cartItems
-            if (order.totalAmount) {
-                revenue += Number(order.totalAmount);
+        const ordersWithCalculatedRevenue = orders.map(order => {
+            let orderRevenue = 0;
+            // Some old orders might have totalAmount strictly equal to 0
+            if (order.totalAmount && order.totalAmount > 0) {
+                orderRevenue = Number(order.totalAmount);
             } else if (order.cartItems && order.cartItems.length > 0) {
                 order.cartItems.forEach(item => {
-                    revenue += (Number(item.price) || 0) * (Number(item.quantity) || 1);
+                    orderRevenue += (Number(item.price) || 0) * (Number(item.quantity) || 1);
                 });
             }
+            revenue += orderRevenue;
+
+            // Return a clean version of the order with its parsed revenue for the frontend table
+            return {
+                _id: order._id,
+                customerName: order.customerDetails?.name || "Unknown",
+                phone: order.customerDetails?.phone || "Unknown",
+                status: order.status,
+                createdAt: order.createdAt,
+                revenue: orderRevenue,
+                itemsCount: order.cartItems?.length || 0,
+                items: order.cartItems || []
+            };
         });
 
         res.status(200).json({
@@ -72,7 +87,10 @@ router.get("/stats", async (req, res) => {
             visits: visitsCount,
             orders: ordersCount,
             revenue: revenue,
-            filterUsed: filter || 'all'
+            filterUsed: filter || 'all',
+            // Detailed Arrays
+            visitsData: visits,
+            ordersData: ordersWithCalculatedRevenue
         });
 
     } catch (err) {
