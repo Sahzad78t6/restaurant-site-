@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en" class="scroll-smooth">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -8,8 +9,10 @@
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;700&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
-    
+    <link
+        href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;700&family=Poppins:wght@300;400;500;600&display=swap"
+        rel="stylesheet">
+
     <!-- Icons -->
     <script src="https://unpkg.com/lucide@latest"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -43,13 +46,24 @@
             }
         }
     </script>
-    
+
     <style>
-        .status-pulse { animation: pulse-orange 2s infinite; }
+        .status-pulse {
+            animation: pulse-orange 2s infinite;
+        }
+
         @keyframes pulse-orange {
-            0% { box-shadow: 0 0 0 0 rgba(255, 107, 0, 0.4); }
-            70% { box-shadow: 0 0 0 15px rgba(255, 107, 0, 0); }
-            100% { box-shadow: 0 0 0 0 rgba(255, 107, 0, 0); }
+            0% {
+                box-shadow: 0 0 0 0 rgba(255, 107, 0, 0.4);
+            }
+
+            70% {
+                box-shadow: 0 0 0 15px rgba(255, 107, 0, 0);
+            }
+
+            100% {
+                box-shadow: 0 0 0 0 rgba(255, 107, 0, 0);
+            }
         }
 
         /* Nav Glassmorphism */
@@ -59,7 +73,6 @@
             -webkit-backdrop-filter: blur(10px);
             border-bottom: 1px solid rgba(255, 255, 255, 0.05);
         }
-        
     </style>
 </head>
 
@@ -68,32 +81,38 @@
     <!-- TOP NAV -->
     <nav class="sticky top-0 z-50 glass-nav px-6 py-5 shadow-sm mb-10">
         <div class="max-w-2xl mx-auto flex justify-between items-center">
-            <a href="index.html" class="w-12 h-12 flex items-center justify-center rounded-full bg-dark-800 text-gray-400 shadow-sm border border-dark-700 hover:text-brand-orange hover:border-brand-orange transition-all duration-300">
+            <a href="index.html"
+                class="w-12 h-12 flex items-center justify-center rounded-full bg-dark-800 text-gray-400 shadow-sm border border-dark-700 hover:text-brand-orange hover:border-brand-orange transition-all duration-300">
                 <i data-lucide="arrow-left" class="w-5 h-5"></i>
             </a>
-            <h1 class="text-2xl font-display font-black text-white tracking-widest uppercase">My <span class="text-brand-orange">Orders</span></h1>
+            <h1 class="text-2xl font-display font-black text-white tracking-widest uppercase">My <span
+                    class="text-brand-orange">Orders</span></h1>
             <div class="w-12 h-12 rounded-full flex items-center justify-center">
-                 <i data-lucide="shopping-bag" class="w-5 h-5 text-gray-500"></i>
+                <i data-lucide="shopping-bag" class="w-5 h-5 text-gray-500"></i>
             </div>
         </div>
     </nav>
 
     <main class="max-w-2xl mx-auto px-6">
-        
+
         <div id="activeOrderSection" class="hidden mb-14">
             <div class="flex items-center gap-3 mb-5">
                 <i data-lucide="clock" class="text-brand-orange w-5 h-5"></i>
                 <h2 class="text-sm font-black text-white uppercase tracking-widest">Ongoing Order</h2>
             </div>
-            
-            <div class="bg-fire-gradient rounded-3xl p-6 sm:p-10 text-white shadow-[0_10px_40px_rgba(255,107,0,0.4)] status-pulse relative overflow-hidden">
-                <i data-lucide="truck" class="w-48 h-48 absolute -right-10 -bottom-10 opacity-20 transform -rotate-12 text-black"></i>
+
+            <div
+                class="bg-fire-gradient rounded-3xl p-6 sm:p-10 text-white shadow-[0_10px_40px_rgba(255,107,0,0.4)] status-pulse relative overflow-hidden">
+                <i data-lucide="truck"
+                    class="w-48 h-48 absolute -right-10 -bottom-10 opacity-20 transform -rotate-12 text-black"></i>
                 <div class="relative z-10">
                     <p class="text-xs font-bold text-white/80 uppercase tracking-widest mb-2 flex items-center gap-2">
                         <i data-lucide="activity" class="w-4 h-4"></i> Current Status
                     </p>
-                    <h3 id="liveStatus" class="text-4xl font-display font-black italic tracking-wide mb-8">Preparing...</h3>
-                    <button onclick="window.location.href='status.html'" class="w-full bg-dark-900 text-brand-orange py-4 rounded-xl font-bold uppercase tracking-widest shadow-lg hover:shadow-xl hover:bg-dark-800 hover:text-white border border-dark-700 active:scale-95 transition-all flex justify-center items-center gap-3">
+                    <h3 id="liveStatus" class="text-4xl font-display font-black italic tracking-wide mb-8">Preparing...
+                    </h3>
+                    <button onclick="window.location.href='status.html'"
+                        class="w-full bg-dark-900 text-brand-orange py-4 rounded-xl font-bold uppercase tracking-widest shadow-lg hover:shadow-xl hover:bg-dark-800 hover:text-white border border-dark-700 active:scale-95 transition-all flex justify-center items-center gap-3">
                         Track Details <i data-lucide="arrow-right" class="w-5 h-5"></i>
                     </button>
                 </div>
@@ -104,20 +123,23 @@
             <i data-lucide="archive" class="text-gray-500 w-5 h-5"></i>
             <h2 class="text-sm font-black text-gray-400 uppercase tracking-widest">Order History</h2>
         </div>
-        
+
         <div id="historyList" class="space-y-6">
             <!-- Loader -->
             <div id="loader" class="flex justify-center py-10 text-brand-orange">
                 <i data-lucide="loader-2" class="w-8 h-8 animate-spin"></i>
             </div>
 
-            <div id="emptyHistory" class="hidden text-center py-20 bg-dark-800 rounded-3xl border border-dashed border-dark-700 shadow-inner">
-                <div class="w-24 h-24 bg-dark-900 border border-dark-700 shadow-inner rounded-full flex items-center justify-center mx-auto mb-6 text-gray-500">
+            <div id="emptyHistory"
+                class="hidden text-center py-20 bg-dark-800 rounded-3xl border border-dashed border-dark-700 shadow-inner">
+                <div
+                    class="w-24 h-24 bg-dark-900 border border-dark-700 shadow-inner rounded-full flex items-center justify-center mx-auto mb-6 text-gray-500">
                     <i data-lucide="package-open" class="w-10 h-10"></i>
                 </div>
                 <h3 class="text-2xl font-display font-bold text-white tracking-wide mb-3">No past orders</h3>
                 <p class="text-gray-400 font-medium">Looks like you haven't ordered anything yet.</p>
-                <button onclick="window.location.href='menu.html'" class="mt-8 bg-dark-900 text-brand-orange border border-dark-700 px-8 py-4 rounded-xl font-bold uppercase tracking-widest hover:bg-fire-gradient hover:border-transparent hover:text-white transition-all">
+                <button onclick="window.location.href='menu.html'"
+                    class="mt-8 bg-dark-900 text-brand-orange border border-dark-700 px-8 py-4 rounded-xl font-bold uppercase tracking-widest hover:bg-fire-gradient hover:border-transparent hover:text-white transition-all">
                     Browse Menu
                 </button>
             </div>
@@ -125,45 +147,45 @@
 
     </main>
 
-  <script>
-    // Init icons safely
-    lucide.createIcons();
+    <script>
+        // Init icons safely
+        lucide.createIcons();
 
-    const user = JSON.parse(localStorage.getItem("royalSweetsUser"));
+        const user = JSON.parse(localStorage.getItem("royalSweetsUser"));
 
-    if(!user){
-        alert("Please login first to view orders");
-        window.location.href="login.html";
-    }
-
-    // Process dates cleanly
-    function formatDate(dateStr) {
-        let orderDate = new Date(dateStr);
-        if (isNaN(orderDate)) return "Recent Order";
-        
-        const options = { year: 'numeric', month: 'short', day: 'numeric', hour: '2-digit', minute:'2-digit' };
-        return orderDate.toLocaleDateString(undefined, options);
-    }
-
-    // Process items robustly
-    function parseItems(itemsArray) {
-        let itemsObj = {};
-        if(itemsArray && Array.isArray(itemsArray)) {
-            itemsArray.forEach(i => {
-                const name = i.name || "Unknown Item";
-                const price = i.price || 0;
-                if(!itemsObj[name]) {
-                    itemsObj[name] = { price: price, count: 0 };
-                }
-                itemsObj[name].count++;
-            });
+        if (!user) {
+            alert("Please login first to view orders");
+            window.location.href = "login.html";
         }
-        return itemsObj;
-    }
 
-    // Generate HTML for cart items dropdown
-    function generateItemsHTML(itemsObj) {
-        return Object.keys(itemsObj).map(name => `
+        // Process dates cleanly
+        function formatDate(dateStr) {
+            let orderDate = new Date(dateStr);
+            if (isNaN(orderDate)) return "Recent Order";
+
+            const options = { year: 'numeric', month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' };
+            return orderDate.toLocaleDateString(undefined, options);
+        }
+
+        // Process items robustly
+        function parseItems(itemsArray) {
+            let itemsObj = {};
+            if (itemsArray && Array.isArray(itemsArray)) {
+                itemsArray.forEach(i => {
+                    const name = i.name || "Unknown Item";
+                    const price = i.price || 0;
+                    if (!itemsObj[name]) {
+                        itemsObj[name] = { price: price, count: 0 };
+                    }
+                    itemsObj[name].count++;
+                });
+            }
+            return itemsObj;
+        }
+
+        // Generate HTML for cart items dropdown
+        function generateItemsHTML(itemsObj) {
+            return Object.keys(itemsObj).map(name => `
             <div class="flex justify-between items-center text-sm py-3 border-b border-dark-700/50 last:border-0 group/item">
                 <span class="text-gray-300 font-medium group-hover/item:text-brand-orange transition-colors">
                     <span class="font-black text-brand-orange mr-3 inline-block w-6 text-right">${itemsObj[name].count}x</span>
@@ -172,85 +194,85 @@
                 <span class="font-bold text-white">₹${itemsObj[name].price * itemsObj[name].count}</span>
             </div>
         `).join('');
-    }
+        }
 
-    // LOAD USER ORDERS
-    async function loadOrders(){
-        const historyContainer = document.getElementById("historyList");
-        const empty = document.getElementById("emptyHistory");
-        const loader = document.getElementById("loader");
+        // LOAD USER ORDERS
+        async function loadOrders() {
+            const historyContainer = document.getElementById("historyList");
+            const empty = document.getElementById("emptyHistory");
+            const loader = document.getElementById("loader");
 
-        try {
-            // First check local storage for newly placed, un-synced orders
-            const localOrdersStr = localStorage.getItem(`orders_${user.phone}`);
-            let localOrders = localOrdersStr ? JSON.parse(localOrdersStr) : [];
-            
-            // Try fetching from API (if backend is active)
-            let apiOrders = [];
             try {
-                const res = await fetch(`https://restaurant-site-8y41.onrender.com/api/orders/user/${user._id}`);
-                if (res.ok) apiOrders = await res.json();
-            } catch(e) {
-                console.log("API offline or error, falling back to local only", e);
-            }
+                // First check local storage for newly placed, un-synced orders
+                const localOrdersStr = localStorage.getItem(`orders_${user.phone}`);
+                let localOrders = localOrdersStr ? JSON.parse(localOrdersStr) : [];
 
-            // Merge local and API orders (preferring local if duplicate ID to show recent state)
-            let allOrdersMap = new Map();
-            apiOrders.forEach(o => allOrdersMap.set(o._id, o));
-            localOrders.forEach(o => allOrdersMap.set(o._id, o));
-            
-            let orders = Array.from(allOrdersMap.values());
-            loader.style.display = "none";
-
-            if (!orders || orders.length === 0) {
-                empty.classList.remove("hidden");
-                empty.classList.add("block");
-                return;
-            }
-
-            // Remove existing logic nodes before injecting
-            historyContainer.querySelectorAll('.order-card-rendered').forEach(el => el.remove());
-
-            // Render Orders (Reverse chronological)
-            orders.sort((a,b) => new Date(b.createdAt || b.date) - new Date(a.createdAt || a.date)).forEach(order => {
-                
-                let formattedDate = formatDate(order.createdAt || order.date);
-                let isCompleted = (order.status || "").toLowerCase() === 'delivered';
-                let isPending = (order.status || "").toLowerCase() === 'pending';
-                
-                let itemsObj = parseItems(order.items);
-                let itemsHTML = generateItemsHTML(itemsObj);
-                
-                // Determine total safely
-                let totalAmt = order.totalAmount || order.total;
-                if (totalAmt === undefined) {
-                    totalAmt = Object.values(itemsObj).reduce((sum, item) => sum + (item.price * item.count), 0);
+                // Try fetching from API (if backend is active)
+                let apiOrders = [];
+                try {
+                    const res = await fetch(`https://restaurant-site-8y41.onrender.com/api/orders/user/${user._id}`);
+                    if (res.ok) apiOrders = await res.json();
+                } catch (e) {
+                    console.log("API offline or error, falling back to local only", e);
                 }
 
-                let isCancelled = (order.status || "").toLowerCase() === 'cancelled';
+                // Merge local and API orders (preferring local if duplicate ID to show recent state)
+                let allOrdersMap = new Map();
+                apiOrders.forEach(o => allOrdersMap.set(o._id, o));
+                localOrders.forEach(o => allOrdersMap.set(o._id, o));
 
-                // Status specific styling
-                let statusColor = isCompleted ? 'text-green-500' : isCancelled ? 'text-brand-red' : 'text-brand-orange';
-                let dotClass = isCompleted ? 'bg-green-500 shadow-green-500/40' : isCancelled ? 'bg-brand-red shadow-brand-red/40' : 'bg-brand-orange shadow-brand-orange/40 animate-pulse';
-                let btnClass = isCompleted 
-                    ? 'bg-dark-900 border border-green-500/50 text-green-500 hover:bg-green-500/10' 
-                    : isCancelled
-                    ? 'bg-dark-900 border border-brand-red text-brand-red opacity-50 cursor-not-allowed'
-                    : 'bg-dark-900 border border-brand-orange text-brand-orange hover:bg-brand-orange hover:text-white';
+                let orders = Array.from(allOrdersMap.values());
+                loader.style.display = "none";
 
-                let cancelBtnHTML = "";
-                let isCancelable = order.status === "Accepted" || order.status === "Kitchen" || order.status === "Pending";
-                if (isCancelable && !isCancelled) {
-                    cancelBtnHTML = `
-                        <button onclick="cancelOrder('${order._id}')" class="text-[10px] font-bold text-gray-500 hover:text-brand-red uppercase transition-colors mr-4 underline decoration-dashed underline-offset-4">
-                            Cancel Order
+                if (!orders || orders.length === 0) {
+                    empty.classList.remove("hidden");
+                    empty.classList.add("block");
+                    return;
+                }
+
+                // Remove existing logic nodes before injecting
+                historyContainer.querySelectorAll('.order-card-rendered').forEach(el => el.remove());
+
+                // Render Orders (Reverse chronological)
+                orders.sort((a, b) => new Date(b.createdAt || b.date) - new Date(a.createdAt || a.date)).forEach(order => {
+
+                    let formattedDate = formatDate(order.createdAt || order.date);
+                    let isCompleted = (order.status || "").toLowerCase() === 'delivered';
+                    let isPending = (order.status || "").toLowerCase() === 'pending';
+
+                    let itemsObj = parseItems(order.items);
+                    let itemsHTML = generateItemsHTML(itemsObj);
+
+                    // Determine total safely
+                    let totalAmt = order.totalAmount || order.total;
+                    if (totalAmt === undefined) {
+                        totalAmt = Object.values(itemsObj).reduce((sum, item) => sum + (item.price * item.count), 0);
+                    }
+
+                    let isCancelled = (order.status || "").toLowerCase() === 'cancelled';
+
+                    // Status specific styling
+                    let statusColor = isCompleted ? 'text-green-500' : isCancelled ? 'text-brand-red' : 'text-brand-orange';
+                    let dotClass = isCompleted ? 'bg-green-500 shadow-green-500/40' : isCancelled ? 'bg-brand-red shadow-brand-red/40' : 'bg-brand-orange shadow-brand-orange/40 animate-pulse';
+                    let btnClass = isCompleted
+                        ? 'bg-dark-900 border border-green-500/50 text-green-500 hover:bg-green-500/10'
+                        : isCancelled
+                            ? 'bg-dark-900 border border-brand-red text-brand-red opacity-50 cursor-not-allowed'
+                            : 'bg-dark-900 border border-brand-orange text-brand-orange hover:bg-brand-orange hover:text-white';
+
+                    let cancelBtnHTML = "";
+                    let isCancelable = order.status === "Accepted" || order.status === "Kitchen" || order.status === "Pending";
+                    if (isCancelable && !isCancelled) {
+                        cancelBtnHTML = `
+                        <button onclick="cancelOrder('${order._id}')" class="text-[10px] font-bold text-gray-400 hover:text-brand-red uppercase transition-colors underline decoration-dashed underline-offset-4 whitespace-nowrap shrink-0">
+                            Cancel
                         </button>
                     `;
-                }
+                    }
 
-                // Add to DOM
-                historyContainer.insertAdjacentHTML('beforeend', `
-                    <div class="order-card-rendered bg-dark-800 p-6 rounded-3xl border border-dark-700 shadow-[0_5px_15px_rgba(0,0,0,0.3)] hover:border-brand-orange/50 transition-all flex flex-col gap-5 group">
+                    // Add to DOM
+                    historyContainer.insertAdjacentHTML('beforeend', `
+                    <div class="order-card-rendered bg-dark-800 p-4 sm:p-6 rounded-3xl border border-dark-700 shadow-[0_5px_15px_rgba(0,0,0,0.3)] hover:border-brand-orange/50 transition-all flex flex-col gap-5 group">
                         
                         <div class="flex justify-between items-start">
                             <div>
@@ -259,103 +281,104 @@
                                 </span>
                                 
                                 <div class="cursor-pointer group/items select-none" onclick="document.getElementById('items-${order._id}').classList.toggle('hidden')">
-                                    <h4 class="font-bold text-white text-lg group-hover/items:text-brand-orange transition-colors flex items-center gap-3">
-                                        ${order.items.length} Items Ordered 
+                                    <h4 class="font-bold text-white text-base sm:text-lg group-hover/items:text-brand-orange transition-colors flex items-center gap-2 sm:gap-3">
+                                        ${order.items.length} ${order.items.length === 1 ? 'Item' : 'Items'} Ordered 
                                         <div class="bg-dark-900 p-1.5 rounded-full border border-dark-700 group-hover/items:border-brand-orange/50 transition-colors">
                                             <i data-lucide="chevron-down" class="w-3 h-3 text-gray-400 group-hover/items:text-brand-orange"></i>
                                         </div>
                                     </h4>
                                 </div>
                             </div>
-                            <span class="text-2xl font-black text-white bg-dark-900 px-4 py-2 rounded-2xl border border-dark-700 shadow-inner group-hover:border-brand-orange/50 transition-colors">
+                            <span class="text-xl sm:text-2xl font-black text-white bg-dark-900 px-3 py-2 sm:px-4 rounded-2xl border border-dark-700 shadow-inner group-hover:border-brand-orange/50 transition-colors">
                                 ₹${totalAmt}
                             </span>
                         </div>
 
-                        <div id="items-${order._id}" class="hidden mt-2 mb-3 p-5 bg-dark-900/80 rounded-2xl border border-dark-700 shadow-inner">
+                        <div id="items-${order._id}" class="hidden mt-2 mb-3 p-4 sm:p-5 bg-dark-900/80 rounded-2xl border border-dark-700 shadow-inner">
                             ${itemsHTML}
                         </div>
 
-                        <div class="flex justify-between items-center mt-2 pt-5 border-t border-dark-700">
-                            <div class="flex items-center gap-3 bg-dark-900 px-4 py-2 rounded-xl border border-dark-700 shadow-inner">
-                                <div class="w-2.5 h-2.5 rounded-full shadow-sm ${dotClass}"></div>
-                                <p class="text-xs font-bold ${statusColor} tracking-widest uppercase">
+                        <div class="flex flex-wrap justify-between items-center mt-2 pt-5 border-t border-dark-700 gap-3">
+                            <div class="flex items-center gap-2 sm:gap-3 bg-dark-900 px-3 sm:px-4 py-2 rounded-xl border border-dark-700 shadow-inner shrink-0">
+                                <div class="w-2 h-2 sm:w-2.5 sm:h-2.5 rounded-full shadow-sm ${dotClass}"></div>
+                                <p class="text-[10px] sm:text-xs font-bold ${statusColor} tracking-widest uppercase">
                                     ${order.status || "Unknown"}
                                 </p>
                             </div>
 
-                            <div class="flex items-center">
+                            <div class="flex items-center gap-3 sm:gap-4 ml-auto">
                                 ${cancelBtnHTML}
                                 <button onclick="window.location.href='status.html?id=${order._id}'"
-                                    class="${btnClass} px-6 py-3 rounded-xl text-xs font-bold uppercase tracking-widest shadow-sm active:scale-95 transition-all flex items-center gap-2">
-                                    <i data-lucide="${isCompleted ? 'check-circle' : isCancelled ? 'x-circle' : 'navigation'}" class="w-4 h-4"></i>
+                                    class="${btnClass} px-4 py-2 sm:px-6 sm:py-3 rounded-xl text-[10px] sm:text-xs font-bold uppercase tracking-widest shadow-sm active:scale-95 transition-all flex items-center gap-2 whitespace-nowrap">
+                                    <i data-lucide="${isCompleted ? 'check-circle' : isCancelled ? 'x-circle' : 'navigation'}" class="w-3 h-3 sm:w-4 sm:h-4"></i>
                                     ${isCompleted ? 'View Order' : isCancelled ? 'Cancelled' : 'Track Status'}
                                 </button>
                             </div>
                         </div>
                     </div>
                 `);
-            });
+                });
 
-            // Re-bind dynamically injected icons
-            lucide.createIcons();
+                // Re-bind dynamically injected icons
+                lucide.createIcons();
 
-        } catch(err) {
-            console.error("Failed to load orders", err);
-            loader.style.display = "none";
-            historyContainer.insertAdjacentHTML('beforeend', `
+            } catch (err) {
+                console.error("Failed to load orders", err);
+                loader.style.display = "none";
+                historyContainer.insertAdjacentHTML('beforeend', `
                 <div class="bg-red-500/10 border border-red-500/50 rounded-2xl p-6 text-center text-red-500">
                     <i data-lucide="alert-triangle" class="w-8 h-8 mx-auto mb-3"></i>
                     <p class="font-bold">Could not load orders. Please try again later.</p>
                 </div>
             `);
-            lucide.createIcons();
-        }
-    }
-
-    // Init page load
-    window.onload = loadOrders;
-
-    // CANCEL ORDER LOGIC
-    async function cancelOrder(orderId) {
-        const reason = prompt("Please provide a reason for cancelling this order:");
-        if (reason === null) return; // user clicked cancel on prompt
-        if (reason.trim() === "") {
-            alert("A reason is required to cancel an order.");
-            return;
-        }
-
-        try {
-            const res = await fetch(`https://restaurant-site-8y41.onrender.com/api/orders/cancel/${orderId}`, {
-                method: "PUT",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ reason: reason.trim() })
-            });
-
-            const data = await res.json();
-            if (data.success) {
-                alert("Order has been cancelled successfully.");
-                // Update local storage so it shows correctly on reload immediately
-                const localOrdersStr = localStorage.getItem(`orders_${user.phone}`);
-                if (localOrdersStr) {
-                    let localOrders = JSON.parse(localOrdersStr);
-                    const idx = localOrders.findIndex(o => o._id === orderId);
-                    if(idx !== -1) {
-                        localOrders[idx].status = "Cancelled";
-                        localOrders[idx].cancellationReason = reason.trim();
-                        localStorage.setItem(`orders_${user.phone}`, JSON.stringify(localOrders));
-                    }
-                }
-                loadOrders(); // Re-render the UI
-            } else {
-                alert("Could not cancel order: " + (data.message || "Unknown error"));
+                lucide.createIcons();
             }
-        } catch(err) {
-            console.error("Cancellation error:", err);
-            alert("Network error: Could not cancel order right now.");
         }
-    }
 
-  </script>
+        // Init page load
+        window.onload = loadOrders;
+
+        // CANCEL ORDER LOGIC
+        async function cancelOrder(orderId) {
+            const reason = prompt("Please provide a reason for cancelling this order:");
+            if (reason === null) return; // user clicked cancel on prompt
+            if (reason.trim() === "") {
+                alert("A reason is required to cancel an order.");
+                return;
+            }
+
+            try {
+                const res = await fetch(`https://restaurant-site-8y41.onrender.com/api/orders/cancel/${orderId}`, {
+                    method: "PUT",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ reason: reason.trim() })
+                });
+
+                const data = await res.json();
+                if (data.success) {
+                    alert("Order has been cancelled successfully.");
+                    // Update local storage so it shows correctly on reload immediately
+                    const localOrdersStr = localStorage.getItem(`orders_${user.phone}`);
+                    if (localOrdersStr) {
+                        let localOrders = JSON.parse(localOrdersStr);
+                        const idx = localOrders.findIndex(o => o._id === orderId);
+                        if (idx !== -1) {
+                            localOrders[idx].status = "Cancelled";
+                            localOrders[idx].cancellationReason = reason.trim();
+                            localStorage.setItem(`orders_${user.phone}`, JSON.stringify(localOrders));
+                        }
+                    }
+                    loadOrders(); // Re-render the UI
+                } else {
+                    alert("Could not cancel order: " + (data.message || "Unknown error"));
+                }
+            } catch (err) {
+                console.error("Cancellation error:", err);
+                alert("Network error: Could not cancel order right now.");
+            }
+        }
+
+    </script>
 </body>
+
 </html>
