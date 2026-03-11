@@ -6,80 +6,6 @@ const User = require("../models/User"); // Imported User model to find delivery 
 const Razorpay = require("razorpay");
 const crypto = require("crypto");
 require("dotenv").config();
-const twilio = require("twilio");
-
-// Initialize Twilio Client
-const twilioClient = twilio(process.env.TWILIO_ACCOUNT_SID, process.env.TWILIO_AUTH_TOKEN);
-
-// Helper function to send notifications
-async function notifyDeliveryBoys(order) {
-    try {
-        const deliveryBoys = await User.find({ role: "delivery" });
-        if (!deliveryBoys || deliveryBoys.length === 0) {
-            console.log("No delivery boys found to notify.");
-            return;
-        }
-
-        const messageBody = `🚨 NEW ORDER ALERT! 🚨\nOrder #${order._id.toString().slice(-6)}\nAmount: ₹${order.total}\nPhone: ${order.phone}\nAddress: ${order.address}\nPlease check the Delivery Dashboard!`;
-
-        for (const boy of deliveryBoys) {
-            if (boy.phone) {
-                // Ensure phone number has country code for Twilio (assuming +91 for India if missing)
-                let formattedPhone = boy.phone;
-                if (!formattedPhone.startsWith('+')) {
-                    formattedPhone = '+91' + formattedPhone; 
-                }
-
-                // Send SMS
-                try {
-                    await twilioClient.messages.create({
-                        body: messageBody,
-                        from: process.env.TWILIO_PHONE_NUMBER,
-                        to: formattedPhone
-                    });
-                    console.log(`SMS sent to delivery boy: ${formattedPhone}`);
-                } catch (smsErr) {
-                    console.error(`Failed to send SMS to ${formattedPhone}:`, smsErr.message);
-                }
-
-                // Send WhatsApp
-                try {
-                    await twilioClient.messages.create({
-                        body: messageBody,
-                        from: process.env.TWILIO_WHATSAPP_NUMBER,
-                        to: `whatsapp:${formattedPhone}`
-                    });
-                    console.log(`WhatsApp sent to delivery boy: ${formattedPhone}`);
-                } catch (waErr) {
-                    console.error(`Failed to send WhatsApp to ${formattedPhone}:`, waErr.message);
-                }
-            }
-        }
-    } catch (err) {
-        console.error("Error notifying delivery boys:", err);
-    }
-}
-
-// DIAGNOSTIC ENDPOINT TO TEST TWILIO FROM THE BROWSER
-router.get("/test-twilio", async (req, res) => {
-    try {
-        const testPhone = req.query.phone || process.env.TWILIO_PHONE_NUMBER;
-        let formattedPhone = testPhone;
-        if (!formattedPhone.startsWith('+')) {
-            formattedPhone = '+91' + formattedPhone;
-        }
-
-        const msg = await twilioClient.messages.create({
-            body: "Server Diagnostic Test SMS",
-            from: process.env.TWILIO_PHONE_NUMBER,
-            to: formattedPhone
-        });
-        
-        res.json({ success: true, message: "Twilio SMS Sent Successfully!", sid: msg.sid });
-    } catch (err) {
-        res.status(500).json({ success: false, error: err.message, code: err.code });
-    }
-});
 
 const razorpay = new Razorpay({
     key_id: process.env.RAZORPAY_KEY_ID,
@@ -104,9 +30,6 @@ router.post("/create", async (req, res) => {
         });
 
         await order.save();
-        
-        // Notify Delivery Boys asynchronously
-        notifyDeliveryBoys(order);
 
         res.json(order);
 
@@ -192,9 +115,6 @@ router.post("/razorpay/verify", async (req, res) => {
             });
 
             await order.save();
-            
-            // Notify Delivery Boys asynchronously
-            notifyDeliveryBoys(order);
 
             res.json({ success: true, message: "Payment verified successfully", order });
 
@@ -375,22 +295,22 @@ router.put("/cancel/:id", async (req, res) => {
     try {
         const { reason } = req.body;
         const order = await Order.findById(req.params.id);
-        
+
         if (!order) return res.status(404).json({ success: false, message: "Order not found" });
 
         // Check if order is too far along to cancel
         const uncancelableStatuses = ["On Way", "Arrived", "Delivered"];
         if (uncancelableStatuses.includes(order.status)) {
-            return res.status(400).json({ 
-                success: false, 
-                message: "This order cannot be cancelled as it is already " + order.status 
+            return res.status(400).json({
+                success: false,
+                message: "This order cannot be cancelled as it is already " + order.status
             });
         }
 
         // Cancel the order
         order.status = "Cancelled";
         if (reason) order.cancellationReason = reason;
-        
+
         await order.save();
 
         res.json({ success: true, message: "Order cancelled successfully", order });
