@@ -1,202 +1,210 @@
 <!DOCTYPE html>
 
 <html lang="en">
+
 <head>
 
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Login | Royal Sweets</title>
+    <title>Login | Royal Sweets</title>
 
-<script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
 
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 
-<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;800&display=swap"
+        rel="stylesheet">
 
-<style>
-body { font-family: 'Plus Jakarta Sans', sans-serif; }
-</style>
+    <style>
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+        }
+    </style>
 
-<!-- Google Identity SDK -->
-<script src="https://accounts.google.com/gsi/client" async defer></script>
+    <!-- Google Identity SDK -->
+    <script src="https://accounts.google.com/gsi/client" async defer></script>
 
 </head>
 
 <body class="bg-slate-50 min-h-screen flex flex-col items-center justify-center p-4 relative overflow-hidden">
 
-<a href="index.html" class="absolute top-8 left-8 w-12 h-12 bg-white rounded-full flex items-center justify-center shadow-sm border border-slate-200 hover:bg-slate-50 transition-colors z-10 hover:-translate-x-1 duration-300">
-    <i class="fa-solid fa-arrow-left text-slate-600"></i>
-</a>
+    <a href="index.html"
+        class="absolute top-8 left-8 w-12 h-12 bg-white rounded-full flex items-center justify-center shadow-sm border border-slate-200 hover:bg-slate-50 transition-colors z-10 hover:-translate-x-1 duration-300">
+        <i class="fa-solid fa-arrow-left text-slate-600"></i>
+    </a>
 
-<!-- Decorative bg elements -->
-<div class="fixed top-[-10%] left-[-10%] w-[40%] h-[40%] bg-orange-500/10 rounded-full blur-3xl pointer-events-none"></div>
-<div class="fixed bottom-[-10%] right-[-10%] w-[40%] h-[40%] bg-orange-400/10 rounded-full blur-3xl pointer-events-none"></div>
+    <!-- Decorative bg elements -->
+    <div
+        class="fixed top-[-10%] left-[-10%] w-[40%] h-[40%] bg-orange-500/10 rounded-full blur-3xl pointer-events-none">
+    </div>
+    <div
+        class="fixed bottom-[-10%] right-[-10%] w-[40%] h-[40%] bg-orange-400/10 rounded-full blur-3xl pointer-events-none">
+    </div>
 
-<div class="w-full max-w-[420px] relative z-10">
-    <div class="bg-white/80 backdrop-blur-xl rounded-[2.5rem] p-10 shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-white">
-        
-        <div class="text-center mb-10">
-            <div class="w-16 h-16 bg-gradient-to-br from-orange-500 to-orange-600 rounded-2xl mx-auto mb-6 flex items-center justify-center text-white text-2xl shadow-lg shadow-orange-500/30 transform -rotate-6 group hover:rotate-0 transition-all duration-300">
-                <i class="fa-solid fa-lock"></i>
+    <div class="w-full max-w-[420px] relative z-10">
+        <div
+            class="bg-white/80 backdrop-blur-xl rounded-[2.5rem] p-10 shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-white">
+
+            <div class="text-center mb-10">
+                <div
+                    class="w-16 h-16 bg-gradient-to-br from-orange-500 to-orange-600 rounded-2xl mx-auto mb-6 flex items-center justify-center text-white text-2xl shadow-lg shadow-orange-500/30 transform -rotate-6 group hover:rotate-0 transition-all duration-300">
+                    <i class="fa-solid fa-lock"></i>
+                </div>
+                <h2 class="text-3xl font-black text-slate-800 tracking-tight">
+                    Welcome back
+                </h2>
+                <p class="text-slate-500 font-medium mt-2">
+                    Please enter your details to sign in.
+                </p>
             </div>
-            <h2 class="text-3xl font-black text-slate-800 tracking-tight">
-                Welcome back
-            </h2>
-            <p class="text-slate-500 font-medium mt-2">
-                Please enter your details to sign in.
+
+            <form id="loginForm" class="space-y-5">
+                <div class="space-y-4">
+                    <div class="relative group">
+                        <div
+                            class="absolute inset-y-0 left-0 pl-5 flex items-center pointer-events-none text-slate-400 group-focus-within:text-orange-500 transition-colors z-10">
+                            <i class="fa-regular fa-envelope"></i>
+                        </div>
+                        <input id="email" type="email" placeholder="Email Address" required
+                            class="relative w-full bg-slate-50/50 border border-slate-200 py-4 pl-12 pr-4 rounded-xl outline-none focus:bg-white focus:border-orange-500 focus:ring-4 focus:ring-orange-500/10 transition-all font-medium text-slate-700 placeholder:text-slate-400">
+                    </div>
+
+                    <div class="relative group">
+                        <div
+                            class="absolute inset-y-0 left-0 pl-5 flex items-center pointer-events-none text-slate-400 group-focus-within:text-orange-500 transition-colors z-10">
+                            <i class="fa-solid fa-lock text-[14px]"></i>
+                        </div>
+                        <input id="password" type="password" placeholder="Password" required
+                            class="relative w-full bg-slate-50/50 border border-slate-200 py-4 pl-12 pr-4 rounded-xl outline-none focus:bg-white focus:border-orange-500 focus:ring-4 focus:ring-orange-500/10 transition-all font-medium text-slate-700 placeholder:text-slate-400">
+                    </div>
+                </div>
+
+                <button type="submit"
+                    class="w-full bg-slate-900 border border-transparent text-white py-4 rounded-xl font-bold tracking-wide shadow-md hover:bg-slate-800 active:scale-[0.98] transition-all flex justify-center items-center gap-2 mt-2">
+                    Sign In <i class="fa-solid fa-arrow-right text-sm"></i>
+                </button>
+            </form>
+
+            <div class="mt-8 flex items-center justify-between">
+                <span class="border-b border-slate-200 w-1/5 lg:w-1/4"></span>
+                <span class="text-xs text-center text-slate-500 uppercase font-bold tracking-widest">or continue
+                    with</span>
+                <span class="border-b border-slate-200 w-1/5 lg:w-1/4"></span>
+            </div>
+
+            <div class="mt-6 flex justify-center">
+                <div id="g_id_onload"
+                    data-client_id="202166681296-2vbnjbi9cln832c8dg2bus3u2sjgrbrg.apps.googleusercontent.com"
+                    data-context="signin" data-ux_mode="popup" data-callback="handleCredentialResponse"
+                    data-auto_prompt="false">
+                </div>
+                <!-- Google Sign-In Button Container -->
+                <div class="g_id_signin" data-type="standard" data-shape="rectangular" data-theme="outline"
+                    data-text="signin_with" data-size="large" data-logo_alignment="left" data-width="340">
+                </div>
+            </div>
+
+            <p class="text-center mt-8 text-sm font-medium text-slate-500">
+                Don't have an account?
+                <a href="signup.html"
+                    class="text-orange-600 font-bold hover:underline underline-offset-4 decoration-2 transition-all">
+                    Sign up
+                </a>
             </p>
         </div>
-
-        <form id="loginForm" class="space-y-5">
-            <div class="space-y-4">
-                <div class="relative group">
-                    <div class="absolute inset-y-0 left-0 pl-5 flex items-center pointer-events-none text-slate-400 group-focus-within:text-orange-500 transition-colors z-10">
-                        <i class="fa-regular fa-envelope"></i>
-                    </div>
-                    <input id="email" type="email" placeholder="Email Address" required
-                        class="relative w-full bg-slate-50/50 border border-slate-200 py-4 pl-12 pr-4 rounded-xl outline-none focus:bg-white focus:border-orange-500 focus:ring-4 focus:ring-orange-500/10 transition-all font-medium text-slate-700 placeholder:text-slate-400">
-                </div>
-
-                <div class="relative group">
-                    <div class="absolute inset-y-0 left-0 pl-5 flex items-center pointer-events-none text-slate-400 group-focus-within:text-orange-500 transition-colors z-10">
-                        <i class="fa-solid fa-lock text-[14px]"></i>
-                    </div>
-                    <input id="password" type="password" placeholder="Password" required
-                        class="relative w-full bg-slate-50/50 border border-slate-200 py-4 pl-12 pr-4 rounded-xl outline-none focus:bg-white focus:border-orange-500 focus:ring-4 focus:ring-orange-500/10 transition-all font-medium text-slate-700 placeholder:text-slate-400">
-                </div>
-            </div>
-
-            <button type="submit"
-                class="w-full bg-slate-900 border border-transparent text-white py-4 rounded-xl font-bold tracking-wide shadow-md hover:bg-slate-800 active:scale-[0.98] transition-all flex justify-center items-center gap-2 mt-2">
-                Sign In <i class="fa-solid fa-arrow-right text-sm"></i>
-            </button>
-        </form>
-
-        <div class="mt-8 flex items-center justify-between">
-            <span class="border-b border-slate-200 w-1/5 lg:w-1/4"></span>
-            <span class="text-xs text-center text-slate-500 uppercase font-bold tracking-widest">or continue with</span>
-            <span class="border-b border-slate-200 w-1/5 lg:w-1/4"></span>
-        </div>
-
-        <div class="mt-6 flex justify-center">
-            <div id="g_id_onload"
-                 data-client_id="202166681296-2vbnjbi9cln832c8dg2bus3u2sjgrbrg.apps.googleusercontent.com"
-                 data-context="signin"
-                 data-ux_mode="popup"
-                 data-callback="handleCredentialResponse"
-                 data-auto_prompt="false">
-            </div>
-            <!-- Google Sign-In Button Container -->
-            <div class="g_id_signin"
-                 data-type="standard"
-                 data-shape="rectangular"
-                 data-theme="outline"
-                 data-text="signin_with"
-                 data-size="large"
-                 data-logo_alignment="left"
-                 data-width="340">
-            </div>
-        </div>
-
-        <p class="text-center mt-8 text-sm font-medium text-slate-500">
-            Don't have an account? 
-            <a href="signup.html" class="text-orange-600 font-bold hover:underline underline-offset-4 decoration-2 transition-all">
-                Sign up
-            </a>
-        </p>
     </div>
-</div>
 
-<script>
+    <script>
 
-// Helper to detect if testing locally to avoid frustrating CORS/Network errors before deploying on Render
-const getBaseUrl = () => {
-    return (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') 
-        ? "http://localhost:5000" 
-        : "https://restaurant-site-8y41.onrender.com";
-};
+        // Helper to detect if testing locally to avoid frustrating CORS/Network errors before deploying on Render
+        const getBaseUrl = () => {
+            return (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1')
+                ? "http://localhost:5000"
+                : "https://restaurant-site-8y41.onrender.com";
+        };
 
-// 1. Traditional Login
-document.getElementById("loginForm").addEventListener("submit", async function(e){
-    e.preventDefault();
-    const email=document.getElementById("email").value;
-    const password=document.getElementById("password").value;
+        // 1. Traditional Login
+        document.getElementById("loginForm").addEventListener("submit", async function (e) {
+            e.preventDefault();
+            const email = document.getElementById("email").value;
+            const password = document.getElementById("password").value;
 
-    try{
-        const res = await fetch(`${getBaseUrl()}/api/auth/login`,{
-            method:"POST",
-            headers:{ "Content-Type":"application/json" },
-            body:JSON.stringify({ email, password })
+            try {
+                const res = await fetch(`${getBaseUrl()}/api/auth/login`, {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ email, password })
+                });
+
+                const data = await res.json();
+                if (res.status !== 200) {
+                    alert(data.message);
+                    return;
+                }
+
+                /* SAVE USER */
+                localStorage.setItem("royalSweetsUser", JSON.stringify(data));
+
+                /* ROLE BASED REDIRECT */
+                if (data.role === "delivery") {
+                    window.location.href = "delivery-dashboard.html";
+                } else if (data.role === "admin") {
+                    window.location.href = "admin.html";
+                } else {
+                    window.location.href = "menu.html";
+                }
+            } catch (err) {
+                console.log(err);
+                alert("Login failed");
+            }
         });
 
-        const data = await res.json();
-        if(res.status!==200){
-            alert(data.message);
-            return;
+        // 2. Seamless Google Auth Callback
+        async function handleCredentialResponse(response) {
+            try {
+                // Send Google token to our backend
+                const res = await fetch(`${getBaseUrl()}/api/auth/google`, {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ token: response.credential })
+                });
+
+                const data = await res.json();
+                console.log("Backend response for Google Auth:", data);
+
+                if (res.status === 404 && data.googleData) {
+                    console.log("Redirecting to signup with data:", data.googleData);
+                    // User does not exist yet. Redirect them to signup to collect their phone number!
+                    sessionStorage.setItem("pendingGoogleSignup", JSON.stringify(data.googleData));
+                    window.location.href = "signup.html";
+                    return;
+                }
+
+                if (res.status !== 200) {
+                    alert(data.message || "Google Login failed");
+                    return;
+                }
+
+                /* AUTO LOGIN EXISTING USER AND REDIRECT */
+                localStorage.setItem("royalSweetsUser", JSON.stringify(data));
+
+                if (data.role === "delivery") {
+                    window.location.href = "delivery-dashboard.html";
+                } else if (data.role === "admin") {
+                    window.location.href = "admin.html";
+                } else {
+                    window.location.href = "menu.html";
+                }
+
+            } catch (err) {
+                console.log("Google error: ", err);
+                alert("Google Verification failed");
+            }
         }
 
-        /* SAVE USER */
-        localStorage.setItem("royalSweetsUser",JSON.stringify(data));
-
-        /* ROLE BASED REDIRECT */
-        if(data.role==="delivery"){
-            window.location.href="delivery-dashboard.html";
-        } else if(data.role==="admin"){
-            window.location.href="admin-dashboard.html";
-        } else{
-            window.location.href="menu.html";
-        }
-    }catch(err){
-        console.log(err);
-        alert("Login failed");
-    }
-});
-
-// 2. Seamless Google Auth Callback
-async function handleCredentialResponse(response) {
-    try {
-        // Send Google token to our backend
-        const res = await fetch(`${getBaseUrl()}/api/auth/google`, {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ token: response.credential })
-        });
-
-        const data = await res.json();
-        console.log("Backend response for Google Auth:", data);
-
-        if (res.status === 404 && data.googleData) {
-            console.log("Redirecting to signup with data:", data.googleData);
-            // User does not exist yet. Redirect them to signup to collect their phone number!
-            sessionStorage.setItem("pendingGoogleSignup", JSON.stringify(data.googleData));
-            window.location.href = "signup.html";
-            return;
-        }
-
-        if (res.status !== 200) {
-            alert(data.message || "Google Login failed");
-            return;
-        }
-
-        /* AUTO LOGIN EXISTING USER AND REDIRECT */
-        localStorage.setItem("royalSweetsUser", JSON.stringify(data));
-
-        if(data.role==="delivery"){
-            window.location.href="delivery-dashboard.html";
-        } else if(data.role==="admin"){
-            window.location.href="admin-dashboard.html";
-        } else{
-            window.location.href="menu.html";
-        }
-
-    } catch(err) {
-        console.log("Google error: ", err);
-        alert("Google Verification failed");
-    }
-}
-
-</script>
+    </script>
 
 </body>
+
 </html>
