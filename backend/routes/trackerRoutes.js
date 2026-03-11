@@ -51,7 +51,7 @@ router.get("/stats", async (req, res) => {
         const orders = await Order.find({
             createdAt: { $gte: cutoffDate },
             status: { $nin: ["Cancelled", "cancelled"] }
-        }).sort({ createdAt: -1 });
+        }).populate('userId').sort({ createdAt: -1 });
 
         const ordersCount = orders.length;
 
@@ -59,26 +59,27 @@ router.get("/stats", async (req, res) => {
         let revenue = 0;
         const ordersWithCalculatedRevenue = orders.map(order => {
             let orderRevenue = 0;
-            // Some old orders might have totalAmount strictly equal to 0
-            if (order.totalAmount && order.totalAmount > 0) {
-                orderRevenue = Number(order.totalAmount);
-            } else if (order.cartItems && order.cartItems.length > 0) {
-                order.cartItems.forEach(item => {
-                    orderRevenue += (Number(item.price) || 0) * (Number(item.quantity) || 1);
+            // The Order schema stores the price as 'total' and items as 'items'
+            if (order.total && order.total > 0) {
+                orderRevenue = Number(order.total);
+            } else if (order.items && order.items.length > 0) {
+                order.items.forEach(item => {
+                    orderRevenue += (Number(item.price) || 0) * (Number(item.qty) || 1);
                 });
             }
             revenue += orderRevenue;
 
             // Return a clean version of the order with its parsed revenue for the frontend table
+            // Customer name comes from the populated userId field
             return {
                 _id: order._id,
-                customerName: order.customerDetails?.name || "Unknown",
-                phone: order.customerDetails?.phone || "Unknown",
+                customerName: order.userId?.name || "Unknown",
+                phone: order.phone || "Unknown",
                 status: order.status,
                 createdAt: order.createdAt,
                 revenue: orderRevenue,
-                itemsCount: order.cartItems?.length || 0,
-                items: order.cartItems || []
+                itemsCount: order.items?.length || 0,
+                items: order.items || []
             };
         });
 

@@ -840,6 +840,14 @@
                 // Re-initialize icons inside dynamic HTML
                 lucide.createIcons();
             }
+
+            // Track visit ping
+            fetch("https://restaurant-site-8y41.onrender.com/api/tracker/visit", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ page: "index" })
+            }).catch(e => console.error("Visit tracking failed:", e));
+
         });
 
         function logout() {
