@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Royal Sweets - Analytics Dashboard</title>
+    <!-- Google Fonts -->
+    <link
+        href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;700&family=Poppins:wght@300;400;500;600&display=swap"
+        rel="stylesheet">
+    <!-- Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            red: '#ff3b3b',
+                            darkred: '#8b0000',
+                            orange: '#ff6b00',
+                        },
+                        dark: {
+                            900: '#0a0a0a',
+                            800: '#141414',
+                            700: '#1f1f1f',
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Poppins', 'sans-serif'],
+                        display: ['Oswald', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+
+<body class="bg-dark-900 text-gray-300 font-sans antialiased">
+    <!-- Navbar -->
+    <nav class="bg-dark-800 border-b border-white/5 py-4 sticky top-0 z-50 shadow-lg">
+        <div class="max-w-7xl mx-auto px-6 flex justify-between items-center">
+            <div class="flex items-center gap-4">
+                <a href="admin.html" class="text-gray-400 hover:text-brand-orange transition-colors"
+                    title="Back to Admin">
+                    <i data-lucide="arrow-left" class="w-6 h-6"></i>
+                </a>
+                <h1 class="text-2xl font-display font-bold text-white tracking-widest uppercase">
+                    Analytics <span class="text-brand-orange">Tracker</span>
+                </h1>
+            </div>
+        </div>
+    </nav>
+
+    <main class="max-w-7xl mx-auto px-6 py-8">
+        <!-- Dashboard Header -->
+        <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-8 gap-4">
+            <div>
+                <h2 class="text-xl font-bold text-white">Platform Metrics</h2>
+                <p class="text-sm text-gray-400">Track visitors, orders, and revenue generated.</p>
+            </div>
+
+            <!-- Filters -->
+            <div class="flex bg-dark-800 rounded-lg p-1 border border-dark-700 shadow-inner">
+                <button onclick="changeFilter('day')" id="filter-day"
+                    class="filter-btn active text-sm px-4 py-2 rounded-md font-medium text-white shadow-md bg-dark-700 hover:text-white transition-all">Today</button>
+                <button onclick="changeFilter('week')" id="filter-week"
+                    class="filter-btn text-sm px-4 py-2 rounded-md font-medium text-gray-400 hover:text-white hover:bg-dark-700/50 transition-all">This
+                    Week</button>
+                <button onclick="changeFilter('month')" id="filter-month"
+                    class="filter-btn text-sm px-4 py-2 rounded-md font-medium text-gray-400 hover:text-white hover:bg-dark-700/50 transition-all">This
+                    Month</button>
+            </div>
+        </div>
+
+        <!-- Metrics Grid -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
+            <!-- Visits Card -->
+            <div
+                class="bg-dark-800 border border-dark-700 rounded-2xl p-6 relative overflow-hidden group hover:border-brand-orange/50 transition-colors">
+                <div
+                    class="absolute -right-6 -bottom-6 opacity-5 group-hover:scale-110 transition-transform duration-500">
+                    <i data-lucide="users" class="w-32 h-32 text-brand-orange"></i>
+                </div>
+                <div class="flex items-center gap-4 mb-4 relative z-10">
+                    <div
+                        class="w-12 h-12 rounded-xl bg-blue-500/10 border border-blue-500/30 flex items-center justify-center text-blue-400">
+                        <i data-lucide="eye" class="w-6 h-6"></i>
+                    </div>
+                    <div>
+                        <h3 class="text-gray-400 text-sm font-semibold uppercase tracking-wider">Total Visits</h3>
+                        <p class="text-xs text-gray-500 mt-0.5" id="visitLabel">Today</p>
+                    </div>
+                </div>
+                <div class="relative z-10">
+                    <h4 class="text-4xl font-display font-bold text-white tracking-wide" id="visitsCount">--</h4>
+                </div>
+            </div>
+
+            <!-- Orders Card -->
+            <div
+                class="bg-dark-800 border border-dark-700 rounded-2xl p-6 relative overflow-hidden group hover:border-brand-orange/50 transition-colors">
+                <div
+                    class="absolute -right-6 -bottom-6 opacity-5 group-hover:scale-110 transition-transform duration-500">
+                    <i data-lucide="shopping-bag" class="w-32 h-32 text-brand-orange"></i>
+                </div>
+                <div class="flex items-center gap-4 mb-4 relative z-10">
+                    <div
+                        class="w-12 h-12 rounded-xl bg-brand-orange/10 border border-brand-orange/30 flex items-center justify-center text-brand-orange">
+                        <i data-lucide="shopping-cart" class="w-6 h-6"></i>
+                    </div>
+                    <div>
+                        <h3 class="text-gray-400 text-sm font-semibold uppercase tracking-wider">Completed Orders</h3>
+                        <p class="text-xs text-gray-500 mt-0.5" id="ordersLabel">Today</p>
+                    </div>
+                </div>
+                <div class="relative z-10">
+                    <h4 class="text-4xl font-display font-bold text-white tracking-wide" id="ordersCount">--</h4>
+                </div>
+            </div>
+
+            <!-- Revenue Card -->
+            <div
+                class="bg-dark-800 border border-dark-700 rounded-2xl p-6 relative overflow-hidden group hover:border-brand-orange/50 transition-colors">
+                <div
+                    class="absolute -right-6 -bottom-6 opacity-5 group-hover:scale-110 transition-transform duration-500">
+                    <i data-lucide="indian-rupee" class="w-32 h-32 text-brand-orange"></i>
+                </div>
+                <div class="flex items-center gap-4 mb-4 relative z-10">
+                    <div
+                        class="w-12 h-12 rounded-xl bg-green-500/10 border border-green-500/30 flex items-center justify-center text-green-400">
+                        <i data-lucide="wallet" class="w-6 h-6"></i>
+                    </div>
+                    <div>
+                        <h3 class="text-gray-400 text-sm font-semibold uppercase tracking-wider">Revenue</h3>
+                        <p class="text-xs text-gray-500 mt-0.5" id="revenueLabel">Today</p>
+                    </div>
+                </div>
+                <div class="relative z-10">
+                    <h4 class="text-4xl font-display font-bold text-white tracking-wide">₹<span
+                            id="revenueCount">--</span></h4>
+                </div>
+            </div>
+        </div>
+
+    </main>
+
+    <script>
+        // Init Icons
+        lucide.createIcons();
+
+        // Check authentication
+        const user = JSON.parse(localStorage.getItem('royalSweetsUser'));
+        if (!user || user.role !== 'admin') {
+            alert('Unauthorized Access');
+            window.location.href = 'index.html';
+        }
+
+        let currentFilter = 'day';
+
+        // Set up filters
+        function changeFilter(filterType) {
+            currentFilter = filterType;
+
+            // UI Toggle
+            document.querySelectorAll('.filter-btn').forEach(btn => {
+                btn.classList.remove('bg-dark-700', 'text-white', 'shadow-md', 'active');
+                btn.classList.add('text-gray-400');
+            });
+            const activeBtn = document.getElementById(`filter-${filterType}`);
+            activeBtn.classList.add('bg-dark-700', 'text-white', 'shadow-md', 'active');
+            activeBtn.classList.remove('text-gray-400');
+
+            // Update Labels
+            const labelText = filterType === 'day' ? 'Today' : filterType === 'week' ? 'This Week' : 'This Month';
+            document.getElementById('visitLabel').innerText = labelText;
+            document.getElementById('ordersLabel').innerText = labelText;
+            document.getElementById('revenueLabel').innerText = labelText;
+
+            fetchStats();
+        }
+
+        async function fetchStats() {
+            try {
+                // Show loading state
+                document.getElementById('visitsCount').innerText = '...';
+                document.getElementById('ordersCount').innerText = '...';
+                document.getElementById('revenueCount').innerText = '...';
+
+                const res = await fetch(`https://restaurant-site-8y41.onrender.com/api/tracker/stats?filter=${currentFilter}`);
+                const data = await res.json();
+
+                if (data.success) {
+                    // Update stats
+                    document.getElementById('visitsCount').innerText = data.visits;
+                    document.getElementById('ordersCount').innerText = data.orders;
+                    // Format revenue
+                    document.getElementById('revenueCount').innerText = new Intl.NumberFormat('en-IN').format(data.revenue);
+                } else {
+                    console.error("Failed to load stats:", data.error);
+                    alert("Could not load stats data.");
+                }
+
+            } catch (e) {
+                console.error("Error fetching stats:", e);
+                // alert("Network error while trying to fetch stats.");
+            }
+        }
+
+        // Fetch initially on load
+        fetchStats();
+
+    </script>
+</body>
+
+</html>
