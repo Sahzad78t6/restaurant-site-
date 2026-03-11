@@ -60,6 +60,27 @@ async function notifyDeliveryBoys(order) {
     }
 }
 
+// DIAGNOSTIC ENDPOINT TO TEST TWILIO FROM THE BROWSER
+router.get("/test-twilio", async (req, res) => {
+    try {
+        const testPhone = req.query.phone || process.env.TWILIO_PHONE_NUMBER;
+        let formattedPhone = testPhone;
+        if (!formattedPhone.startsWith('+')) {
+            formattedPhone = '+91' + formattedPhone;
+        }
+
+        const msg = await twilioClient.messages.create({
+            body: "Server Diagnostic Test SMS",
+            from: process.env.TWILIO_PHONE_NUMBER,
+            to: formattedPhone
+        });
+        
+        res.json({ success: true, message: "Twilio SMS Sent Successfully!", sid: msg.sid });
+    } catch (err) {
+        res.status(500).json({ success: false, error: err.message, code: err.code });
+    }
+});
+
 const razorpay = new Razorpay({
     key_id: process.env.RAZORPAY_KEY_ID,
     key_secret: process.env.RAZORPAY_KEY_SECRET,
