@@ -11,10 +11,8 @@
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link
-        href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;700&family=Poppins:wght@300;400;500;600&display=swap"
-        rel="stylesheet">
-
+    <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;700&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+    
     <!-- Icons -->
     <script src="https://unpkg.com/lucide@latest"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -59,13 +57,8 @@
         }
 
         @keyframes spin {
-            0% {
-                transform: rotate(0deg);
-            }
-
-            100% {
-                transform: rotate(360deg);
-            }
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
         }
 
         .payment-option.active {
@@ -82,8 +75,7 @@
             max-height: 200px;
             overflow-y: auto;
             z-index: 50;
-            color: #d1d5db;
-            /* text-gray-300 */
+            color: #d1d5db; /* text-gray-300 */
         }
 
         .suggestion-item {
@@ -104,21 +96,18 @@
             -webkit-backdrop-filter: blur(10px);
             border-bottom: 1px solid rgba(255, 255, 255, 0.05);
         }
-
+        
         /* Custom scrollbar for order list */
         .custom-scrollbar::-webkit-scrollbar {
             width: 4px;
         }
-
         .custom-scrollbar::-webkit-scrollbar-track {
             background: #0a0a0a;
         }
-
         .custom-scrollbar::-webkit-scrollbar-thumb {
             background: #1f1f1f;
             border-radius: 4px;
         }
-
         .custom-scrollbar::-webkit-scrollbar-thumb:hover {
             background: #ff6b00;
         }
@@ -144,8 +133,7 @@
                 class="w-12 h-12 flex items-center justify-center rounded-full bg-dark-800 text-gray-400 shadow-sm border border-dark-700 hover:text-brand-orange hover:border-brand-orange transition-all duration-300">
                 <i data-lucide="arrow-left" class="w-5 h-5"></i>
             </a>
-            <h1 class="text-2xl font-display font-black text-white tracking-widest uppercase">Secure <span
-                    class="text-brand-orange">Checkout</span></h1>
+            <h1 class="text-2xl font-display font-black text-white tracking-widest uppercase">Secure <span class="text-brand-orange">Checkout</span></h1>
             <div class="w-12 h-12 rounded-full flex items-center justify-center">
                 <!-- Flexbox spacer -->
             </div>
@@ -159,22 +147,17 @@
             class="bg-dark-800 rounded-3xl p-6 sm:p-10 shadow-[0_10px_40px_rgba(0,0,0,0.5)] border border-dark-700">
 
             <div class="flex items-center gap-3 mb-8">
-                <div
-                    class="w-10 h-10 rounded-full bg-dark-900 border border-dark-700 flex items-center justify-center text-brand-orange">
+                <div class="w-10 h-10 rounded-full bg-dark-900 border border-dark-700 flex items-center justify-center text-brand-orange">
                     <i data-lucide="receipt" class="w-5 h-5"></i>
                 </div>
                 <h2 class="text-2xl font-display font-bold tracking-wide text-white">Order Summary</h2>
             </div>
 
-            <div id="cartItems"
-                class="space-y-4 border-b border-dark-700 pb-8 mb-8 custom-scrollbar max-h-60 overflow-y-auto pr-2">
-            </div>
+            <div id="cartItems" class="space-y-4 border-b border-dark-700 pb-8 mb-8 custom-scrollbar max-h-60 overflow-y-auto pr-2"></div>
 
-            <div
-                class="flex justify-between items-center mb-10 bg-dark-900 shadow-inner p-6 rounded-2xl border border-dark-700 relative overflow-hidden">
+            <div class="flex justify-between items-center mb-10 bg-dark-900 shadow-inner p-6 rounded-2xl border border-dark-700 relative overflow-hidden">
                 <div class="absolute right-0 top-0 bottom-0 w-32 bg-brand-orange/5 blur-xl"></div>
-                <span
-                    class="text-gray-400 font-bold uppercase tracking-widest text-xs flex items-center gap-3 relative z-10">
+                <span class="text-gray-400 font-bold uppercase tracking-widest text-xs flex items-center gap-3 relative z-10">
                     <i data-lucide="wallet" class="w-5 h-5 text-brand-orange"></i> Total Amount
                 </span>
                 <span class="text-4xl font-black text-white tracking-tight relative z-10">
@@ -192,16 +175,14 @@
                 </div>
 
                 <div class="relative group">
-                    <i data-lucide="phone"
-                        class="absolute left-5 top-1/2 -translate-y-1/2 text-gray-500 w-5 h-5 group-focus-within:text-brand-orange transition-colors"></i>
+                    <i data-lucide="phone" class="absolute left-5 top-1/2 -translate-y-1/2 text-gray-500 w-5 h-5 group-focus-within:text-brand-orange transition-colors"></i>
                     <input id="phone" type="tel" placeholder="Phone Number"
                         class="w-full bg-dark-900 border border-dark-700 py-4 pl-14 pr-4 rounded-xl outline-none focus:border-brand-orange focus:ring-1 focus:ring-brand-orange transition-all font-semibold text-white placeholder-gray-500">
                 </div>
 
                 <div class="relative flex gap-3 group">
                     <div class="relative flex-1">
-                        <i data-lucide="map-pin"
-                            class="absolute left-5 top-1/2 -translate-y-1/2 text-gray-500 w-5 h-5 group-focus-within:text-brand-orange transition-colors"></i>
+                        <i data-lucide="map-pin" class="absolute left-5 top-1/2 -translate-y-1/2 text-gray-500 w-5 h-5 group-focus-within:text-brand-orange transition-colors"></i>
                         <input id="address" type="text" placeholder="Enter full delivery address"
                             class="w-full bg-dark-900 border border-dark-700 py-4 pl-14 pr-4 rounded-xl outline-none focus:border-brand-orange focus:ring-1 focus:ring-brand-orange transition-all font-semibold text-white placeholder-gray-500">
                     </div>
@@ -266,14 +247,12 @@
             class="hidden flex-col items-center justify-center p-12 bg-dark-800 rounded-3xl shadow-[0_10px_40px_rgba(0,0,0,0.5)] border border-dark-700 min-h-[500px]">
             <div class="relative w-24 h-24 mb-10 flex items-center justify-center">
                 <div class="absolute inset-0 border-4 border-dark-700 rounded-full"></div>
-                <div
-                    class="absolute inset-0 border-4 border-brand-orange rounded-full border-t-transparent animate-spin">
+                <div class="absolute inset-0 border-4 border-brand-orange rounded-full border-t-transparent animate-spin">
                 </div>
                 <i data-lucide="utensils" class="text-brand-orange w-8 h-8 animate-pulse"></i>
             </div>
             <h2 class="text-3xl font-display font-bold text-white tracking-wide mb-3">Processing Order</h2>
-            <p class="text-gray-400 font-medium text-center">Please wait while we confirm your details with Royal
-                Sweets...</p>
+            <p class="text-gray-400 font-medium text-center">Please wait while we confirm your details with Royal Sweets...</p>
         </div>
         <!-- SUCCESS STATE -->
         <div id="success"
@@ -379,7 +358,7 @@
                 const index = cart.findIndex(i => i.name === name);
                 if (index > -1) cart.splice(index, 1);
             }
-
+            
             localStorage.setItem("activeCart", JSON.stringify(cart));
             renderCart();
         }
@@ -483,9 +462,9 @@
 
             const phone = document.getElementById("phone").value.trim();
             const address = document.getElementById("address").value.trim();
-
+            
             // Basic number validation (must be roughly 10 digits to be vaguely valid)
-            const cleanPhone = phone.replace(/\D/g, '');
+            const cleanPhone = phone.replace(/\D/g, ''); 
 
             if (!phone || cleanPhone.length < 10) {
                 alert("Please enter a valid phone number so we can contact you regarding delivery.");
@@ -521,7 +500,7 @@
                         headers: { "Content-Type": "application/json" },
                         body: JSON.stringify(orderPayload)
                     });
-
+                    
                     if (!res.ok) throw new Error("Order rejected by server");
 
                     const createdOrder = await res.json();
@@ -534,19 +513,19 @@
                         headers: { "Content-Type": "application/json" },
                         body: JSON.stringify({ amount: total })
                     });
-
+                    
                     if (!rzpReq.ok) throw new Error("Could not create Razorpay order");
-
+                    
                     const orderData = await rzpReq.json();
-
+                    
                     const options = {
-                        "key": "rzp_" + "live_SPMT8sf7wug9lY",
-                        "amount": orderData.amount,
+                        "key": "rzp_" + "live_SPMT8sf7wug9lY", 
+                        "amount": orderData.amount, 
                         "currency": "INR",
                         "name": "Royal Sweets",
                         "description": "Order Payment",
-                        "order_id": orderData.id,
-                        "handler": async function (response) {
+                        "order_id": orderData.id, 
+                        "handler": async function (response){
                             // Payment success callback
                             try {
                                 const verifyRes = await fetch("https://restaurant-site-8y41.onrender.com/api/orders/razorpay/verify", {
@@ -562,7 +541,7 @@
 
                                 const verifyData = await verifyRes.json();
 
-                                if (verifyData.success) {
+                                if(verifyData.success) {
                                     finalizeOrder(verifyData.order);
                                 } else {
                                     throw new Error("Payment verification failed");
@@ -582,16 +561,16 @@
                             "color": "#ff6b00"
                         },
                         "modal": {
-                            "ondismiss": function () {
+                            "ondismiss": function(){
                                 // User closed modal
                                 resetCheckoutUI();
                             }
                         }
                     };
                     const rzp1 = new Razorpay(options);
-                    rzp1.on('payment.failed', function (response) {
-                        alert("Payment Failed. Reason: " + response.error.description);
-                        resetCheckoutUI();
+                    rzp1.on('payment.failed', function (response){
+                            alert("Payment Failed. Reason: " + response.error.description);
+                            resetCheckoutUI();
                     });
                     rzp1.open();
 
@@ -621,29 +600,11 @@
 
             document.getElementById("loading").classList.add("hidden");
             document.getElementById("loading").classList.remove("flex");
-
+            
             document.getElementById("success").classList.remove("hidden");
             document.getElementById("success").classList.add("flex");
 
             localStorage.removeItem("activeCart"); // clear cart!
-
-            // WhatsApp Redirect Hook
-            setTimeout(() => {
-                let itemsString = (orderObj.items || cart).map(i => `- ${i.quantity || i.qty || 1}x ${i.name}`).join('\n');
-                let waTotal = orderObj.total || orderObj.totalAmount || total;
-                let waPhone = orderObj.phone || document.getElementById("phone").value.trim();
-                let waAddress = orderObj.address || document.getElementById("address").value.trim();
-                let waMethod = selectedPaymentMethod === 'cod' ? 'Cash on Delivery' : 'Online Payment';
-                let rawId = orderObj._id || "NEW";
-                let waOrderId = rawId.toString().substring(rawId.toString().length - 6).toUpperCase();
-
-                let waMessage = `🚨 *NEW ORDER ALERT!* 🚨\n\n*Order ID:* #${waOrderId}\n*Customer:* ${user.name}\n*Phone:* ${waPhone}\n*Address:* ${waAddress}\n*Method:* ${waMethod}\n\n*Items:*\n${itemsString}\n\n*Total Amount:* ₹${waTotal}`;
-
-                let waUrl = `https://wa.me/918260722846?text=${encodeURIComponent(waMessage)}`;
-
-                // Open new tab silently
-                window.open(waUrl, '_blank');
-            }, 500); // 500ms slight delay for nice UI flow
         }
 
         function resetCheckoutUI() {
