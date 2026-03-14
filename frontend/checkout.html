@@ -15,6 +15,9 @@
         href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;700&family=Poppins:wght@300;400;500;600&display=swap"
         rel="stylesheet">
 
+    <!-- Leaflet CSS for Map -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
+
     <!-- Icons -->
     <script src="https://unpkg.com/lucide@latest"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -134,10 +137,28 @@
         .custom-scrollbar::-webkit-scrollbar-thumb:hover {
             background: #ff6b00;
         }
+
+        /* Map styling */
+        #map {
+            height: 250px;
+            width: 100%;
+            border-radius: 12px;
+            border: 1px solid #1f1f1f;
+            margin-top: 1rem;
+            z-index: 10;
+        }
+        .leaflet-control-attribution {
+            background: rgba(10, 10, 10, 0.7) !important;
+            color: #d1d5db !important;
+        }
+        .leaflet-control-attribution a {
+            color: #ff6b00 !important;
+        }
     </style>
 
 </head>
 
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
 <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
 <script>
     const userCheck = localStorage.getItem("royalSweetsUser");
@@ -235,6 +256,10 @@
                         class="suggestion-box hidden absolute top-[calc(100%+0.5rem)] left-0 w-[calc(100%-4rem)] shadow-xl z-50 overflow-hidden">
                     </div>
                 </div>
+                
+                <!-- Interactive Map container -->
+                <div id="map"></div>
+                <p class="text-xs text-gray-500 mt-2"><i data-lucide="info" class="inline w-3 h-3 mb-0.5"></i> You can click on the map to accurately pinpoint your delivery location.</p>
             </div>
 
             <!-- PAYMENT -->
@@ -491,32 +516,88 @@
             }
         });
 
+        /* INTERACTIVE MAP LOGIC WITH LEAFLET */
+        let map;
+        let mapMarker;
+
+        // Initialize Map
+        function initMap(lat = 19.0760, lon = 72.8777) { // Default to Mumbai
+            if (map) return; // Prevent multiple initializations
+            
+            map = L.map('map').setView([lat, lon], 13);
+            
+            L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
+                attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>',
+                subdomains: 'abcd',
+                maxZoom: 20
+            }).addTo(map);
+
+            // Add click event on map to select location
+            map.on('click', async function(e) {
+                const lat = e.latlng.lat;
+                const lon = e.latlng.lng;
+                
+                placeMarker(lat, lon);
+                await reverseGeocode(lat, lon);
+            });
+        }
+
+        function placeMarker(lat, lon) {
+            if (mapMarker) {
+                mapMarker.setLatLng([lat, lon]);
+            } else {
+                // Create a custom orange marker icon
+                const orangeIcon = new L.Icon({
+                    iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-orange.png',
+                    shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png',
+                    iconSize: [25, 41],
+                    iconAnchor: [12, 41],
+                    popupAnchor: [1, -34],
+                    shadowSize: [41, 41]
+                });
+                mapMarker = L.marker([lat, lon], {icon: orangeIcon}).addTo(map);
+            }
+            map.setView([lat, lon], 16);
+        }
+
+        async function reverseGeocode(lat, lon) {
+            addressInput.placeholder = "Loading precise address...";
+            try {
+                const res = await fetch(`https://photon.komoot.io/reverse?lon=${lon}&lat=${lat}`);
+                const data = await res.json();
+                if (data.features && data.features.length > 0) {
+                    const prop = data.features[0].properties;
+                    const components = [prop.name, prop.street, prop.locality, prop.district, prop.city, prop.state, prop.postcode];
+                    const uniqueComponents = [...new Set(components.filter(Boolean))];
+                    addressInput.value = uniqueComponents.join(", ");
+                } else {
+                    alert("Could not extract a readable address here. Try adjusting the pin slightly.");
+                }
+            } catch (err) {
+                alert("Location service error while finding map address.");
+            }
+            addressInput.placeholder = "Enter full delivery address";
+        }
+
         /* GPS LOCATION GRAB LOGIC */
         function useLocation() {
             if (navigator.geolocation) {
-                addressInput.placeholder = "Locating...";
+                addressInput.placeholder = "Locating your GPS...";
                 navigator.geolocation.getCurrentPosition(
                     async (position) => {
                         const lat = position.coords.latitude;
                         const lon = position.coords.longitude;
-
-                        try {
-                            const res = await fetch(`https://photon.komoot.io/reverse?lon=${lon}&lat=${lat}`);
-                            const data = await res.json();
-                            if (data.features && data.features.length > 0) {
-                                const prop = data.features[0].properties;
-                                const components = [prop.name, prop.street, prop.locality, prop.district, prop.city, prop.state, prop.postcode];
-                                const uniqueComponents = [...new Set(components.filter(Boolean))];
-                                addressInput.value = uniqueComponents.join(", ");
-                            } else {
-                                alert("Could not fetch address dynamically. Please type manually.");
-                            }
-                        } catch (err) {
-                            alert("Location service error. Please type manually.");
-                        }
+                        
+                        // Update Map
+                        if(!map) initMap(lat, lon);
+                        placeMarker(lat, lon);
+                        
+                        // Populate Text Field
+                        await reverseGeocode(lat, lon);
                     },
                     (error) => {
-                        alert("Please allow location access in your browser or type manually.");
+                        alert("Please allow location access in your browser to use GPS.");
+                        addressInput.placeholder = "Enter full delivery address";
                     }
                 );
             } else {
@@ -688,6 +769,10 @@
 
         /* INIT */
         renderCart();
+        // Initialize map with a short delay to ensure DOM is ready
+        setTimeout(() => {
+            initMap();
+        }, 300);
 
     </script>
 
