@@ -526,10 +526,10 @@
             
             map = L.map('map').setView([lat, lon], 13);
             
-            // Standard colorful map with labels
-            L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
-                attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
-                maxZoom: 19
+            // Google Maps Standard tiles
+            L.tileLayer('https://mt1.google.com/vt/lyrs=m&x={x}&y={y}&z={z}', {
+                attribution: '&copy; Google Maps',
+                maxZoom: 20
             }).addTo(map);
 
             // Add click event on map to select location
