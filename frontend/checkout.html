@@ -421,16 +421,20 @@
         let userLat = null;
         let userLon = null;
 
-        // Try to get approximate location for better search bias
-        fetch('https://ipapi.co/json/')
-            .then(res => res.json())
-            .then(data => {
-                if(data.latitude && data.longitude) {
-                    userLat = data.latitude;
-                    userLon = data.longitude;
-                }
-            })
-            .catch(err => console.log("Could not get IP location for bias"));
+        // Try to get precise location for search bias on load
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(
+                (position) => {
+                    userLat = position.coords.latitude;
+                    userLon = position.coords.longitude;
+                    console.log("Location bias active:", userLat, userLon);
+                },
+                (error) => {
+                    console.log("Location bias disabled (permission denied/error)", error);
+                },
+                { enableHighAccuracy: false, timeout: 5000, maximumAge: 600000 }
+            );
+        }
 
         let timeoutId;
         addressInput.addEventListener("input", function () {
