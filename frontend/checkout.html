@@ -418,6 +418,20 @@
         const addressInput = document.getElementById("address");
         const suggestionsBox = document.getElementById("suggestions");
 
+        let userLat = null;
+        let userLon = null;
+
+        // Try to get approximate location for better search bias
+        fetch('https://ipapi.co/json/')
+            .then(res => res.json())
+            .then(data => {
+                if(data.latitude && data.longitude) {
+                    userLat = data.latitude;
+                    userLon = data.longitude;
+                }
+            })
+            .catch(err => console.log("Could not get IP location for bias"));
+
         let timeoutId;
         addressInput.addEventListener("input", function () {
             clearTimeout(timeoutId);
@@ -431,7 +445,12 @@
             timeoutId = setTimeout(async () => {
                 try {
                     // Using Photon API for better typing autocomplete than Nominatim
-                    const res = await fetch(`https://photon.komoot.io/api/?q=${encodeURIComponent(query)}&bbox=68.1,6.7,97.4,35.5&limit=5`);
+                    let apiUrl = `https://photon.komoot.io/api/?q=${encodeURIComponent(query)}&bbox=68.1,6.7,97.4,35.5&limit=5`;
+                    if (userLat && userLon) {
+                        apiUrl += `&lat=${userLat}&lon=${userLon}`;
+                    }
+                    
+                    const res = await fetch(apiUrl);
                     const data = await res.json();
 
                     if (data.features && data.features.length > 0) {
