@@ -13,6 +13,13 @@
 </head>
 
 <body class="bg-gray-100 min-h-screen flex items-center justify-center">
+    <!-- Video Preloader -->
+    <div id="preloader" class="fixed inset-0 z-[9999] bg-black flex items-center justify-center transition-opacity duration-500">
+        <video autoplay muted loop playsinline class="w-64 h-64 object-contain">
+            <source src="loading.mp4" type="video/mp4">
+        </video>
+    </div>
+
 
 <div class="bg-white p-10 rounded-3xl shadow-xl w-[350px] text-center">
 
@@ -148,6 +155,39 @@ async function pay(method) {
 }
 
 </script>
+
+
+    <!-- Preloader Script -->
+    <script>
+        window.addEventListener('load', function() {
+            const preloader = document.getElementById('preloader');
+            if (preloader) {
+                setTimeout(() => {
+                    preloader.style.opacity = '0';
+                    setTimeout(() => preloader.style.display = 'none', 500);
+                }, 500);
+            }
+        });
+
+        document.addEventListener('DOMContentLoaded', function() {
+            document.querySelectorAll('a').forEach(link => {
+                link.addEventListener('click', function(e) {
+                    const href = this.getAttribute('href');
+                    if (href && href.endsWith('.html') && !href.startsWith('#') && !this.hasAttribute('target') && !href.includes('mailto:') && !href.includes('tel:')) {
+                        e.preventDefault();
+                        const preloader = document.getElementById('preloader');
+                        if (preloader) {
+                            preloader.style.display = 'flex';
+                            setTimeout(() => preloader.style.opacity = '1', 10);
+                            setTimeout(() => window.location.href = href, 500);
+                        } else {
+                            window.location.href = href;
+                        }
+                    }
+                });
+            });
+        });
+    </script>
 
 </body>
 </html>
