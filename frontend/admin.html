@@ -111,7 +111,7 @@
 <body class="bg-gray-50 text-gray-800 min-h-screen">
     <!-- Video Preloader -->
     <div id="preloader" class="fixed inset-0 z-[9999] bg-black flex items-center justify-center transition-opacity duration-500 overflow-hidden">
-        <video autoplay muted loop playsinline class="w-full h-full object-cover">
+        <video id="preloader-video" autoplay muted loop playsinline class="w-full h-full object-cover">
             <source src="loading.mp4" type="video/mp4">
         </video>
     </div>
@@ -503,17 +503,16 @@
 
     <!-- Preloader Script -->
     <script>
-        window.addEventListener('load', function() {
-            const preloader = document.getElementById('preloader');
-            if (preloader) {
-                setTimeout(() => {
-                    preloader.style.opacity = '0';
-                    setTimeout(() => preloader.style.display = 'none', 500);
-                }, 500);
-            }
-        });
-
         document.addEventListener('DOMContentLoaded', function() {
+            // Set correct video for device
+            const preloaderVideo = document.getElementById('preloader-video');
+            if (preloaderVideo) {
+                const isMobile = window.innerWidth < 768;
+                const videoSrc = isMobile ? 'phone.mp4' : 'loading.mp4';
+                preloaderVideo.src = videoSrc;
+                preloaderVideo.load();
+            }
+
             document.querySelectorAll('a').forEach(link => {
                 link.addEventListener('click', function(e) {
                     const href = this.getAttribute('href');
@@ -523,13 +522,23 @@
                         if (preloader) {
                             preloader.style.display = 'flex';
                             setTimeout(() => preloader.style.opacity = '1', 10);
-                            setTimeout(() => window.location.href = href, 500);
+                            setTimeout(() => window.location.href = href, 1500); // Fixed 1.5s transition
                         } else {
                             window.location.href = href;
                         }
                     }
                 });
             });
+        });
+
+        window.addEventListener('load', function() {
+            const preloader = document.getElementById('preloader');
+            if (preloader) {
+                setTimeout(() => {
+                    preloader.style.opacity = '0';
+                    setTimeout(() => preloader.style.display = 'none', 500);
+                }, 1500); // Fixed 1.5s load time
+            }
         });
     </script>
 
