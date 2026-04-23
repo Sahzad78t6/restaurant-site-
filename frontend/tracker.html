@@ -43,12 +43,7 @@
 </head>
 
 <body class="bg-dark-900 text-gray-300 font-sans antialiased">
-    <!-- Video Preloader -->
-    <div id="preloader" class="fixed inset-0 z-[9999] bg-black flex items-center justify-center transition-opacity duration-500 overflow-hidden">
-        <video id="preloader-video" autoplay muted loop playsinline class="w-full h-full object-cover">
-            <source src="loading.mp4" type="video/mp4">
-        </video>
-    </div>
+    
 
     <!-- Navbar -->
     <nav class="bg-dark-800 border-b border-white/5 py-4 sticky top-0 z-50 shadow-lg">
@@ -346,46 +341,7 @@
 
     </script>
 
-    <!-- Preloader Script -->
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            // Set correct video for device
-            const preloaderVideo = document.getElementById('preloader-video');
-            if (preloaderVideo) {
-                const isMobile = window.innerWidth < 768;
-                const videoSrc = isMobile ? 'phone.mp4' : 'loading.mp4';
-                preloaderVideo.src = videoSrc;
-                preloaderVideo.load();
-            }
-
-            document.querySelectorAll('a').forEach(link => {
-                link.addEventListener('click', function(e) {
-                    const href = this.getAttribute('href');
-                    if (href && href.endsWith('.html') && !href.startsWith('#') && !this.hasAttribute('target') && !href.includes('mailto:') && !href.includes('tel:')) {
-                        e.preventDefault();
-                        const preloader = document.getElementById('preloader');
-                        if (preloader) {
-                            preloader.style.display = 'flex';
-                            setTimeout(() => preloader.style.opacity = '1', 10);
-                            setTimeout(() => window.location.href = href, 1500); // Fixed 1.5s transition
-                        } else {
-                            window.location.href = href;
-                        }
-                    }
-                });
-            });
-        });
-
-        window.addEventListener('load', function() {
-            const preloader = document.getElementById('preloader');
-            if (preloader) {
-                setTimeout(() => {
-                    preloader.style.opacity = '0';
-                    setTimeout(() => preloader.style.display = 'none', 500);
-                }, 1500); // Fixed 1.5s load time
-            }
-        });
-    </script>
+    
 
 </body>
 

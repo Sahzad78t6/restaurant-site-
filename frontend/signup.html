@@ -25,12 +25,7 @@ body { font-family: 'Plus Jakarta Sans', sans-serif; }
 </head>
 
 <body class="bg-slate-50 min-h-screen flex flex-col items-center justify-center p-4 py-8 relative overflow-hidden">
-    <!-- Video Preloader -->
-    <div id="preloader" class="fixed inset-0 z-[9999] bg-black flex items-center justify-center transition-opacity duration-500 overflow-hidden">
-        <video id="preloader-video" autoplay muted loop playsinline class="w-full h-full object-cover">
-            <source src="loading.mp4" type="video/mp4">
-        </video>
-    </div>
+    
 
 
 <a href="login.html" class="absolute top-6 left-6 w-10 h-10 sm:top-8 sm:left-8 sm:w-12 sm:h-12 bg-white rounded-full flex items-center justify-center shadow-sm border border-slate-200 hover:bg-slate-50 transition-colors z-10 hover:-translate-x-1 duration-300">
@@ -281,46 +276,7 @@ async function handleCredentialResponse(response) {
 </script>
 
 
-    <!-- Preloader Script -->
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            // Set correct video for device
-            const preloaderVideo = document.getElementById('preloader-video');
-            if (preloaderVideo) {
-                const isMobile = window.innerWidth < 768;
-                const videoSrc = isMobile ? 'phone.mp4' : 'loading.mp4';
-                preloaderVideo.src = videoSrc;
-                preloaderVideo.load();
-            }
-
-            document.querySelectorAll('a').forEach(link => {
-                link.addEventListener('click', function(e) {
-                    const href = this.getAttribute('href');
-                    if (href && href.endsWith('.html') && !href.startsWith('#') && !this.hasAttribute('target') && !href.includes('mailto:') && !href.includes('tel:')) {
-                        e.preventDefault();
-                        const preloader = document.getElementById('preloader');
-                        if (preloader) {
-                            preloader.style.display = 'flex';
-                            setTimeout(() => preloader.style.opacity = '1', 10);
-                            setTimeout(() => window.location.href = href, 1500); // Fixed 1.5s transition
-                        } else {
-                            window.location.href = href;
-                        }
-                    }
-                });
-            });
-        });
-
-        window.addEventListener('load', function() {
-            const preloader = document.getElementById('preloader');
-            if (preloader) {
-                setTimeout(() => {
-                    preloader.style.opacity = '0';
-                    setTimeout(() => preloader.style.display = 'none', 500);
-                }, 1500); // Fixed 1.5s load time
-            }
-        });
-    </script>
+    
 
 </body>
 </html>
